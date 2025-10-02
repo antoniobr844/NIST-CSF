@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título da página inicial -->
+    <title>NIST CSF - Consulta de Categorias</title>
+    <style>
+        <!-- formatação de layout data página em css  
+        -->
+        *
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body
+        {
+            font-family: 'SegoeUI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%,#c3cfe2
+        100%);
+        min-height:
+        100vh;
+        padding:
+        20px;
+        color:
+        #2c3e50;
+        }
+        .container
+        {
+        max-width:
+        1000px;
+        margin:
+        0
+        auto;
+        background:
+        white;
+        border-radius:
+        15px;
+        padding:
+        30px;
+        box-shadow:
+        0
+        10px
+        30px
+        rgba(0,
+        0,
+        0,
+        0.15);
+        }
+        .combo-container
+        {
+        margin-bottom:
+        25px;
+        background:
+        #f8f9fa;
+        padding:
+        20px;
+        border-radius:
+        10px;
+        border-left:
+        4px
+        solid
+        #d80300;
+        }
+        h1
+        {
+        text-align:
+        center;
+        margin-bottom:
+        30px;
+        font-size:
+        2.2em;
+        font-weight:
+        600;
+        color:
+        #2c3e50;
+        }
+
+        .breadcrumb {
+            display: flex;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        .breadcrumb div {
+            margin-right: 10px;
+            padding-right: 15px;
+            position: relative;
+        }
+
+        .breadcrumb div:not(:last-child)::after {
+            content: "›";
+            position: absolute;
+            right: 0;
+            color: #7f8c8d;
+        }
+
+        .breadcrumb .active {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        select
+        {
+        width:
+        100%;
+        padding:
+        12px
+        15px;
+        border:
+        2px
+        solid
+        #ddd;
+        border-radius:
+        8px;
+        font-size:
+        16px;
+        background-color:
+        white;
+        transition:
+        border-color
+        0.3s;
+        }
+        select:focus
+        {
+        border-color:
+        #3498db;
+        outline:
+        none;
+        }
+        .hidden
+        {
+        display:
+        none;
+        opacity:
+        0;
+        transform:
+        translateY(-10px);
+        }
+        .visible
+        {
+        display:
+        block;
+        animation:fadeIn
+        0.3s
+        forwards;
+        }
+        .info-container
+        {
+        margin-top:
+        20px;
+        padding:
+        15px;
+        border:
+        1px
+        solid
+        #ddd;
+        border-radius:
+        4px;
+        background-color:#f5f5f5;
+        }
+        textarea
+        {
+        width:
+        100%;
+        min-height:
+        150px;
+        padding:
+        10px;
+        font-family:
+        Arial,
+        sans-serif;
+        font-size:
+        14px;
+        border:
+        1px
+        solid
+        #ccc;
+        border-radius:
+        4px;
+        resize:
+        vertical;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- em html a partir daqui do título -->
+    <div class="container">
+        <h1>NIST CSF - Consultas</h1>
+        <div class="breadcrumb">
+            <div class="active">Função</div>
+            <div>Categoria</div>
+            <div>Subcategorias</div>
+        </div>
+
+        <div class="combo-container">
+
+            <!--esse é o subtítulo da página -->
+            <label for="opcoesPrincipais">Selecione uma função:</label>
+            <!-- função que forma a combox -->
+            <select id="opcoesPrincipais" onchange="mostrarSubOpcoes(this)">
+                <!-- as opções dentro da combox -->
+                <option value="">Selecione uma função</option>
+                <option value="governanca">Governança</option>
+                <option value="identificar">Identificar</option>
+                <option value="proteger">Proteger</option>
+                <option value="detectar">Detectar</option>
+                <option value="responder">Responder</option>
+                <option value="recuperar">Recuperar</option>
+            </select>
+        </div>
+        <!-- após clicar numa opção aparece outra combobox dessa vez para selecionar uma categoria -->
+
+        <div id="subOpcoesContainer" class="hidden">
+            <div class="combo-container">
+                <label for="subOpcoes">Selecione uma categoria:</label>
+                <select id="subOpcoes" onchange="mostrarSubCatOpcoes(this)">
+                    <option value="">Selecione uma categoria</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="subCatContainer" class="hidden">
+            <div class="combo-container">
+                <label for="subCatOpcoes">Selecione uma Subcategoria:</label>
+                <select id="subCatOpcoes" onchange="mostrarInformacoes(this)">
+                    <option value="">Selecione uma Subcategoria</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- essa função faz aparecer logo em seguida ao clique da ação anterior uma caixinha de texto contendo informações sobre aquela categoria  -->
+        <div id="infoContainer" class="hidden">
+            <div class="info-container">
+                <div class="combo-container">
+                    <h3>Informações da Subcategoria:</h3>
+                    <textarea id="infoTextarea" readonly></textarea>
+                </div>
+            </div>
+
+            <script>
+                // Dados das subopções (a partir daqui é c# para retornar as funções da interface e integrar o frontend do backend)
+                const subOpcoesData = {
+                    governanca: [
+                        "GV.AC (CONTROLE DE ACESSO)"
+                    ],
+                    identificar: [
+                        "ID.AM-01"
+                    ],
+                    proteger: [
+                        "PR.AA-01"
+                    ],
+                    detectar: [
+                        "DE.CM-09"
+                    ],
+                    responder: [
+                        "RS.MI-2"
+                    ],
+                    recuperar: [
+                        "RC.RP-01"
+
+                    ]
+                };
+
+                const subCatData = {
+                    "GV.AC (CONTROLE DE ACESSO)": [
+                        "GV.OC-01"
+                    ],
+                    "ID.AM-01": [
+                        "ID.AM-1"
+                    ],
+                    "PR.AA-01": [
+                        "PR.AA-1"
+                    ],
+                    "DE.CM-09": [
+                        "DE.CM-9"
+                    ],
+                    "RS.MI-2": [
+                        "RS.MI-2"
+                    ],
+                    "RC.RP-01": [
+                        "RC.RP-1"
+                    ]
+                };
+
+                //Dados das informações (exemplo simplificado) que serão implementadas do banco de dados
+                const informacoesData = {
+                    "GV.OC-01": "Compartilhar a missão da organização para fornecer uma base para identificar riscos.",
+                    "ID.AM-1": "Inventário de ativos organizacionais é mantido.",
+                    "PR.AA-1": "Atribuições de acesso são gerenciadas.",
+                    "DE.CM-9": "Monitoramento contínuo é realizado para detectar eventos de segurança.",
+                    "RS.MI-2": "Análise e melhoria das respostas a incidentes.",
+                    "RC.RP-1": "Plano de recuperação é implementado."
+                }
+                    ;
+
+                // isso retorna na página todas as informações anteriores
+                function mostrarSubOpcoes(selectElement) {
+                    const subOpcoesContainer = document.getElementById('subOpcoesContainer');
+                    const subOpcoesSelect = document.getElementById('subOpcoes');
+                    const subCatContainer = document.getElementById('subCatContainer');
+                    const subCatSelect = document.getElementById('subCatOpcoes');
+                    const infoContainer = document.getElementById('infoContainer');
+                    const infoTextarea = document.getElementById('infoTextarea');
+
+                    // Limpar seleções anteriores
+                    //subOpcoesSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
+                    //infoContainer.classList.add('hidden');
+                    //document.getElementById('infoTextarea').value = '';
+
+                    const valorSelecionado = selectElement.value;
+
+                    subOpcoesSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
+                    subCatSelect.innerHTML = '<option value="">Selecione uma Subcategoria</option>';
+                    infoTextarea.value = '';
+                    subOpcoesContainer.classList.add('hidden');
+                    subCatContainer.classList.add('hidden');
+                    infoContainer.classList.add('hidden');
+
+                    if (valorSelecionado) {
+                        // Preencher as subopções
+                        subOpcoesData[valorSelecionado].forEach(opcao => {
+                            const option = document.createElement('option');
+                            option.value = opcao;
+                            option.textContent = opcao;
+                            subOpcoesSelect.appendChild(option);
+                        });
+
+                        // Mostrar o container com animação
+                        subOpcoesContainer.classList.remove('hidden');
+                        subOpcoesContainer.classList.add('visible');
+                    } else {
+                        // Esconder o container se nenhuma opção estiver selecionada
+                        subOpcoesContainer.classList.remove('visible');
+                        subOpcoesContainer.classList.add('hidden');
+                    }
+                }
+
+                    function updateBreadcrumb(step) {
+                    const breadcrumbItems = document.querySelectorAll('.breadcrumb div');
+
+                    // Reset all
+                    breadcrumbItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // Set active step
+                    if (step >= 1) breadcrumbItems[0].classList.add('active');
+                    if (step >= 2) breadcrumbItems[1].classList.add('active');
+                    if (step >= 3) breadcrumbItems[2].classList.add('active');
+                }
+
+                function mostrarSubCatOpcoes(selectElement) {
+                    const subCatContainer = document.getElementById('subCatContainer');
+                    const subCatSelect = document.getElementById('subCatOpcoes');
+                    const infoContainer = document.getElementById('infoContainer');
+
+                    // Limpar seleções anteriores
+                    subCatSelect.innerHTML = '<option value="">Selecione uma Subcategoria</option>';
+                    infoContainer.classList.add('hidden');
+                    document.getElementById('infoTextarea').value = '';
+
+                    const valorSelecionado = selectElement.value;
+
+                    subCatSelect.innerHTML = '<option value="">Selecione uma Subcategoria</option>';
+                    infoTextarea.value = '';
+                    subCatContainer.classList.add('hidden');
+                    infoContainer.classList.add('hidden');
+
+
+                    if (valorSelecionado && subCatData[valorSelecionado]) {
+                        // Preencher as subopções
+                        subCatData[valorSelecionado].forEach(opcao => {
+                            const option = document.createElement('option');
+                            option.value = opcao;
+                            option.textContent = opcao;
+                            subCatSelect.appendChild(option);
+                        });
+
+                        // Mostrar o container com animação
+                        subCatContainer.classList.remove('hidden');
+                        subCatContainer.classList.add('visible');
+                    } else {
+                        // Esconder o container se nenhuma opção estiver selecionada
+                        subCatContainer.classList.remove('visible');
+                        subCatContainer.classList.add('hidden');
+                    }
+                }
+
+                function mostrarInformacoes(selectElement) {
+                    const infoContainer = document.getElementById('infoContainer');
+                    //const infoTextarea = document.getElementById('infoTextarea');
+
+                    const valorSelecionado = selectElement.value;
+
+                    if (valorSelecionado) {
+                        // Obter informações da categoria selecionada
+                        const informacao = informacoesData[valorSelecionado] ||
+                            "Informações detalhadas sobre esta categoria não estão disponíveis no momento.";
+
+                        infoTextarea.value = `${valorSelecionado}\n\n${informacao}`;
+
+                        // Mostrar o container com animação
+                        infoContainer.classList.remove('hidden');
+                        infoContainer.classList.add('visible');
+                    } else {
+                        // Esconder o container se nenhuma opção estiver selecionada
+                        infoContainer.classList.remove('visible');
+                        infoContainer.classList.add('hidden');
+                    }
+                }
+
+                //fim do c#
+            </script>
+</body>
+<!-- fim do html -->
+
+</html>

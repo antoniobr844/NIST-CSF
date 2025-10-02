@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST CSF - Seleção de Subcategorias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .breadcrumb {
+            display: flex;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        .breadcrumb div {
+            margin-right: 10px;
+            padding-right: 15px;
+            position: relative;
+        }
+
+        .breadcrumb div:not(:last-child)::after {
+            content: "›";
+            position: absolute;
+            right: 0;
+            color: #7f8c8d;
+        }
+
+        .breadcrumb .active {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .combo-container {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #d80300;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: white;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subcategorias-container {
+            margin-top: 20px;
+        }
+
+        .subcategoria-topic {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #d80300;
+            margin-bottom: 20px;
+        }
+
+        .subcategoria-topic h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+        }
+
+        .subcategoria-topic h3::before {
+            content: "•";
+            margin-right: 10px;
+            color: #3498db;
+            font-size: 1.5em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-label:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-label.selected {
+            border-color: #27ae60;
+            background-color: #e8f5e9;
+        }
+
+        .option-checkbox {
+            margin-right: 12px;
+            transform: scale(1.3);
+            accent-color: #27ae60;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-excluir {
+            background: linear-gradient(135deg, #ff0000, #ff0000);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px #9b111e;
+        }
+
+        .btn-excluir:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px #9b111e;
+        }
+
+        .btn-avancar {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-avancar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-avancar:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .selected-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .selected-info h3 {
+            margin-bottom: 10px;
+            color: #27ae60;
+        }
+
+        .selected-count {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            color: #2c3e50;
+            padding: 12px;
+            background: #e8f4fc;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .global-selected-count {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            font-weight: bold;
+        }
+
+        /* Agrupamento dos botões */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Botão de desmarcar */
+        .btn-desmarcar {
+            background: linear-gradient(135deg, #f39c12, #f1c40f);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-desmarcar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        /* Sidebar lateral */
+        #sidebarSelection {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background: #f4f4f4;
+            border-left: 1px solid #ccc;
+            padding: 20px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        #sidebarSelection.visible {
+            transform: translateX(0);
+        }
+
+        #sidebarSelection h3 {
+            margin-top: 0;
+        }
+
+        .sidebar-category {
+            margin-bottom: 12px;
+        }
+
+        .sidebar-subcategory {
+            margin-left: 10px;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>NIST CSF - Seleção de Subcategorias</h1>
+
+        <div class="breadcrumb">
+            <div class="active">Função</div>
+            <div>Categoria</div>
+            <div>Subcategorias</div>
+        </div>
+
+        <div class="combo-container">
+            <label for="opcoesPrincipais">Selecione uma função:</label>
+            <select id="opcoesPrincipais" onchange="mostrarCategorias(this)">
+                <option value="">Selecione uma função</option>
+                <option value="governanca">Governança (GV)</option>
+                <option value="identificar">Identificar (ID)</option>
+                <option value="proteger">Proteger (PR)</option>
+                <option value="detectar">Detectar (DE)</option>
+                <option value="responder">Responder (RS)</option>
+                <option value="recuperar">Recuperar (RC)</option>
+            </select>
+        </div>
+
+        <div id="categoriasContainer" class="hidden">
+            <div class="combo-container">
+                <label for="categorias">Selecione uma categoria:</label>
+                <select id="categorias" onchange="mostrarSubcategorias(this)">
+                    <option value="">Selecione uma categoria</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="subcategoriasContainer" class="hidden">
+            <div class="global-selected-count" id="globalSelectedCount">
+                Total de 0 subcategorias selecionadas em todas as categorias
+            </div>
+
+            <div class="selected-count" id="selectedCount">
+                Nenhuma subcategoria selecionada nesta categoria
+            </div>
+
+            <div id="subcategoriasList" class="subcategorias-container">
+                <!-- As subcategorias serão inseridas aqui via JavaScript -->
+            </div>
+            <div class="navigation button-group">
+                <button class="btn-excluir" id="btnExcluir" onclick="desmarcarTudo()">
+                    Excluir seleções
+                </button>
+
+                <button class="btn-desmarcar" onclick="desmarcarTodasSubcategorias()">
+                    Desmarcar subcategorias
+                </button>
+
+                <button class="btn-avancar" id="btnAvancar" onclick="avancarParaAlteracoes()">
+                    Avançar para Alterações
+                </button>
+            </div>
+
+            <!-- Sidebar que mostra as seleções -->
+            <div id="sidebarSelection">
+                <h3>Seleções Atuais</h3>
+                <div id="sidebarContent"></div>
+            </div>
+
+            <script>
+                // Dados das categorias
+                const categoriasData = {
+                    governanca: [
+                        "GV.OC - Governança Organizacional",
+                        "GV.RM - Gerenciamento de Riscos",
+                        "GV.SC - Cadeia de Suprimentos"
+                    ],
+                    identificar: [
+                        "ID.AM - Gerenciamento de Ativos",
+                        "ID.BE - Governança de Negócios",
+                        "ID.RA - Avaliação de Riscos"
+                    ],
+                    proteger: [
+                        "PR.AC - Controle de Acesso",
+                        "PR.DS - Proteção de Dados",
+                        "PR.IP - Proteção de Infraestrutura"
+                    ],
+                    detectar: [
+                        "DE.AE - Análise de Eventos",
+                        "DE.CM - Monitoramento de Segurança",
+                        "DE.DP - Detecção de Processos"
+                    ],
+                    responder: [
+                        "RS.RP - Planejamento de Resposta",
+                        "RS.CO - Comunicações",
+                        "RS.MI - Mitigação"
+                    ],
+                    recuperar: [
+                        "RC.RP - Planejamento de Recuperação",
+                        "RC.IM - Melhorias",
+                        "RC.CO - Comunicações"
+                    ]
+                };
+
+                // Dados das subcategorias
+                const subcategoriasData = {
+                    "GV.OC - Governança Organizacional": [
+                        "GV.OC-01 - Políticas e procedimentos de governança",
+                        "GV.OC-02 - Estratégia organizacional de segurança",
+                        "GV.OC-03 - Alinhamento com objetivos de negócio"
+                    ],
+                    "GV.RM - Gerenciamento de Riscos": [
+                        "GV.RM-01 - Processo de avaliação de riscos",
+                        "GV.RM-02 - Análise de impacto no negócio",
+                        "GV.RM-03 - Estratégia de tratamento de riscos"
+                    ],
+                    "GV.SC - Cadeia de Suprimentos": [
+                        "GV.SC-01 - Gerenciamento de riscos na cadeia de suprimentos",
+                        "GV.SC-02 - Avaliação de fornecedores",
+                        "GV.SC-03 - Contratos com fornecedores"
+                    ],
+                    "ID.AM - Gerenciamento de Ativos": [
+                        "ID.AM-01 - Inventário de dispositivos físicos",
+                        "ID.AM-02 - Inventário de software",
+                        "ID.AM-03 - Mapeamento de fluxo de dados"
+                    ],
+                    "ID.BE - Governança de Negócios": [
+                        "ID.BE-01 - Objetivos de negócio",
+                        "ID.BE-02 - Prioridades de negócio",
+                        "ID.BE-03 - Recursos de negócio"
+                    ],
+                    "ID.RA - Avaliação de Riscos": [
+                        "ID.RA-01 - Avaliação de vulnerabilidades",
+                        "ID.RA-02 - Ameaças internas e externas",
+                        "ID.RA-03 - Probabilidade e impacto"
+                    ],
+                    "PR.AC - Controle de Acesso": [
+                        "PR.AC-01 - Identidade e credenciais",
+                        "PR.AC-02 - Controle de acesso físico",
+                        "PR.AC-03 - Controle de acesso lógico"
+                    ],
+                    "PR.DS - Proteção de Dados": [
+                        "PR.DS-01 - Dados em repouso",
+                        "PR.DS-02 - Dados em trânsito",
+                        "PR.DS-03 - Criptografia"
+                    ],
+                    "PR.IP - Proteção de Infraestrutura": [
+                        "PR.IP-01 - Políticas de proteção",
+                        "PR.IP-02 - Configurações seguras",
+                        "PR.IP-03 - Gerenciamento de vulnerabilidades"
+                    ],
+                    "DE.AE - Análise de Eventos": [
+                        "DE.AE-01 - Coleta de eventos",
+                        "DE.AE-02 - Detecção de anomalias",
+                        "DE.AE-03 - Análise de impacto"
+                    ],
+                    "DE.CM - Monitoramento de Segurança": [
+                        "DE.CM-01 - Monitoramento contínuo",
+                        "DE.CM-02 - Testes de penetração",
+                        "DE.CM-03 - Análise de malware"
+                    ],
+                    "DE.DP - Detecção de Processos": [
+                        "DE.DP-01 - Processos de detecção",
+                        "DE.DP-02 - Melhoria contínua",
+                        "DE.DP-03 - Integração de ferramentas"
+                    ],
+                    "RS.RP - Planejamento de Resposta": [
+                        "RS.RP-01 - Plano de resposta a incidentes",
+                        "RS.RP-02 - Treinamento da equipe",
+                        "RS.RP-03 - Comunicação durante incidentes"
+                    ],
+                    "RS.CO - Comunicações": [
+                        "RS.CO-01 - Comunicações internas",
+                        "RS.CO-02 - Comunicações externas",
+                        "RS.CO-03 - Coordenação com autoridades"
+                    ],
+                    "RS.MI - Mitigação": [
+                        "RS.MI-01 - Contenção de incidentes",
+                        "RS.MI-02 - Eliminação de ameaças",
+                        "RS.MI-03 - Documentação de lições aprendidas"
+                    ],
+                    "RC.RP - Planejamento de Recuperação": [
+                        "RC.RP-01 - Plano de recuperação",
+                        "RC.RP-02 - Restauração de sistemas",
+                        "RC.RP-03 - Testes de recuperação"
+                    ],
+                    "RC.IM - Melhorias": [
+                        "RC.IM-01 - Análise pós-incidente",
+                        "RC.IM-02 - Implementação de melhorias",
+                        "RC.IM-03 - Atualização de planos"
+                    ],
+                    "RC.CO - Comunicações": [
+                        "RC.CO-01 - Comunicações de recuperação",
+                        "RC.CO-02 - Status para partes interessadas",
+                        "RC.CO-03 - Relatórios de recuperação"
+                    ]
+                };
+
+                // Dados das informações
+                const informacoesData = {
+                    "GV.OC-01 - Políticas e procedimentos de governança": "Estabelecer e manter políticas, procedimentos e processos para gerenciar a estratégia de segurança cibernética da organização, alinhados com os objetivos estratégicos e conformidade regulatória.",
+                    "GV.OC-02 - Estratégia organizacional de segurança": "Desenvolver e implementar uma estratégia de segurança cibernética que seja integrada aos objetivos de negócio da organização e ao gerenciamento de riscos.",
+                    "GV.OC-03 - Alinhamento com objetivos de negócio": "Garantir que as atividades de segurança cibernética estejam alinhadas com os objetivos de negócio, estratégia organizacional e recursos.",
+                    "GV.RM-01 - Processo de avaliação de riscos": "Estabelecer e manter um processo de avaliação de riscos que identifique, analise e avalie os riscos de segurança cibernética.",
+                    "GV.RM-02 - Análise de impacto no negócio": "Conduzir análises de impacto no negócio para entender as consequências de interrupções relacionadas à segurança cibernética.",
+                    "GV.RM-03 - Estratégia de tratamento de riscos": "Desenvolver e implementar uma estratégia de tratamento de riscos que inclua transferência, mitigação, aceitação ou evitação de riscos.",
+                    "ID.AM-01 - Inventário de dispositivos físicos": "Identificar e manter um inventário de dispositivos físicos e sistemas dentro da organização.",
+                    "ID.AM-02 - Inventário de software": "Identificar e manter um inventário de aplicações de software e serviços utilizados na organização.",
+                    "ID.AM-03 - Mapeamento de fluxo de dados": "Mapear o fluxo de dados dentro dos sistemas e para entidades externas.",
+                    "PR.AC-01 - Identidade e credenciais": "Gerenciar identidades e credenciais de usuários e dispositivos, incluindo estabelecimento, manutenção e revogação.",
+                    "PR.AC-02 - Controle de acesso físico": "Controlar o acesso físico às facilities e ativos baseado em funções e necessidades de negócio.",
+                    "PR.AC-03 - Controle de acesso lógico": "Controlar o acesso lógico aos ativos e informações baseado em funções e necessidades de negócio."
+                };
+
+                let selectedFunction = "";
+                let selectedCategory = "";
+                let selectedSubcategories = {}; // Objeto para armazenar todas as seleções
+
+                // Inicializar o objeto de seleções
+                function initializeSelections() {
+                    // Para cada função
+                    for (const func in categoriasData) {
+                        selectedSubcategories[func] = {};
+                        // Para cada categoria na função
+                        categoriasData[func].forEach(categoria => {
+                            selectedSubcategories[func][categoria] = [];
+                        });
+                    }
+                }
+
+                // Carregar seleções salvas no localStorage (se existirem)
+                function loadSelections() {
+                    const savedSelections = localStorage.getItem('nistSelections');
+                    if (savedSelections) {
+                        selectedSubcategories = JSON.parse(savedSelections);
+                    } else {
+                        initializeSelections();
+                    }
+                }
+
+                // Salvar seleções no localStorage
+                function saveSelections() {
+                    localStorage.setItem('nistSelections', JSON.stringify(selectedSubcategories));
+                }
+
+                // Atualizar a contagem global de seleções
+                function updateGlobalSelectionCount() {
+                    const globalSelectedCount = document.getElementById('globalSelectedCount');
+                    let total = 0;
+
+                    // Contar todas as subcategorias selecionadas em todas as funções e categorias
+                    for (const func in selectedSubcategories) {
+                        for (const categoria in selectedSubcategories[func]) {
+                            total += selectedSubcategories[func][categoria].length;
+                        }
+                    }
+
+                    globalSelectedCount.textContent = `Total de ${total} subcategoria${total !== 1 ? 's' : ''} selecionada${total !== 1 ? 's' : ''} em todas as categorias`;
+                }
+
+                function mostrarCategorias(selectElement) {
+                    const categoriasContainer = document.getElementById('categoriasContainer');
+                    const categoriasSelect = document.getElementById('categorias');
+                    const subcategoriasContainer = document.getElementById('subcategoriasContainer');
+
+                    selectedFunction = selectElement.value;
+
+                    // Limpar seleções anteriores
+                    categoriasSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
+                    subcategoriasContainer.classList.add('hidden');
+
+                    // Atualizar breadcrumb
+                    updateBreadcrumb(1);
+
+                    if (selectedFunction && categoriasData[selectedFunction]) {
+                        // Preencher as categorias
+                        categoriasData[selectedFunction].forEach(categoria => {
+                            const option = document.createElement('option');
+                            option.value = categoria;
+                            option.textContent = categoria;
+                            categoriasSelect.appendChild(option);
+                        });
+
+                        // Mostrar o container
+                        categoriasContainer.classList.remove('hidden');
+                        categoriasContainer.classList.add('visible');
+
+                        // Atualizar contagem global
+                        updateGlobalSelectionCount();
+                    } else {
+                        // Esconder o container se nenhuma opção estiver selecionada
+                        categoriasContainer.classList.add('hidden');
+                    }
+                }
+
+                function mostrarSubcategorias(selectElement) {
+                    const subcategoriasContainer = document.getElementById('subcategoriasContainer');
+                    const subcategoriasList = document.getElementById('subcategoriasList');
+
+                    selectedCategory = selectElement.value;
+
+                    // Limpar seleções anteriores
+                    subcategoriasList.innerHTML = '';
+
+                    // Atualizar breadcrumb
+                    updateBreadcrumb(2);
+
+                    if (selectedCategory && subcategoriasData[selectedCategory]) {
+                        // Criar tópico para as subcategorias
+                        const topicDiv = document.createElement('div');
+                        topicDiv.className = 'subcategoria-topic';
+
+                        const topicTitle = document.createElement('h3');
+                        topicTitle.textContent = selectedCategory;
+                        topicDiv.appendChild(topicTitle);
+
+                        const optionsDiv = document.createElement('div');
+                        optionsDiv.className = 'options';
+
+                        // Preencher as subcategorias como checkboxes
+                        subcategoriasData[selectedCategory].forEach(subcategoria => {
+                            const label = document.createElement('label');
+                            label.className = 'option-label';
+
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.className = 'option-checkbox';
+                            checkbox.value = subcategoria;
+
+                            // Verificar se esta subcategoria já foi selecionada anteriormente
+                            if (selectedSubcategories[selectedFunction] &&
+                                selectedSubcategories[selectedFunction][selectedCategory] &&
+                                selectedSubcategories[selectedFunction][selectedCategory].includes(subcategoria)) {
+                                checkbox.checked = true;
+                                label.classList.add('selected');
+                            }
+
+                            const span = document.createElement('span');
+                            span.textContent = subcategoria;
+
+                            label.appendChild(checkbox);
+                            label.appendChild(span);
+                            optionsDiv.appendChild(label);
+
+                            // Adicionar evento para atualizar contagem de seleção
+                            checkbox.addEventListener('change', function () {
+                                updateSelection(this, subcategoria);
+                            });
+                        });
+
+                        topicDiv.appendChild(optionsDiv);
+                        subcategoriasList.appendChild(topicDiv);
+
+                        // Mostrar o container
+                        subcategoriasContainer.classList.remove('hidden');
+                        subcategoriasContainer.classList.add('visible');
+
+                        // Inicializar a contagem de seleção
+                        updateLocalSelectionCount();
+                        updateGlobalSelectionCount();
+                    } else {
+                        // Esconder o container se nenhuma opção estiver selecionada
+                        subcategoriasContainer.classList.add('hidden');
+                    }
+                }
+
+                function updateSelection(checkbox, subcategoria) {
+                    const label = checkbox.closest('.option-label');
+
+                    if (checkbox.checked) {
+                        label.classList.add('selected');
+                        // Adicionar à lista de seleções
+                        if (!selectedSubcategories[selectedFunction][selectedCategory].includes(subcategoria)) {
+                            selectedSubcategories[selectedFunction][selectedCategory].push(subcategoria);
+                        }
+                    } else {
+                        label.classList.remove('selected');
+                        // Remover da lista de seleções
+                        const index = selectedSubcategories[selectedFunction][selectedCategory].indexOf(subcategoria);
+                        if (index > -1) {
+                            selectedSubcategories[selectedFunction][selectedCategory].splice(index, 1);
+                        }
+                    }
+
+                    // Atualizar contadores
+                    updateLocalSelectionCount();
+                    updateGlobalSelectionCount();
+
+                    // Salvar seleções
+                    saveSelections();
+                }
+
+                function updateLocalSelectionCount() {
+                    const selectedCount = document.getElementById('selectedCount');
+                    const count = selectedSubcategories[selectedFunction][selectedCategory].length;
+
+                    // Atualiza contador
+                    selectedCount.textContent =
+                        count === 0 ? 'Nenhuma subcategoria selecionada nesta categoria' :
+                            `${count} subcategoria${count !== 1 ? 's' : ''} selecionada${count !== 1 ? 's' : ''} nesta categoria`;
+                }
+
+                function updateBreadcrumb(step) {
+                    const breadcrumbItems = document.querySelectorAll('.breadcrumb div');
+
+                    // Reset all
+                    breadcrumbItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // Set active step
+                    if (step >= 1) breadcrumbItems[0].classList.add('active');
+                    if (step >= 2) breadcrumbItems[1].classList.add('active');
+                    if (step >= 3) breadcrumbItems[2].classList.add('active');
+                }
+
+                function avancarParaAlteracoes() {
+                    // Salvar no localStorage
+                    localStorage.setItem('selectedFunction', selectedFunction);
+                    localStorage.setItem('selectedCategory', selectedCategory);
+                    localStorage.setItem('selectedSubcategories', JSON.stringify(selectedSubcategories));
+
+                    // Redirecionar para a página de alterações
+                    window.location.href = '/Home/Governanca';
+                }
+
+                // Inicializar quando a página carregar
+                document.addEventListener('DOMContentLoaded', function () {
+                    loadSelections();
+                    updateGlobalSelectionCount();
+                });
+
+                function desmarcarTodasSubcategorias() {
+                    const checkboxes = document.querySelectorAll('#subcategoriasList .option-checkbox');
+
+                    checkboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            checkbox.checked = false;
+                            checkbox.closest('.option-label').classList.remove('selected');
+                        }
+                    });
+
+                    // Limpa a seleção da categoria atual
+                    if (selectedSubcategories[selectedFunction] &&
+                        selectedSubcategories[selectedFunction][selectedCategory]) {
+                        selectedSubcategories[selectedFunction][selectedCategory] = [];
+                    }
+
+                    updateLocalSelectionCount();
+                    updateGlobalSelectionCount();
+                    saveSelections();
+                }
+
+                function desmarcarTudo() {
+                    // Resetar selects de função e categoria para o primeiro option (geralmente o placeholder)
+                    const funcoes = document.getElementById('funcoes');
+                    const categorias = document.getElementById('categorias');
+
+                    if (funcoes) funcoes.selectedIndex = 0;
+                    if (categorias) categorias.selectedIndex = 0;
+
+                    // Limpar o objeto de seleção (subcategorias)
+                    initializeSelections();
+                    saveSelections();
+
+                    // Desmarcar todos os checkboxes visíveis
+                    const checkboxes = document.querySelectorAll('.option-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.closest('.option-label').classList.remove('selected');
+                    });
+
+                    // Atualizar contadores
+                    updateLocalSelectionCount();
+                    updateGlobalSelectionCount();
+
+                    // Limpar áreas de exibição ou listas, se houver
+                    // Por exemplo, se você exibe a lista de subcategorias selecionadas:
+                    const listaSelecionadas = document.getElementById('listaSubcategoriasSelecionadas');
+                    if (listaSelecionadas) {
+                        listaSelecionadas.innerHTML = '';
+                    }
+
+                    alert("Tudo foi resetado: função, categoria e subcategorias.");
+                }
+
+                const selectedSub = {};
+
+                function onCheckboxChange(checkbox, categoria) {
+                    const valor = checkbox.value;
+                    if (checkbox.checked) {
+                        if (!selectedSub[categoria]) {
+                            selectedSub[categoria] = [];
+                        }
+                        if (!selectedSub[categoria].includes(valor)) {
+                            selectedSub[categoria].push(valor);
+                        }
+                    } else {
+                        if (selectedSub[categoria]) {
+                            selectedSub[categoria] = selectedSub[categoria].filter(v => v !== valor);
+                            if (selectedSub[categoria].length === 0) {
+                                delete selectedSub[categoria];
+                            }
+                        }
+                    }
+                    updateSidebar();
+                }
+
+                function updateSidebar() {
+                    const sidebar = document.getElementById('sidebarSelection');
+                    const content = document.getElementById('sidebarContent');
+                    content.innerHTML = '';
+
+                    const categorias = Object.keys(selectedSub);
+                    if (categorias.length === 0) {
+                        sidebar.classList.remove('visible');
+                        return;
+                    }
+
+                    categorias.forEach(cat => {
+                        const catDiv = document.createElement('div');
+                        catDiv.className = 'sidebar-category';
+                        const catTitle = document.createElement('strong');
+                        catTitle.textContent = cat;
+                        catDiv.appendChild(catTitle);
+
+                        selectedSub[cat].forEach(sub => {
+                            const subDiv = document.createElement('div');
+                            subDiv.className = 'sidebar-subcategory';
+                            subDiv.textContent = sub;
+                            catDiv.appendChild(subDiv);
+                        });
+
+                        content.appendChild(catDiv);
+                    });
+
+                    sidebar.classList.add('visible');
+                }
+            </script>
+</body>
+</html>
