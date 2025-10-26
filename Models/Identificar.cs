@@ -1,4 +1,4 @@
-public class RecuperarViewModel
+public class Identificar
 {
     public List<string>? OpcoesSelecionadas { get; set; }
     public string? Observacoes { get; set; }

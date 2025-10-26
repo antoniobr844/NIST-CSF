@@ -1,66 +1,63 @@
-// Models/Categoria.cs
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace NistXGH.Models
 // Esse arquivo é responsável por definir a classe Categoria, que representa uma categoria de dados no sistema
 {
-    public class Categoria
+    public class CenarioAtual
     {
-        public int Id { get; set; }
-
-        // esse campo é obrigatório e deve ter no máximo 100 caracteres
-        [Required(ErrorMessage = "O nome da categoria é obrigatório")]
-        [StringLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres")]
-        public string Resultado { get; set; }
-
-        // esse campo é obrigatório e deve ter no máximo 255 caracteres
-        [StringLength(255, ErrorMessage = "A descrição deve ter no máximo 255 caracteres")]
-        [Display(Name = "Descrição")]
-        public string Descricao { get; set; }
+        [Key]
+        public int ID { get; set; }
 
         [Display(Name = "Incluído no Perfil")]
-        public bool IncluidoPerfil { get; set; } = true;
+        public bool INC_PERFIL { get; set; } = true;
 
         [StringLength(255, ErrorMessage = "A descrição deve ter no máximo 255 caracteres")]
-        public string Justificativa { get; set; }
+        public string JUSTIFICATIVA { get; set; }
 
         [StringLength(255, ErrorMessage = "A prioridade deve ter no máximo 255 caracteres")]
         [Display(Name = "Prioridade atual")]
-        public string Prioridade { get; set; }
+        public string PRIOR_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O status deve ter no máximo 255 caracteres")]
-        [Display(Name = "Status atual")]
-        public string Status { get; set; }
+        [Display(Name = "Nível atual")]
+        public string NIVEL_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Políticas, processos e procedimentos atuais")]
-        public string PoliticasPro { get; set; }
+        public string POLIT_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Práticas internas")]
-        public string PraticasInternas { get; set; }
+        public string PRAT_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Funções e responsabilidades atuais")]
-        public string FuncoesResp { get; set; }
+        public string FUNC_RESP { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Referências informativas selecionadas atualmente")]
-        public string ReferenciasInfo { get; set; }
+        public string REF_INFO { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Artefatos e evidências atuais")]
-        public string ArtefatosEvi { get; set; }
+        public string EVID_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
-        public string Notas { get; set; }
+        public string NOTAS { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Considerações")]
-        public string Consideracoes { get; set; }
+        public string CONSIDERACOES { get; set; }
+
+        [ForeignKey("SUBCATEGORIA")]
+        public string SUBCATEGORIA { get; set; }
+
+        [Display(Name = "Data de Registro")]
+        public DateTime DATA_REGISTRO { get; set; }
 
         [StringLength(50, ErrorMessage = "O ícone deve ter no máximo 50 caracteres")]
-        public string Icone { get; set; }
+        public string ICONE { get; set; }
     }
 }

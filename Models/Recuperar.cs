@@ -1,4 +1,4 @@
-public class ResponderViewModel
+public class Recuperar
 {
     public List<string>? OpcoesSelecionadas { get; set; }
     public string? Observacoes { get; set; }

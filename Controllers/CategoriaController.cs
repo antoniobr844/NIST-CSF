@@ -1,114 +1,45 @@
 // Controllers/CategoriaController.cs
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
 
 namespace NistXGH.Controllers
 {
-    public class CategoriaController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CategoriasController : ControllerBase
     {
-        // Simulação de banco de dados em memória
-        private static List<Categoria> _categorias = new List<Categoria>();
-        private static int _nextId = 1;
+        private readonly SgsiDbContext _context;
 
-        // GET: Categoria
-        public IActionResult Index()
+        public CategoriasController(SgsiDbContext context)
         {
-            return View(_categorias.OrderBy(c => c.Justificativa).ToList());
+            _context = context;
         }
 
-        // GET: Categoria/Cadastrar
-        public IActionResult Cadastrar()
+        // GET: api/Categorias
+        // GET: api/Categorias?funcaoId=1
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Categorias>>> GetCategorias(
+            [FromQuery] int? funcaoId
+        )
         {
-            return View();
-        }
-
-        // POST: Categoria/Cadastrar
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Cadastrar(Categoria categoria)
-        {
-            if (ModelState.IsValid)
+            try
             {
-                categoria.Id = _nextId++;
-                _categorias.Add(categoria);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(categoria);
-        }
+                var query = _context.Categorias.AsQueryable();
 
-        // GET: Categoria/Editar/5
-        public IActionResult Editar(int id)
-        {
-            var categoria = _categorias.FirstOrDefault(c => c.Id == id);
-            if (categoria == null)
-            {
-                return NotFound();
-            }
-            return View(categoria);
-        }
-
-        // POST: Categoria/Editar/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Editar(int id, Categoria categoria)
-        {
-            if (id != categoria.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                var existingCategoria = _categorias.FirstOrDefault(c => c.Id == id);
-                if (existingCategoria == null)
+                if (funcaoId.HasValue)
                 {
-                    return NotFound();
+                    query = query.Where(c => c.FUNCAO == funcaoId.Value);
                 }
 
-                existingCategoria.Resultado = categoria.Resultado;
-                existingCategoria.Descricao = categoria.Descricao;
-                existingCategoria.Justificativa = categoria.Justificativa;
-                existingCategoria.IncluidoPerfil = categoria.IncluidoPerfil;
-                existingCategoria.Prioridade = categoria.Prioridade;
-                existingCategoria.Status = categoria.Status;
-                existingCategoria.PoliticasPro = categoria.PoliticasPro;
-                existingCategoria.PraticasInternas = categoria.PraticasInternas;
-                existingCategoria.FuncoesResp = categoria.FuncoesResp;
-                existingCategoria.ReferenciasInfo = categoria.ReferenciasInfo;
-                existingCategoria.ArtefatosEvi = categoria.ArtefatosEvi;
-                existingCategoria.Notas = categoria.Notas;
-                existingCategoria.Consideracoes = categoria.Consideracoes;
-                existingCategoria.Icone = categoria.Icone;
+                var categorias = await query.OrderBy(c => c.ID).ToListAsync();
 
-                return RedirectToAction(nameof(Index));
+                return Ok(categorias);
             }
-            return View(categoria);
-        }
-
-        // GET: Categoria/Excluir/5
-        public IActionResult Excluir(int id)
-        {
-            var categoria = _categorias.FirstOrDefault(c => c.Id == id);
-            if (categoria == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, $"Erro interno: {ex.Message}");
             }
-            return View(categoria);
-        }
-
-        // POST: Categoria/Excluir/5
-        [HttpPost, ActionName("Excluir")]
-        [ValidateAntiForgeryToken]
-        public IActionResult ConfirmarExcluir(int id)
-        {
-            var categoria = _categorias.FirstOrDefault(c => c.Id == id);
-            if (categoria != null)
-            {
-                _categorias.Remove(categoria);
-            }
-            return RedirectToAction(nameof(Index));
         }
     }
 }

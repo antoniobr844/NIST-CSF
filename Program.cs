@@ -1,10 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using NistXGH.Models;
+using Oracle.EntityFrameworkCore;
+using Oracle.ManagedDataAccess.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Program.cs
-builder.Services.AddScoped<IRelatorioService, RelatorioService>();
+builder.Services.AddDbContext<SgsiDbContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("SgsiDbContext"))
+);
+
+builder.Services.AddScoped<IDadosService, DadosService>();
 
 var app = builder.Build();
 
@@ -15,9 +23,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.MapControllers();
 
 app.UseAuthorization();
 

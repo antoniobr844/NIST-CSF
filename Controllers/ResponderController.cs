@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NistXGH.Models;
 
 public class ResponderController : Controller
 {

@@ -1,4 +1,4 @@
-@model NistXGH.Models.Categoria
+@model NistXGH.Models.CenarioAtual
 
 @{
     ViewData["Title"] = "Cadastrar";
@@ -7,104 +7,91 @@
 <div class="container">
     <h1>@ViewData["Title"]</h1>
 
-   <!-- Essa div faz aparecer o título -->
+    <!-- Essa div faz aparecer o título -->
     <div class="row">
         <div class="col-md-6">
             <form asp-action="Cadastrar" method="post">
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-               <!-- essa div faz aparecer a textbox abaixo do título "resultado" na página  -->
-                <div class="form-group">
-                    <label asp-for="Resultado" class="control-label"></label>
-                    <input asp-for="Resultado" class="form-control" />
-                    <span asp-validation-for="Resultado" class="text-danger"></span>
-                </div>
-                <!-- essa div faz aparecer a textbox abaixo do título "descrição na página" -->
-                <div class="form-group">
-                    <label asp-for="Descricao" class="control-label"></label>
-                    <input asp-for="Descricao" class="form-control" />
-                    <span asp-validation-for="Descricao" class="text-danger"></span>
-                </div>
                 <!-- essa div faz aparecer a checkbox abaixo do título "incluído no perfil"  -->
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" asp-for="IncluidoPerfil" />
-                    <label class="form-check-label" asp-for="IncluidoPerfil"></label>
-                    <span asp-validation-for="IncluidoPerfil" class="text-danger"></span>
+                    <input type="checkbox" class="form-check-input" asp-for="INC_PERFIL" />
+                    <label class="form-check-label" asp-for="INC_PERFIL"></label>
+                    <span asp-validation-for="INC_PERFIL" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "justificativa" -->
-                 <div class="form-group">
-                    <label asp-for="Justificativa" class="control-label"></label>
-                    <input asp-for="Justificativa" class="form-control" />
-                    <span asp-validation-for="Justificativa" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="JUSTIFICATIVA" class="control-label"></label>
+                    <input asp-for="JUSTIFICATIVA" class="form-control" />
+                    <span asp-validation-for="JUSTIFICATIVA" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "prioridade atual"  -->
                 <div class="combo-container">
                     <label formaction="opcoesPrioridade">Selecione uma prioridade:</label>
-            <!-- função que forma a combox -->
-            <select id="opcoesPrioridade" onchange="mostrarSubOpcoes(this)">
-            <!-- as opções dentro da combox -->
-                <option value=""></option>
-                <option value="semClassificacao">Sem Classificação</option>
-                <option value="classificacaoum">Classificado 1</option>
-                <option value="classificacaodois">Classificado 2</option>
-            </select>
+                    <!-- função que forma a combox -->
+                    <select id="opcoesPrioridade" onchange="mostrarSubOpcoes(this)">
+                        <!-- as opções dentro da combox -->
+                        <option value=""></option>
+                        <option value="semClassificacao">Sem Classificação</option>
+                        <option value="classificacaoum">Classificado 1</option>
+                        <option value="classificacaodois">Classificado 2</option>
+                    </select>
                 </div>
                 <!-- essa div faz aparecer a checkbox abaixo do título "status atual" -->
                 <div class="form-group form-check">
-                <label formaction="opcoesStatus">Selecione um status:</label>
-                <select id="opcoesStatus" onchange="mostrarSubOpcoes(this)">
-                    <option value=""></option>
-                    <option value="atendidoum">Atendido</option>
-                    <option value="atendidodois">Atendido 1</option>
-                    <option value="atendidotres">Atendido 2</option>
-                    <option value="atendidoquatro">Atendido 3</option>
-                    <option value="atendidocinco">Atendido 4</option>
-                </select>
+                    <label formaction="opcoesStatus">Selecione um status:</label>
+                    <select id="opcoesStatus" onchange="mostrarSubOpcoes(this)">
+                        <option value=""></option>
+                        <option value="atendidoum">Atendido</option>
+                        <option value="atendidodois">Atendido 1</option>
+                        <option value="atendidotres">Atendido 2</option>
+                        <option value="atendidoquatro">Atendido 3</option>
+                        <option value="atendidocinco">Atendido 4</option>
+                    </select>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "políticas, processos e procedimentos atuais" -->
-                
+
                 <div class="form-group">
-                    <label asp-for="PoliticasPro" class="control-label"></label>
-                    <input asp-for="PoliticasPro" class="form-control" />
-                    <span asp-validation-for="PoliticasPro" class="text-danger"></span>
+                    <label asp-for="POLIT_ATUAL" class="control-label"></label>
+                    <input asp-for="POLIT_ATUAL" class="form-control" />
+                    <span asp-validation-for="POLIT_ATUAL" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "práticas internas"  -->
                 <div class="form-group">
-                    <label asp-for="PraticasInternas" class="control-label"></label>
-                    <input asp-for="PraticasInternas" class="form-control" />
-                    <span asp-validation-for="PraticasInternas" class="text-danger"></span>
+                    <label asp-for="PRAT_ATUAL" class="control-label"></label>
+                    <input asp-for="PRAT_ATUAL" class="form-control" />
+                    <span asp-validation-for="PRAT_ATUAL" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a checkbox abaixo do título "funções e responsabilidades atuais"-->
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" asp-for="FuncoesResp" />
-                    <label class="form-check-label" asp-for="FuncoesResp"></label>
-                    <span asp-validation-for="FuncoesResp" class="text-danger"></span>
+                    <input type="checkbox" class="form-check-input" asp-for="FUNC_RESP" />
+                    <label class="form-check-label" asp-for="FUNC_RESP"></label>
+                    <span asp-validation-for="FUNC_RESP" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "referências informativas selecionas atualmente" -->
                 <div class="form-group">
-                    <label asp-for="ReferenciasInfo" class="control-label"></label>
-                    <input asp-for="ReferenciasInfo" class="form-control" />
-                    <span asp-validation-for="ReferenciasInfo" class="text-danger"></span>
+                    <label asp-for="REF_INFO" class="control-label"></label>
+                    <input asp-for="REF_INFO" class="form-control" />
+                    <span asp-validation-for="REF_INFO" class="text-danger"></span>
                 </div>
 
                 <!-- essa div faz aparecer a textbox abaixo do título "Artefatos e evidências atuais" -->
                 <div class="form-group">
-                    <label asp-for="ArtefatosEvi" class="control-label"></label>
-                    <input asp-for="ArtefatosEvi" class="form-control" />
-                    <span asp-validation-for="ArtefatosEvi" class="text-danger"></span>
+                    <label asp-for="EVID_ATUAL" class="control-label"></label>
+                    <input asp-for="EVID_ATUAL" class="form-control" />
+                    <span asp-validation-for="EVID_ATUAL" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "notas"-->
                 <div class="form-group">
-                    <label asp-for="Notas" class="control-label"></label>
-                    <textarea asp-for="Notas" class="form-control"></textarea>
-                    <span asp-validation-for="Notas" class="text-danger"></span>
+                    <label asp-for="NOTAS" class="control-label"></label>
+                    <textarea asp-for="NOTAS" class="form-control"></textarea>
+                    <span asp-validation-for="NOTAS" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer a textbox abaixo do título "considerações"-->
                 <div class="form-group">
-                    <label asp-for="Consideracoes" class="control-label"></label>
-                    <textarea asp-for="Consideracoes" class="form-control"></textarea>
-                    <span asp-validation-for="Consideracoes" class="text-danger"></span>
+                    <label asp-for="CONSIDERACOES" class="control-label"></label>
+                    <textarea asp-for="CONSIDERACOES" class="form-control"></textarea>
+                    <span asp-validation-for="CONSIDERACOES" class="text-danger"></span>
                 </div>
                 <!-- essa div faz aparecer os botões de "salvar" e "cancelar"-->
                 <div class="form-group">

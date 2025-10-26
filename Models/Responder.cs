@@ -1,4 +1,4 @@
-public class GovernancaViewModel
+public class Responder
 {
     public List<string>? OpcoesSelecionadas { get; set; }
     public string? Observacoes { get; set; }

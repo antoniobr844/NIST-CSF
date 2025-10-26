@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-
-//using NistXGH.Models;
+using NistXGH.Models;
 
 namespace NistXGH.Controllers;
 
@@ -31,6 +30,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Gestao()
+    {
+        return View();
+    }
+
     public IActionResult Governanca()
     {
         // Recupera as opções selecionadas
@@ -44,7 +48,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SalvarAlteracoes(GovernancaViewModel model)
+    public IActionResult SalvarAlteracoes(Governanca model)
     {
         // Aqui você salva no banco de dados
         // model contém todas as alterações feitas
@@ -70,7 +74,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SalvarAlteracoes(IdentificarViewModel model)
+    public IActionResult SalvarAlteracoes(Identificar model)
     {
         // Aqui você salva no banco de dados
         // model contém todas as alterações feitas
@@ -91,7 +95,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SalvarAlteracoes(ProtegerViewModel model)
+    public IActionResult SalvarAlteracoes(Proteger model)
     {
         // Aqui você salva no banco de dados
         // model contém todas as alterações feitas
@@ -112,7 +116,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SalvarAlteracoes(DetectarViewModel model)
+    public IActionResult SalvarAlteracoes(Detectar model)
     {
         // Aqui você salva no banco de dados
         // model contém todas as alterações feitas
@@ -133,7 +137,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SalvarAlteracoes(ResponderViewModel model)
+    public IActionResult SalvarAlteracoes(Responder model)
     {
         // Aqui você salva no banco de dados
         // model contém todas as alterações feitas
@@ -154,7 +158,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SalvarAlteracoes(RecuperarViewModel model)
+    public IActionResult SalvarAlteracoes(Recuperar model)
     {
         // Aqui você salva no banco de dados
         // model contém todas as alterações feitas

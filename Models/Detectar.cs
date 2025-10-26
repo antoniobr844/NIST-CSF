@@ -1,4 +1,4 @@
-public class ProtegerViewModel
+public class Detectar
 {
     public List<string>? OpcoesSelecionadas { get; set; }
     public string? Observacoes { get; set; }
