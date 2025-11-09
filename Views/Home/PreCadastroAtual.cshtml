@@ -1,0 +1,86 @@
+@{
+  ViewData["Title"] = "NIST CSF - Seleção de Subcategorias para Cenário Atual";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+  <link rel="stylesheet" href="~/css/pages/precadastroAtual.css" />
+}
+
+<div class="container">
+  <h1>NIST CSF - Seleção de Subcategorias para Cenário Atual</h1>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-cards">
+    <div class="home-card">
+      <div class="home-card-content">
+        <h3>Total de Subcategorias Selecionadas</h3>
+        <div class="summary-value" id="totalSubcategorias">0</div>
+      </div>
+    </div>
+    <div class="home-card">
+      <div class="home-card-content">
+        <h3>Funções com Seleções</h3>
+        <div class="summary-value" id="totalFuncoes">0</div>
+      </div>
+    </div>
+    <div class="home-card">
+      <div class="home-card-content">
+        <h3>Categorias com Seleções</h3>
+        <div class="summary-value" id="totalCategorias">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div id="conteudo">
+    <div class="loading" id="loadingMessage">Carregando subcategorias do Cenário Atual...</div>
+    <div id="subcategoriasContainer" class="hidden">
+      <!-- As subcategorias serão carregadas aqui -->
+    </div>
+    <div id="emptyMessage" class="hidden">
+      <p>Nenhuma subcategoria selecionada no Cenário Atual.</p>
+    </div>
+    <div id="errorMessage" class="hidden">
+      <p>Erro ao carregar as subcategorias. Tente novamente.</p>
+    </div>
+  </div>
+
+  <!-- NAVEGAÇÃO -->
+  <div class="navigation">
+    <div class="button-group">
+      <button class="btn btn-danger" id="btnLimparTudo">
+        Limpar Todas as Seleções
+      </button>
+      <button class="btn btn-success" id="btnAvancar" disabled>
+        Avançar para Edição →
+      </button>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script src="~/js/modules/cenarioAtualManager.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('Inicializando Cenário Atual...');
+
+      // Verifica se o manager existe
+      if (typeof cenarioAtualManager === 'undefined') {
+        console.error('cenarioAtualManager não foi carregado!');
+        document.getElementById('loadingMessage').classList.add('hidden');
+        document.getElementById('errorMessage').classList.remove('hidden');
+        return;
+      }
+
+      // Inicializa com tratamento de erro
+      try {
+        cenarioAtualManager.init();
+      } catch (error) {
+        console.error('Erro ao inicializar cenarioAtualManager:', error);
+        document.getElementById('loadingMessage').classList.add('hidden');
+        document.getElementById('errorMessage').classList.remove('hidden');
+      }
+    });
+  </script>
+}

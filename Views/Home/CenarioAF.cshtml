@@ -1,6 +1,5 @@
-﻿@{
+@{
     ViewData["Title"] = "Home - Sistema";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles {
@@ -9,19 +8,19 @@
 
 <div class="container">
     <header class="header">
-        <h1 class="title">NIST CSF - Consultas</h1>
+        <h1 class="title">Cenário Atual X Cenário Futuro</h1>
         <p class="subtitle">Selecione uma opção para continuar</p>
     </header>
 
     <div class="cards-container">
         <!-- Card 1 - Cadastro -->
-        <div class="card" onclick="navigateTo('/Home/CenarioAF')">
+        <div class="card" onclick="navigateTo('/Home/PreCadastroAtual')">
             <div class="card-icon">
                 <i class="fas fa-user-plus"></i>
             </div>
             <div class="card-content">
-                <h3>Cadastro</h3>
-                <p>Realize o cadastro de informações no sistema.</p>
+                <h3>Cenário Atual</h3>
+                <p>Proposta de alteração de cenário.</p>
             </div>
             <div class="card-arrow">
                 <i class="fas fa-chevron-right"></i>
@@ -29,32 +28,21 @@
         </div>
 
         <!-- Card 2 - Consultas -->
-        <div class="card" onclick="navigateTo('/Home/Consultas')">
+        <div class="card" onclick="navigateTo('/Home/Precadastro')">
             <div class="card-icon">
                 <i class="fas fa-search"></i>
             </div>
             <div class="card-content">
-                <h3>Consultas</h3>
-                <p>Consulte categorias e subcategorias do NIST Cybersecurity Framework.</p>
+                <h3>Cenário Futuro</h3>
+                <p>Efetivação de alterações de cenários.</p>
             </div>
             <div class="card-arrow">
                 <i class="fas fa-chevron-right"></i>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Card 3 - Relatórios -->
-        <div class="card" onclick="navigateTo('/Home/Relatorios')">
-            <div class="card-icon">
-                <i class="fas fa-chart-bar"></i>
-            </div>
-            <div class="card-content">
-                <h3>Relatórios</h3>
-                <p>Acompanhamento de evolução do cenário atual em relação as projeções futuras.</p>
-            </div>
-            <div class="card-arrow">
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        </div>
 @section Scripts {
     <script>
         function navigateTo(url) {

@@ -89,7 +89,8 @@
         }
 
         function formatarComboSubcategoria(codigoFuncao, codigoCategoria, sub) {
-            return `${codigoFuncao}.${codigoCategoria} - ${sub.nome || sub.NOME || sub.subcategoria || sub.SUBCATEGORIA}`;
+            const nomeSubcategoria = sub.codigo || sub.nome || sub.subcategoria;
+            return `${codigoFuncao}.${codigoCategoria} - ${nomeSubcategoria}`;
         }
 
         function formatarTextArea(subcategoria, controles, funcaoOption, categoriaOption) {
@@ -97,12 +98,14 @@
             const nomeFuncao = funcaoOption.textContent.split(' - ')[1] || '';
             const codigoCategoria = categoriaOption.textContent.split(' - ')[0] || '';
             const nomeCategoria = categoriaOption.textContent.split(' - ')[1] || '';
-            const nomeSubcategoria = subcategoria.nome || subcategoria.NOME || subcategoria.subcategoria || subcategoria.SUBCATEGORIA;
-            const descricao = subcategoria.descricao || subcategoria.DESCRICAO || '';
+
+            // CORREÇÃO: Usar propriedades consistentes
+            const nomeSubcategoria = subcategoria.codigo || subcategoria.nome || subcategoria.subcategoria;
+            const descricao = subcategoria.descricao || '';
 
             let texto = `FUNÇÃO: ${codigoFuncao} - ${nomeFuncao}\n`;
             texto += `CATEGORIA: ${codigoCategoria} - ${nomeCategoria}\n`;
-            texto += `SUBCATEGORIA: - ${nomeSubcategoria}\n`;
+            texto += `SUBCATEGORIA: ${nomeSubcategoria}\n`;
             texto += `DESCRIÇÃO: ${descricao}\n\n`;
 
             if (controles && controles.length > 0) {
@@ -194,12 +197,13 @@
                     const opcoesElements = subcategorias.map(sub => {
                         const option = document.createElement('option');
                         option.value = sub.id || sub.ID || sub.ID_SUBCATEGORIA;
-                        option.textContent = formatarComboSubcategoria(
-                            funcaoOption.textContent.split(' - ')[0],
-                            categoriaOption.textContent.split(' - ')[0],
-                            sub
-                        );
-                        option.setAttribute('data-descricao', `${sub.descricao || sub.DESCRICAO || ''}`);
+
+                        // CORREÇÃO: Formatação correta da subcategoria
+                        const codigoFuncao = funcaoOption.textContent.split(' - ')[0];
+                        const codigoCategoria = categoriaOption.textContent.split(' - ')[0];
+                        option.textContent = formatarComboSubcategoria(codigoFuncao, codigoCategoria, sub);
+
+                        option.setAttribute('data-descricao', sub.descricao || sub.DESCRICAO || '');
                         return option;
                     });
 

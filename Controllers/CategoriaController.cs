@@ -1,45 +1,62 @@
-// Controllers/CategoriaController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
+using NistXGH.Models.Dto;
 
-namespace NistXGH.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class CategoriasController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CategoriasController : ControllerBase
+    private readonly SgsiDbContext _context;
+
+    public CategoriasController(SgsiDbContext context)
     {
-        private readonly SgsiDbContext _context;
+        _context = context;
+    }
 
-        public CategoriasController(SgsiDbContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CategoriaDto>>> GetCategorias([FromQuery] int? funcaoId)
+    {
+        try
         {
-            _context = context;
-        }
+            var query = _context.Categorias.AsQueryable();
 
-        // GET: api/Categorias
-        // GET: api/Categorias?funcaoId=1
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categorias>>> GetCategorias(
-            [FromQuery] int? funcaoId
-        )
-        {
-            try
-            {
-                var query = _context.Categorias.AsQueryable();
+            if (funcaoId.HasValue)
+                query = query.Where(c => c.FUNCAO == funcaoId.Value);
 
-                if (funcaoId.HasValue)
+            var categorias = await query
+                .OrderBy(c => c.CODIGO)
+                .Select(c => new CategoriaDto
                 {
-                    query = query.Where(c => c.FUNCAO == funcaoId.Value);
-                }
+                    Id = c.ID,
+                    Codigo = c.CODIGO,
+                    Nome = c.NOME, // ✅ usa a coluna correta
+                    Funcao = c.FUNCAO
+                })
+                .ToListAsync();
 
-                var categorias = await query.OrderBy(c => c.ID).ToListAsync();
-
-                return Ok(categorias);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro interno: {ex.Message}");
-            }
+            return Ok(categorias);
         }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno: {ex.Message}");
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CategoriaDto>> GetCategoria(int id)
+    {
+        var c = await _context.Categorias.FirstOrDefaultAsync(x => x.ID == id);
+
+        if (c == null)
+            return NotFound();
+
+        return new CategoriaDto
+        {
+            Id = c.ID,
+            Codigo = c.CODIGO,
+            Nome = c.NOME, // ✅ corrigido
+            Funcao = c.FUNCAO
+        };
     }
 }

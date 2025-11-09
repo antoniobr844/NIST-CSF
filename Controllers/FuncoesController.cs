@@ -1,55 +1,55 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
+using NistXGH.Models.Dto;
 
 [ApiController]
 [Route("api/[controller]")]
 public class FuncoesController : ControllerBase
 {
     private readonly SgsiDbContext _context;
-    private readonly ILogger<FuncoesController> _logger;
 
-    public FuncoesController(SgsiDbContext context, ILogger<FuncoesController> logger)
+    public FuncoesController(SgsiDbContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
-    // GET: api/Funcoes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Funcoes>>> GetFuncoes()
+    public async Task<ActionResult<IEnumerable<FuncaoDto>>> GetFuncoes()
     {
-        _logger.LogInformation("=== INICIANDO REQUISIÇÃO API FUNCOES ===");
-
         try
         {
-            // Verifica se o DbContext está funcionando
-            _logger.LogInformation("Verificando conexão com o banco...");
-
-            var funcoes = await _context.Funcoes.AsNoTracking().OrderBy(f => f.ID).ToListAsync();
-
-            _logger.LogInformation($"SUCESSO: {funcoes.Count} funções encontradas");
-
-            if (funcoes.Count == 0)
-            {
-                _logger.LogWarning("Nenhuma função encontrada na tabela");
-            }
+            var funcoes = await _context.Funcoes
+                .OrderBy(f => f.CODIGO)
+                .Select(f => new FuncaoDto
+                {
+                    Id = f.ID,
+                    Codigo = f.CODIGO,
+                    Nome = f.NOME // ✅ usa o nome da coluna correta
+                })
+                .ToListAsync();
 
             return Ok(funcoes);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "ERRO CRÍTICO ao buscar funções");
-            return StatusCode(
-                500,
-                new
-                {
-                    error = "Erro interno do servidor",
-                    details = ex.Message,
-                    stackTrace = ex.StackTrace,
-                }
-            );
+            return StatusCode(500, $"Erro interno: {ex.Message}");
         }
     }
-}
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<FuncaoDto>> GetFuncao(int id)
+    {
+        var f = await _context.Funcoes.FirstOrDefaultAsync(x => x.ID == id);
+
+        if (f == null)
+            return NotFound();
+
+        return new FuncaoDto
+        {
+            Id = f.ID,
+            Codigo = f.CODIGO,
+            Nome = f.NOME // ✅ corrigido
+        };
+    }
+}

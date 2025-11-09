@@ -27,6 +27,6 @@ namespace NistXGH.Models
         public Categorias? CategoriaNav { get; set; }
 
         [ForeignKey("FUNCAO")]
-        public virtual Funcoes FuncaoNav { get; set; }
+        public virtual Funcoes? FuncaoNav { get; set; }
     }
 }

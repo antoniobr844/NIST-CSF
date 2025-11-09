@@ -23,7 +23,14 @@ public class HomeController : Controller
     {
         return View();
     }
-
+      public IActionResult PrecadastroAtual()
+    {
+        return View();
+    }
+    public IActionResult CenarioAF()
+    {
+        return View();
+    }
     public IActionResult Relatorios()
     {
         ViewData["Title"] = "Relatórios - Comparação de Cenários";

@@ -85,6 +85,16 @@
                 this.currentFunction = "";
                 this.currentCategory = "";
 
+                // Mapeamento de funções
+                this.mapeamentoFuncoes = {
+                    '1': 'Governanca',
+                    '2': 'Identificar', 
+                    '3': 'Proteger',
+                    '4': 'Detectar',
+                    '5': 'Responder',
+                    '6': 'Recuperar'
+                };
+
                 this.init();
             }
 
@@ -351,13 +361,75 @@
                 }
             }
 
+            // FUNÇÃO CORRIGIDA: Determinar a primeira função com seleções
             avancarParaAlteracoes() {
-                // Salvar dados adicionais no localStorage se necessário
-                localStorage.setItem('selectedFunction', this.currentFunction);
-                localStorage.setItem('selectedCategory', this.currentCategory);
+                const selections = this.selectionManager.getSelections();
+                console.log('Seleções atuais:', selections);
 
-                // Redirecionar
-                window.location.href = '/Home/Governanca';
+                if (Object.keys(selections).length === 0) {
+                    alert('Selecione pelo menos uma subcategoria para avançar.');
+                    return;
+                }
+
+                // Encontrar a primeira função que tem seleções
+                const primeiraFuncaoComSelecoes = this.encontrarPrimeiraFuncaoComSelecoes(selections);
+                
+                if (!primeiraFuncaoComSelecoes) {
+                    alert('Erro: Não foi possível determinar a primeira função com seleções.');
+                    return;
+                }
+
+                console.log('Primeira função com seleções:', primeiraFuncaoComSelecoes);
+
+                // Redirecionar para a página da primeira função
+                const paginaDestino = `/Home/${primeiraFuncaoComSelecoes}`;
+                console.log('Redirecionando para:', paginaDestino);
+                
+                window.location.href = paginaDestino;
+            }
+
+            // NOVA FUNÇÃO: Encontrar a primeira função com seleções
+            encontrarPrimeiraFuncaoComSelecoes(selections) {
+                // Ordem das funções conforme definido no NIST CSF
+                const ordemFuncoes = ['Governanca', 'Identificar', 'Proteger', 'Detectar', 'Responder', 'Recuperar'];
+                
+                // Para cada função na ordem, verificar se tem seleções
+                for (const funcaoNome of ordemFuncoes) {
+                    // Encontrar o ID da função pelo nome
+                    const funcaoId = Object.keys(this.mapeamentoFuncoes).find(
+                        key => this.mapeamentoFuncoes[key] === funcaoNome
+                    );
+
+                    if (funcaoId && selections[funcaoId]) {
+                        // Verificar se esta função tem alguma categoria com subcategorias selecionadas
+                        const categorias = selections[funcaoId];
+                        for (const categoriaId in categorias) {
+                            if (categorias[categoriaId].length > 0) {
+                                console.log(`Função ${funcaoNome} tem seleções na categoria ${categoriaId}`);
+                                return funcaoNome;
+                            }
+                        }
+                    }
+                }
+
+                // Se não encontrou nenhuma função com seleções, tenta uma abordagem alternativa
+                console.log('Tentando abordagem alternativa...');
+                
+                // Procura por qualquer função que tenha seleções, independente da ordem
+                for (const funcaoId in selections) {
+                    const categorias = selections[funcaoId];
+                    for (const categoriaId in categorias) {
+                        if (categorias[categoriaId].length > 0) {
+                            const funcaoNome = this.mapeamentoFuncoes[funcaoId];
+                            if (funcaoNome) {
+                                console.log(`Encontrada função ${funcaoNome} com seleções (abordagem alternativa)`);
+                                return funcaoNome;
+                            }
+                        }
+                    }
+                }
+
+                return null;
             }
 
             atualizarContadorLocal() {
@@ -384,6 +456,13 @@
                 const btnAvancar = document.getElementById('btnAvancar');
                 const total = this.selectionManager.getTotalSelectedCount();
                 btnAvancar.disabled = total === 0;
+                
+                // Atualizar o texto do botão para mostrar quantas seleções foram feitas
+                if (total > 0) {
+                    btnAvancar.textContent = `Avançar para Alterações (${total} selecionada${total !== 1 ? 's' : ''})`;
+                } else {
+                    btnAvancar.textContent = 'Avançar para Alterações';
+                }
             }
 
             mostrarContainer(containerId) {
