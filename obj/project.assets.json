@@ -250,11 +250,11 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Oracle.EntityFrameworkCore/9.23.26000": {
+      "Oracle.EntityFrameworkCore/9.23.90": {
         "type": "package",
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Relational": "[9.0.0, 10.0.0)",
-          "Oracle.ManagedDataAccess.Core": "[23.26.0, 24.0.0)"
+          "Oracle.ManagedDataAccess.Core": "[23.9.0, 24.0.0)"
         },
         "compile": {
           "lib/net8.0/Oracle.EntityFrameworkCore.dll": {}
@@ -263,7 +263,7 @@
           "lib/net8.0/Oracle.EntityFrameworkCore.dll": {}
         }
       },
-      "Oracle.ManagedDataAccess.Core/23.26.0": {
+      "Oracle.ManagedDataAccess.Core/23.9.1": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.PerformanceCounter": "8.0.0",
@@ -458,6 +458,22 @@
           }
         }
       },
+      "System.Interactive.Async/7.0.0-preview.1.g24680b5469": {
+        "type": "package",
+        "dependencies": {
+          "System.Linq.AsyncEnumerable": "10.0.0-rc.1.25451.107"
+        },
+        "compile": {
+          "lib/net8.0/System.Interactive.Async.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.Interactive.Async.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.IO/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -491,17 +507,37 @@
           "lib/netstandard1.6/System.Linq.dll": {}
         }
       },
-      "System.Linq.Async/6.0.3": {
+      "System.Linq.Async/7.0.0-preview.1.g24680b5469": {
         "type": "package",
+        "dependencies": {
+          "System.Interactive.Async": "7.0.0-preview.1.g24680b5469",
+          "System.Linq.AsyncEnumerable": "10.0.0-rc.1.25451.107"
+        },
         "compile": {
-          "ref/net6.0/System.Linq.Async.dll": {
+          "ref/net8.0/System.Linq.Async.dll": {
             "related": ".deps.json;.xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.Linq.Async.dll": {
+          "lib/netstandard2.1/System.Linq.Async.dll": {
             "related": ".xml"
           }
+        }
+      },
+      "System.Linq.AsyncEnumerable/10.0.0-rc.1.25451.107": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.Linq.AsyncEnumerable.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.Linq.AsyncEnumerable.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
         }
       },
       "System.Memory/4.6.0": {
@@ -1056,25 +1092,25 @@
         "runtime.json"
       ]
     },
-    "Oracle.EntityFrameworkCore/9.23.26000": {
-      "sha512": "jt/LjtPdpMYXafRLIwg+FC3nzo010GiJgcLjj073/thiFHPVAGOq6OCWGdo1c+xTv9mFUbrF/ce9JYBe+2tqjg==",
+    "Oracle.EntityFrameworkCore/9.23.90": {
+      "sha512": "V1jC3miueNkxB4oWpT0LdPYAguabIQt56aYMAOhgmfMmmf8bVE/P45QAmeCqp4OW6q3NlyqIK5+UWxXhg/4aLA==",
       "type": "package",
-      "path": "oracle.entityframeworkcore/9.23.26000",
+      "path": "oracle.entityframeworkcore/9.23.90",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "README.md",
         "lib/net8.0/Oracle.EntityFrameworkCore.dll",
-        "oracle.entityframeworkcore.9.23.26000.nupkg.sha512",
+        "oracle.entityframeworkcore.9.23.90.nupkg.sha512",
         "oracle.entityframeworkcore.nuspec",
         "oracle.png"
       ]
     },
-    "Oracle.ManagedDataAccess.Core/23.26.0": {
-      "sha512": "+F+d0hTbbqRll5A0T/8mPRy6erBvs3gnaBgktVTYHFZEJkjR+6wErh+4L34QMZIy9mP6osPbptcQJWweH6NrIg==",
+    "Oracle.ManagedDataAccess.Core/23.9.1": {
+      "sha512": "WDQxe50dzRdtNoPKiFwF5p4Zv6AGwM7IKfnWQa7/ijd0k+vT6RBmwLRjtS0wn4C3PIamygy1Vn6AV3GgNkkGXg==",
       "type": "package",
-      "path": "oracle.manageddataaccess.core/23.26.0",
+      "path": "oracle.manageddataaccess.core/23.9.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1085,7 +1121,7 @@
         "info.txt",
         "lib/net8.0/Oracle.ManagedDataAccess.dll",
         "lib/netstandard2.1/Oracle.ManagedDataAccess.dll",
-        "oracle.manageddataaccess.core.23.26.0.nupkg.sha512",
+        "oracle.manageddataaccess.core.23.9.1.nupkg.sha512",
         "oracle.manageddataaccess.core.nuspec",
         "oracle.png"
       ]
@@ -1505,6 +1541,26 @@
         "system.globalization.nuspec"
       ]
     },
+    "System.Interactive.Async/7.0.0-preview.1.g24680b5469": {
+      "sha512": "+szATIG2qi/gacnQRPWt+NYLsnoc+8nJOGGVyUEvvYKNB0L43B/uH1QE4BlPkWoNVn2HCoRC7xLELmvZ87tNcA==",
+      "type": "package",
+      "path": "system.interactive.async/7.0.0-preview.1.g24680b5469",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Logo.png",
+        "lib/net48/System.Interactive.Async.dll",
+        "lib/net48/System.Interactive.Async.xml",
+        "lib/net8.0/System.Interactive.Async.dll",
+        "lib/net8.0/System.Interactive.Async.xml",
+        "lib/netstandard2.0/System.Interactive.Async.dll",
+        "lib/netstandard2.0/System.Interactive.Async.xml",
+        "lib/netstandard2.1/System.Interactive.Async.dll",
+        "lib/netstandard2.1/System.Interactive.Async.xml",
+        "system.interactive.async.7.0.0-preview.1.g24680b5469.nupkg.sha512",
+        "system.interactive.async.nuspec"
+      ]
+    },
     "System.IO/4.3.0": {
       "sha512": "3qjaHvxQPDpSOYICjUoTsmoq5u6QJAFRUITgeT/4gqkF1bajbSmb1kwSxEA8AHlofqgcKJcM8udgieRNhaJ5Cg==",
       "type": "package",
@@ -1658,18 +1714,18 @@
         "system.linq.nuspec"
       ]
     },
-    "System.Linq.Async/6.0.3": {
-      "sha512": "hSHiq2m1ky7zUQgTp+/2h1K3lABIQ+GltRixoclHPg/Sc1vnfeS6g/Uy5moOVZKrZJdQiFPFZd6OobBp3tZcFg==",
+    "System.Linq.Async/7.0.0-preview.1.g24680b5469": {
+      "sha512": "8hjN0yC3D56Qa0WimqLLlpWQkC6Y4hasmCug/8dxfXUX8+0CYRjnCLBQkQTjVrUnnV6LumQGoKCz7X1fD/RkMg==",
       "type": "package",
-      "path": "system.linq.async/6.0.3",
+      "path": "system.linq.async/7.0.0-preview.1.g24680b5469",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Logo.png",
+        "lib/net10.0/System.Linq.Async.dll",
+        "lib/net10.0/System.Linq.Async.xml",
         "lib/net48/System.Linq.Async.dll",
         "lib/net48/System.Linq.Async.xml",
-        "lib/net6.0/System.Linq.Async.dll",
-        "lib/net6.0/System.Linq.Async.xml",
         "lib/netstandard2.0/System.Linq.Async.dll",
         "lib/netstandard2.0/System.Linq.Async.xml",
         "lib/netstandard2.1/System.Linq.Async.dll",
@@ -1679,17 +1735,46 @@
         "ref/net48/System.Linq.Async.xml",
         "ref/net48/System.Runtime.CompilerServices.Unsafe.dll",
         "ref/net48/System.Threading.Tasks.Extensions.dll",
-        "ref/net6.0/System.Linq.Async.deps.json",
-        "ref/net6.0/System.Linq.Async.dll",
-        "ref/net6.0/System.Linq.Async.xml",
+        "ref/net8.0/System.Linq.Async.deps.json",
+        "ref/net8.0/System.Linq.Async.dll",
+        "ref/net8.0/System.Linq.Async.xml",
         "ref/netstandard2.0/System.Linq.Async.deps.json",
         "ref/netstandard2.0/System.Linq.Async.dll",
         "ref/netstandard2.0/System.Linq.Async.xml",
         "ref/netstandard2.1/System.Linq.Async.deps.json",
         "ref/netstandard2.1/System.Linq.Async.dll",
         "ref/netstandard2.1/System.Linq.Async.xml",
-        "system.linq.async.6.0.3.nupkg.sha512",
+        "system.linq.async.7.0.0-preview.1.g24680b5469.nupkg.sha512",
         "system.linq.async.nuspec"
+      ]
+    },
+    "System.Linq.AsyncEnumerable/10.0.0-rc.1.25451.107": {
+      "sha512": "rSbbRADnx1qz9sePyjJ2kRlPyPFVAbettclbG2kh2XlVVxuqpOvDvuhvzyqjr4dsw48fwRauv7faBU18m2pV6w==",
+      "type": "package",
+      "path": "system.linq.asyncenumerable/10.0.0-rc.1.25451.107",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Linq.AsyncEnumerable.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Linq.AsyncEnumerable.targets",
+        "lib/net10.0/System.Linq.AsyncEnumerable.dll",
+        "lib/net10.0/System.Linq.AsyncEnumerable.xml",
+        "lib/net462/System.Linq.AsyncEnumerable.dll",
+        "lib/net462/System.Linq.AsyncEnumerable.xml",
+        "lib/net8.0/System.Linq.AsyncEnumerable.dll",
+        "lib/net8.0/System.Linq.AsyncEnumerable.xml",
+        "lib/net9.0/System.Linq.AsyncEnumerable.dll",
+        "lib/net9.0/System.Linq.AsyncEnumerable.xml",
+        "lib/netstandard2.0/System.Linq.AsyncEnumerable.dll",
+        "lib/netstandard2.0/System.Linq.AsyncEnumerable.xml",
+        "system.linq.asyncenumerable.10.0.0-rc.1.25451.107.nupkg.sha512",
+        "system.linq.asyncenumerable.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Memory/4.6.0": {
@@ -2292,10 +2377,10 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Oracle.EntityFrameworkCore >= 9.23.26000",
-      "Oracle.ManagedDataAccess.Core >= 23.26.0",
+      "Oracle.EntityFrameworkCore >= 9.23.90",
+      "Oracle.ManagedDataAccess.Core >= 23.9.1",
       "System.Linq >= 4.3.0",
-      "System.Linq.Async >= 6.0.3"
+      "System.Linq.Async >= 7.0.0-preview.1.g24680b5469"
     ]
   },
   "packageFolders": {
@@ -2304,11 +2389,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\projetos\\NistXGH_3.1\\NistXGH\\NistXGH.csproj",
+      "projectUniqueName": "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj",
       "projectName": "NistXGH",
-      "projectPath": "C:\\projetos\\NistXGH_3.1\\NistXGH\\NistXGH.csproj",
+      "projectPath": "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj",
       "packagesPath": "C:\\Users\\anton\\.nuget\\packages\\",
-      "outputPath": "C:\\projetos\\NistXGH_3.1\\NistXGH\\obj\\",
+      "outputPath": "C:\\projetos\\NistXGH_5.0\\NistXGH\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\anton\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -2343,11 +2428,11 @@
         "dependencies": {
           "Oracle.EntityFrameworkCore": {
             "target": "Package",
-            "version": "[9.23.26000, )"
+            "version": "[9.23.90, )"
           },
           "Oracle.ManagedDataAccess.Core": {
             "target": "Package",
-            "version": "[23.26.0, )"
+            "version": "[23.9.1, )"
           },
           "System.Linq": {
             "target": "Package",
@@ -2355,7 +2440,7 @@
           },
           "System.Linq.Async": {
             "target": "Package",
-            "version": "[6.0.3, )"
+            "version": "[7.0.0-preview.1.g24680b5469, )"
           }
         },
         "imports": [

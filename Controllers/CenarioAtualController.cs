@@ -1,97 +1,108 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
-using NistXGH.Models.Dto;
 
 namespace NistXGH.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CenarioAtualController : ControllerBase  // Mude para ControllerBase
+    public class CenarioAtualController : Controller
     {
-        private readonly SgsiDbContext _context;
+        // Simulação de banco de dados em memória
+        private static List<CenarioAtual> _CenarioAtual = new List<CenarioAtual>();
+        private static int _nextId = 1;
 
-        public CenarioAtualController(SgsiDbContext context)
+        // GET: Categoria
+        public IActionResult Index()
         {
-            _context = context;
+            return View(_CenarioAtual.OrderBy(c => c.JUSTIFICATIVA).ToList());
         }
 
-        // GET: api/CenarioAtual?subcategoriaId=5
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int subcategoriaId)
+        // GET: Categoria/Cadastrar
+        public IActionResult Cadastrar()
         {
-            try
-            {
-                var cenario = await _context.Set<CenarioAtual>()
-                    .FirstOrDefaultAsync(c => c.SUBCATEGORIA == subcategoriaId);
-
-                return Ok(cenario ?? new CenarioAtual());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro interno: {ex.Message}");
-            }
+            return View();
         }
 
-        // POST: api/CenarioAtual/salvar
-        [HttpPost("salvar")]
-        public async Task<IActionResult> Salvar([FromBody] CenarioAtualDto cenarioDto)
+        // POST: Categoria/Cadastrar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Cadastrar(CenarioAtual cenarioAtual)
         {
-            if (cenarioDto == null)
-                return BadRequest("Dados inválidos.");
-
-            try
+            if (ModelState.IsValid)
             {
-                // Verifica se já existe um registro para essa subcategoria
-                var existente = await _context.Set<CenarioAtual>()
-                    .FirstOrDefaultAsync(c => c.SUBCATEGORIA == cenarioDto.SUBCATEGORIA);
+                cenarioAtual.ID = _nextId++;
+                _CenarioAtual.Add(cenarioAtual);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(cenarioAtual);
+        }
 
-                if (existente != null)
+        // GET: Categoria/Editar/5
+        public IActionResult Editar(int id)
+        {
+            var cenarioAtual = _CenarioAtual.FirstOrDefault(c => c.ID == id);
+            if (cenarioAtual == null)
+            {
+                return NotFound();
+            }
+            return View(cenarioAtual);
+        }
+
+        // POST: Categoria/Editar/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Editar(int id, CenarioAtual cenarioAtual)
+        {
+            if (id != cenarioAtual.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var existingCenarioAtual = _CenarioAtual.FirstOrDefault(c => c.ID == id);
+                if (existingCenarioAtual == null)
                 {
-                    // Atualiza campos
-                    existente.JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA;
-                    existente.PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL;
-                    existente.NIVEL_ATUAL = cenarioDto.NIVEL_ATUAL;
-                    existente.POLIT_ATUAL = cenarioDto.POLIT_ATUAL;
-                    existente.PRAT_ATUAL = cenarioDto.PRAT_ATUAL;
-                    existente.FUNC_RESP = cenarioDto.FUNC_RESP;
-                    existente.REF_INFO = cenarioDto.REF_INFO;
-                    existente.EVID_ATUAL = cenarioDto.EVID_ATUAL;
-                    existente.NOTAS = cenarioDto.NOTAS;
-                    existente.CONSIDERACOES = cenarioDto.CONSIDERACOES;
-                    existente.ICONE = cenarioDto.ICONE;
-                    existente.DATA_REGISTRO = DateTime.Now;
-                    _context.Update(existente);
-                }
-                else
-                {
-                    // Cria novo registro
-                    var novo = new CenarioAtual
-                    {
-                        SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
-                        JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA,
-                        PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL,
-                        NIVEL_ATUAL = cenarioDto.NIVEL_ATUAL,
-                        POLIT_ATUAL = cenarioDto.POLIT_ATUAL,
-                        PRAT_ATUAL = cenarioDto.PRAT_ATUAL,
-                        FUNC_RESP = cenarioDto.FUNC_RESP,
-                        REF_INFO = cenarioDto.REF_INFO,
-                        EVID_ATUAL = cenarioDto.EVID_ATUAL,
-                        NOTAS = cenarioDto.NOTAS,
-                        CONSIDERACOES = cenarioDto.CONSIDERACOES,
-                        ICONE = cenarioDto.ICONE,
-                        DATA_REGISTRO = DateTime.Now
-                    };
-                    _context.Add(novo);
+                    return NotFound();
                 }
 
-                await _context.SaveChangesAsync();
-                return Ok(new { sucesso = true, mensagem = "Cenário Atual salvo com sucesso!" });
+                existingCenarioAtual.PRIOR_ATUAL = cenarioAtual.PRIOR_ATUAL;
+                existingCenarioAtual.NIVEL_ATUAL = cenarioAtual.NIVEL_ATUAL;
+                existingCenarioAtual.POLIT_ATUAL = cenarioAtual.POLIT_ATUAL;
+                existingCenarioAtual.PRAT_ATUAL = cenarioAtual.PRAT_ATUAL;
+                existingCenarioAtual.FUNC_RESP = cenarioAtual.FUNC_RESP;
+                existingCenarioAtual.REF_INFO = cenarioAtual.REF_INFO;
+                existingCenarioAtual.EVID_ATUAL = cenarioAtual.EVID_ATUAL;
+                existingCenarioAtual.SUBCATEGORIA = cenarioAtual.SUBCATEGORIA;
+                existingCenarioAtual.DATA_REGISTRO = cenarioAtual.DATA_REGISTRO;
+
+                return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            return View(cenarioAtual);
+        }
+
+        // GET: Categoria/Excluir/5
+        public IActionResult Excluir(int id)
+        {
+            var cenarioAtual = _CenarioAtual.FirstOrDefault(c => c.ID == id);
+            if (cenarioAtual == null)
             {
-                return StatusCode(500, $"Erro ao salvar: {ex.Message}");
+                return NotFound();
             }
+            return View(cenarioAtual);
+        }
+
+        // POST: Categoria/Excluir/5
+        [HttpPost, ActionName("Excluir")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmarExcluir(int id)
+        {
+            var cenarioAtual = _CenarioAtual.FirstOrDefault(c => c.ID == id);
+            if (cenarioAtual != null)
+            {
+                _CenarioAtual.Remove(cenarioAtual);
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

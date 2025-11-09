@@ -52,7 +52,7 @@ namespace NistXGH.Models
         public string CONSIDERACOES { get; set; }
 
         [ForeignKey("SUBCATEGORIA")]
-        public int SUBCATEGORIA { get; set; }
+        public string SUBCATEGORIA { get; set; }
 
         [Display(Name = "Data de Registro")]
         public DateTime DATA_REGISTRO { get; set; }

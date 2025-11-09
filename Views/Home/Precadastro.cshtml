@@ -5,14 +5,306 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIST CSF - Seleção de Subcategorias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- CSS Compartilhado -->
-    <link rel="stylesheet" href="/css/base/variables.css">
-    <link rel="stylesheet" href="/css/base/reset.css">
-    <link rel="stylesheet" href="/css/components/breadcrumb.css">
-    <link rel="stylesheet" href="/css/components/forms.css">
-    <link rel="stylesheet" href="/css/components/buttons.css">
-    <link rel="stylesheet" href="/css/pages/precadastro.css">
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .breadcrumb {
+            display: flex;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        .breadcrumb div {
+            margin-right: 10px;
+            padding-right: 15px;
+            position: relative;
+        }
+
+        .breadcrumb div:not(:last-child)::after {
+            content: "›";
+            position: absolute;
+            right: 0;
+            color: #7f8c8d;
+        }
+
+        .breadcrumb .active {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .combo-container {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: white;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        keyframes
+        fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subcategorias-container {
+            margin-top: 20px;
+        }
+
+        .subcategoria-topic {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+        }
+
+        .subcategoria-topic h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+        }
+
+        .subcategoria-topic h3::before {
+            content: "•";
+            margin-right: 10px;
+            color: #3498db;
+            font-size: 1.5em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-label:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-label.selected {
+            border-color: #27ae60;
+            background-color: #e8f5e9;
+        }
+
+        .option-checkbox {
+            margin-right: 12px;
+            transform: scale(1.3);
+            accent-color: #27ae60;
+        }
+
+        .subcategoria-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .subcategoria-codigo {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .subcategoria-descricao {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-excluir {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-excluir:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-avancar {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-avancar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-avancar:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .selected-count {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            color: #2c3e50;
+            padding: 12px;
+            background: #e8f4fc;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .global-selected-count {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-desmarcar {
+            background: linear-gradient(135deg, #f39c12, #f1c40f);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-desmarcar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+
+        .error {
+            color: #e74c3c;
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -27,7 +319,7 @@
 
         <div class="combo-container">
             <label for="opcoesPrincipais">Selecione uma função:</label>
-            <select id="opcoesPrincipais" disabled>
+            <select id="opcoesPrincipais" onchange="carregarCategorias(this.value)" disabled>
                 <option value="">Carregando funções...</option>
             </select>
         </div>
@@ -35,7 +327,7 @@
         <div id="categoriasContainer" class="hidden">
             <div class="combo-container">
                 <label for="categorias">Selecione uma categoria:</label>
-                <select id="categorias" disabled>
+                <select id="categorias" onchange="carregarSubcategorias(this.value)" disabled>
                     <option value="">Selecione uma categoria</option>
                 </select>
             </div>
@@ -54,455 +346,420 @@
                 <!-- As subcategorias serão inseridas aqui via JavaScript -->
             </div>
 
-            <div class="button-group">
-                <button class="btn btn-danger" id="btnExcluir">
+            <div class="navigation button-group">
+                <button class="btn-excluir" id="btnExcluir" onclick="desmarcarTudo()">
                     Excluir seleções
                 </button>
 
-                <button class="btn btn-warning" id="btnDesmarcarTodas">
+                <button class="btn-desmarcar" onclick="desmarcarTodasSubcategorias()">
                     Desmarcar subcategorias
                 </button>
 
-                <button class="btn btn-success" id="btnAvancar" disabled>
+                <button class="btn-avancar" id="btnAvancar" onclick="avancarParaAlteracoes()">
                     Avançar para Alterações
                 </button>
             </div>
         </div>
-    </div>
 
-    <!-- JavaScript Modularizado -->
-    <script type="module">
-        import { NistDataLoader } from '/js/modules/nistDataLoader.js';
-        import { SelectionManager } from '/js/modules/selectionManager.js';
-        import { BreadcrumbManager } from '/js/modules/breadcrumbManager.js';
+        <script>
+            // Variáveis globais para armazenar dados do banco
+            let funcoesData = [];
+            let categoriasData = [];
+            let subcategoriasData = [];
 
-        class PrecadastroPage {
-            constructor() {
-                this.dataLoader = new NistDataLoader();
-                this.selectionManager = new SelectionManager();
-                this.breadcrumb = new BreadcrumbManager();
+            // Cache para informações de função e categoria
+            let funcoesCache = {};
+            let categoriasCache = {};
 
-                this.currentFunction = "";
-                this.currentCategory = "";
+            // Variáveis para controle de seleções
+            let selectedFunction = "";
+            let selectedCategory = "";
+            let selectedSubcategories = {};
 
-                // Mapeamento de funções
-                this.mapeamentoFuncoes = {
-                    '1': 'Governanca',
-                    '2': 'Identificar', 
-                    '3': 'Proteger',
-                    '4': 'Detectar',
-                    '5': 'Responder',
-                    '6': 'Recuperar'
-                };
+            // Inicialização quando a página carrega
+            document.addEventListener('DOMContentLoaded', function () {
+                carregarFuncoes();
+                loadSelections();
+                updateGlobalSelectionCount();
+            });
 
-                this.init();
-            }
-
-            async init() {
-                await this.carregarFuncoes();
-                this.configurarEventos();
-                this.atualizarContadorGlobal();
-            }
-
-            async carregarFuncoes() {
+            // Carregar funções do banco
+            async function carregarFuncoes() {
                 try {
-                    const funcoes = await this.dataLoader.carregarFuncoes();
-                    this.preencherFuncoes(funcoes);
+                    console.log('Carregando funções...');
+                    const response = await fetch('/api/Funcoes');
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('Funções carregadas:', data);
+
+                    funcoesData = data;
+                    // Popular cache de funções
+                    funcoesData.forEach(funcao => {
+                        funcoesCache[funcao.id || funcao.ID] = funcao;
+                    });
+                    preencherFuncoes();
+
                 } catch (error) {
-                    this.mostrarErro('opcoesPrincipais', 'Erro ao carregar funções');
+                    console.error('Erro ao carregar funções:', error);
+                    document.getElementById('opcoesPrincipais').innerHTML = '<option value="">Erro ao carregar funções</option>';
+                    document.getElementById('opcoesPrincipais').disabled = false;
                 }
             }
 
-            preencherFuncoes(funcoes) {
+            // Preencher dropdown de funções
+            function preencherFuncoes() {
                 const select = document.getElementById('opcoesPrincipais');
                 select.innerHTML = '<option value="">Selecione uma função</option>';
 
-                funcoes.forEach(funcao => {
+                funcoesData.forEach(funcao => {
                     const option = document.createElement('option');
                     option.value = funcao.id || funcao.ID;
-                    option.textContent = `${funcao.codigo || funcao.CODIGO || ''} - ${funcao.nome || funcao.NOME}`;
+                    option.textContent = `${funcao.codigo || funcao.CODIGO || ''} - ${funcao.nome || funcao.NOME || funcao.descricao || funcao.DESCRICAO}`;
                     select.appendChild(option);
                 });
 
                 select.disabled = false;
-                this.breadcrumb.update(1);
+                updateBreadcrumb(1);
             }
 
-            configurarEventos() {
-                // Eventos dos selects
-                document.getElementById('opcoesPrincipais').addEventListener('change',
-                    (e) => this.onFuncaoSelecionada(e.target.value));
+            // Carregar categorias baseadas na função selecionada
+            async function carregarCategorias(funcaoId) {
+                const categoriasContainer = document.getElementById('categoriasContainer');
+                const categoriasSelect = document.getElementById('categorias');
+                const subcategoriasContainer = document.getElementById('subcategoriasContainer');
 
-                document.getElementById('categorias').addEventListener('change',
-                    (e) => this.onCategoriaSelecionada(e.target.value));
+                // Limpar seleções anteriores
+                categoriasSelect.innerHTML = '<option value="">Carregando categorias...</option>';
+                categoriasSelect.disabled = true;
+                subcategoriasContainer.classList.add('hidden');
 
-                // Eventos dos botões
-                document.getElementById('btnExcluir').addEventListener('click',
-                    () => this.excluirTodasSelecoes());
-
-                document.getElementById('btnDesmarcarTodas').addEventListener('click',
-                    () => this.desmarcarSubcategoriasAtuais());
-
-                document.getElementById('btnAvancar').addEventListener('click',
-                    () => this.avancarParaAlteracoes());
-            }
-
-            async onFuncaoSelecionada(funcaoId) {
-                this.currentFunction = funcaoId;
+                selectedFunction = funcaoId;
 
                 if (!funcaoId) {
-                    this.ocultarContainer('categoriasContainer');
-                    this.ocultarContainer('subcategoriasContainer');
-                    this.breadcrumb.update(1);
+                    categoriasContainer.classList.add('hidden');
+                    updateBreadcrumb(1);
                     return;
                 }
 
                 try {
-                    const categorias = await this.dataLoader.carregarCategorias(funcaoId);
-                    this.preencherCategorias(categorias);
+                    console.log(`Carregando categorias para função ${funcaoId}...`);
+                    const response = await fetch(`/api/Categorias?funcaoId=${funcaoId}`);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('Categorias carregadas:', data);
+
+                    // Limpar cache de categorias para esta função
+                    Object.keys(categoriasCache).forEach(key => {
+                        if (categoriasCache[key].funcaoId === funcaoId) {
+                            delete categoriasCache[key];
+                        }
+                    });
+
+                    // Preencher categorias e popular cache
+                    categoriasSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
+
+                    data.forEach(categoria => {
+                        const option = document.createElement('option');
+                        option.value = categoria.id || categoria.ID;
+                        option.textContent = `${categoria.codigo || categoria.CODIGO || ''} - ${categoria.nome || categoria.NOME}`;
+                        categoriasSelect.appendChild(option);
+
+                        // Armazenar no cache
+                        categoriasCache[categoria.id || categoria.ID] = {
+                            ...categoria,
+                            funcaoId: funcaoId
+                        };
+                    });
+
+                    categoriasSelect.disabled = false;
+                    categoriasContainer.classList.remove('hidden');
+                    categoriasContainer.classList.add('visible');
+                    updateBreadcrumb(2);
+
+                    // Inicializar seleções para esta função se não existir
+                    if (!selectedSubcategories[funcaoId]) {
+                        selectedSubcategories[funcaoId] = {};
+                    }
+
                 } catch (error) {
-                    this.mostrarErro('categorias', 'Erro ao carregar categorias');
+                    console.error('Erro ao carregar categorias:', error);
+                    categoriasSelect.innerHTML = '<option value="">Erro ao carregar categorias</option>';
+                    categoriasSelect.disabled = false;
                 }
             }
 
-            preencherCategorias(categorias) {
-                const select = document.getElementById('categorias');
-                select.innerHTML = '<option value="">Selecione uma categoria</option>';
+            // Carregar subcategorias baseadas na categoria selecionada
+            async function carregarSubcategorias(categoriaId) {
+                const subcategoriasContainer = document.getElementById('subcategoriasContainer');
+                const subcategoriasList = document.getElementById('subcategoriasList');
 
-                categorias.forEach(categoria => {
-                    const option = document.createElement('option');
-                    option.value = categoria.id || categoria.ID;
-                    option.textContent = `${categoria.codigo || categoria.CODIGO || ''} - ${categoria.nome || categoria.NOME}`;
-                    select.appendChild(option);
-                });
+                selectedCategory = categoriaId;
 
-                select.disabled = false;
-                this.mostrarContainer('categoriasContainer');
-                this.breadcrumb.update(2);
-            }
+                // Limpar seleções anteriores
+                subcategoriasList.innerHTML = '';
 
-            async onCategoriaSelecionada(categoriaId) {
-                this.currentCategory = categoriaId;
+                // Atualizar breadcrumb
+                updateBreadcrumb(2);
 
                 if (!categoriaId) {
-                    this.ocultarContainer('subcategoriasContainer');
-                    this.breadcrumb.update(2);
+                    subcategoriasContainer.classList.add('hidden');
                     return;
                 }
 
                 try {
-                    const subcategorias = await this.dataLoader.carregarSubcategorias(categoriaId);
-                    this.exibirSubcategorias(subcategorias);
+                    console.log(`Carregando subcategorias para categoria ${categoriaId}...`);
+                    const response = await fetch(`/api/Subcategorias?categoriaId=${categoriaId}`);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('Subcategorias carregadas:', data);
+
+                    // Inicializar seleções para esta categoria se não existir
+                    if (!selectedSubcategories[selectedFunction][categoriaId]) {
+                        selectedSubcategories[selectedFunction][categoriaId] = [];
+                    }
+
+                    // Buscar informações da função e categoria para montar o código completo
+                    const funcaoInfo = funcoesCache[selectedFunction];
+                    const categoriaInfo = categoriasCache[categoriaId];
+
+                    // Criar tópico para as subcategorias
+                    const topicDiv = document.createElement('div');
+                    topicDiv.className = 'subcategoria-topic';
+
+                    const topicTitle = document.createElement('h3');
+                    const categoriaNome = document.getElementById('categorias').options[document.getElementById('categorias').selectedIndex].textContent;
+                    topicTitle.textContent = categoriaNome;
+                    topicDiv.appendChild(topicTitle);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    // Preencher as subcategorias como checkboxes
+                    data.forEach(subcategoria => {
+                        const label = document.createElement('label');
+                        label.className = 'option-label';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.className = 'option-checkbox';
+                        checkbox.value = subcategoria.id || subcategoria.ID;
+
+                        // Verificar se esta subcategoria já foi selecionada anteriormente
+                        if (selectedSubcategories[selectedFunction] &&
+                            selectedSubcategories[selectedFunction][categoriaId] &&
+                            selectedSubcategories[selectedFunction][categoriaId].includes(subcategoria.id || subcategoria.ID)) {
+                            checkbox.checked = true;
+                            label.classList.add('selected');
+                        }
+
+                        // Criar container para as informações da subcategoria
+                        const infoDiv = document.createElement('div');
+                        infoDiv.className = 'subcategoria-info';
+
+                        // Montar código completo: função.categoria-numero (ex: DE.CM-01)
+                        const codigoFuncao = funcaoInfo?.codigo || funcaoInfo?.CODIGO || '';
+                        const codigoCategoria = categoriaInfo?.codigo || categoriaInfo?.CODIGO || '';
+                        const codigoSubcategoria = subcategoria.codigo || subcategoria.CODIGO || '';
+
+                        // Formatar o código completo
+                        let codigoCompleto = '';
+                        if (codigoFuncao && codigoCategoria) {
+                            // Se já tem o código completo na subcategoria, usa ele
+                            if (codigoSubcategoria && codigoSubcategoria.includes('.')) {
+                                codigoCompleto = codigoSubcategoria;
+                            } else {
+                                // Monta o código: função.categoria-numero
+                                codigoCompleto = `${codigoFuncao}.${codigoCategoria}-${codigoSubcategoria}${subcategoria.subcategoria || subcategoria.SUBCATEGORIA}`;
+                            }
+                        } else {
+                            codigoCompleto = codigoSubcategoria || `SC-${subcategoria.id || subcategoria.ID}`;
+                        }
+
+                        const codigoSpan = document.createElement('span');
+                        codigoSpan.className = 'subcategoria-codigo';
+                        codigoSpan.textContent = codigoCompleto;
+
+                        const descricaoSpan = document.createElement('span');
+                        descricaoSpan.className = 'subcategoria-descricao';
+                        descricaoSpan.textContent = subcategoria.descricao || subcategoria.DESCRICAO || subcategoria.descricao || subcategoria.DESCRICAO || '';
+
+                        infoDiv.appendChild(codigoSpan);
+                        infoDiv.appendChild(descricaoSpan);
+
+                        label.appendChild(checkbox);
+                        label.appendChild(infoDiv);
+                        optionsDiv.appendChild(label);
+
+                        // Adicionar evento para atualizar contagem de seleção
+                        checkbox.addEventListener('change', function () {
+                            updateSelection(this, subcategoria.id || subcategoria.ID);
+                        });
+                    });
+
+                    topicDiv.appendChild(optionsDiv);
+                    subcategoriasList.appendChild(topicDiv);
+
+                    // Mostrar o container
+                    subcategoriasContainer.classList.remove('hidden');
+                    subcategoriasContainer.classList.add('visible');
+
+                    // Inicializar a contagem de seleção
+                    updateLocalSelectionCount();
+                    updateGlobalSelectionCount();
+
                 } catch (error) {
-                    this.mostrarErroSubcategorias('Erro ao carregar subcategorias');
+                    console.error('Erro ao carregar subcategorias:', error);
+                    subcategoriasList.innerHTML = '<div class="error">Erro ao carregar subcategorias</div>';
                 }
             }
 
-            exibirSubcategorias(subcategorias) {
-                const container = document.getElementById('subcategoriasList');
-                container.innerHTML = '';
-
-                if (subcategorias.length === 0) {
-                    container.innerHTML = '<div class="no-data">Nenhuma subcategoria encontrada para esta categoria.</div>';
-                    return;
-                }
-
-                // Criar tópico para as subcategorias
-                const topicDiv = document.createElement('div');
-                topicDiv.className = 'subcategoria-topic';
-
-                const topicTitle = document.createElement('h3');
-                const categoriaSelect = document.getElementById('categorias');
-                const categoriaNome = categoriaSelect.options[categoriaSelect.selectedIndex].textContent;
-                topicTitle.textContent = categoriaNome;
-                topicDiv.appendChild(topicTitle);
-
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'options';
-
-                // Preencher as subcategorias como checkboxes
-                subcategorias.forEach(subcategoria => {
-                    const subcategoriaId = subcategoria.id || subcategoria.ID;
-
-                    const label = this.criarCheckboxSubcategoria(
-                        subcategoria,
-                        subcategoriaId
-                    );
-                    optionsDiv.appendChild(label);
-                });
-
-                topicDiv.appendChild(optionsDiv);
-                container.appendChild(topicDiv);
-
-                this.mostrarContainer('subcategoriasContainer');
-                this.breadcrumb.update(3);
-                this.atualizarContadorLocal();
+            // Funções de gerenciamento de seleções
+            function initializeSelections() {
+                selectedSubcategories = {};
             }
 
-            criarCheckboxSubcategoria(subcategoria, subcategoriaId) {
-                const label = document.createElement('label');
-                label.className = 'option-label';
-
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'option-checkbox';
-                checkbox.value = subcategoriaId;
-
-                // Verificar se já está selecionada
-                const isSelected = this.selectionManager.isSubcategorySelected(
-                    this.currentFunction,
-                    this.currentCategory,
-                    subcategoriaId
-                );
-
-                if (isSelected) {
-                    checkbox.checked = true;
-                    label.classList.add('selected');
+            function loadSelections() {
+                const savedSelections = localStorage.getItem('nistSelections');
+                if (savedSelections) {
+                    selectedSubcategories = JSON.parse(savedSelections);
+                } else {
+                    initializeSelections();
                 }
-
-                // Criar container para informações
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'subcategoria-info';
-
-                // Buscar códigos da função e categoria atualmente selecionadas
-                const funcaoSelect = document.getElementById('opcoesPrincipais');
-                const categoriaSelect = document.getElementById('categorias');
-
-                const funcaoCod = funcaoSelect.options[funcaoSelect.selectedIndex]?.textContent.split(' - ')[0] || '';
-                const categoriaCod = categoriaSelect.options[categoriaSelect.selectedIndex]?.textContent.split(' - ')[0] || '';
-                const subcatCod = subcategoria.codigo || subcategoria.CODIGO || subcategoria.subcategoria ||subcategoria.SUBCATEGORIA ;
-
-                // Montar o texto completo: função.categoria - subcategoria
-                const codigoSpan = document.createElement('span');
-                codigoSpan.className = 'subcategoria-codigo';
-                codigoSpan.textContent = `${funcaoCod}.${categoriaCod} - ${subcatCod}`;
-
-                const descricaoSpan = document.createElement('span');
-                descricaoSpan.className = 'subcategoria-descricao';
-                descricaoSpan.textContent = subcategoria.descricao || subcategoria.DESCRICAO || '';
-
-                infoDiv.appendChild(codigoSpan);
-                infoDiv.appendChild(descricaoSpan);
-
-                label.appendChild(checkbox);
-                label.appendChild(infoDiv);
-
-                // Evento de change
-                checkbox.addEventListener('change', () => {
-                    this.onSubcategoriaToggle(checkbox, subcategoriaId);
-                });
-
-                return label;
             }
 
-            onSubcategoriaToggle(checkbox, subcategoriaId) {
+            function saveSelections() {
+                localStorage.setItem('nistSelections', JSON.stringify(selectedSubcategories));
+            }
+
+            function updateSelection(checkbox, subcategoriaId) {
                 const label = checkbox.closest('.option-label');
-                const wasAdded = this.selectionManager.toggleSubcategory(
-                    this.currentFunction,
-                    this.currentCategory,
-                    subcategoriaId
-                );
 
-                if (wasAdded) {
+                if (checkbox.checked) {
                     label.classList.add('selected');
+                    // Adicionar à lista de seleções
+                    if (!selectedSubcategories[selectedFunction][selectedCategory].includes(subcategoriaId)) {
+                        selectedSubcategories[selectedFunction][selectedCategory].push(subcategoriaId);
+                    }
                 } else {
                     label.classList.remove('selected');
-                }
-
-                this.selectionManager.saveSelections();
-                this.atualizarContadorLocal();
-                this.atualizarContadorGlobal();
-                this.atualizarEstadoBotaoAvancar();
-            }
-
-            desmarcarSubcategoriasAtuais() {
-                const checkboxes = document.querySelectorAll('#subcategoriasList .option-checkbox:checked');
-
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                    checkbox.closest('.option-label').classList.remove('selected');
-
-                    // Atualizar no manager
-                    this.selectionManager.toggleSubcategory(
-                        this.currentFunction,
-                        this.currentCategory,
-                        checkbox.value
-                    );
-                });
-
-                this.selectionManager.saveSelections();
-                this.atualizarContadorLocal();
-                this.atualizarContadorGlobal();
-                this.atualizarEstadoBotaoAvancar();
-            }
-
-            excluirTodasSelecoes() {
-                if (confirm('Tem certeza que deseja excluir todas as seleções?')) {
-                    // Resetar selects
-                    document.getElementById('opcoesPrincipais').selectedIndex = 0;
-                    document.getElementById('categorias').selectedIndex = 0;
-
-                    // Esconder containers
-                    this.ocultarContainer('categoriasContainer');
-                    this.ocultarContainer('subcategoriasContainer');
-
-                    // Limpar seleções
-                    this.selectionManager.clearAll();
-
-                    // Atualizar contadores
-                    this.atualizarContadorLocal();
-                    this.atualizarContadorGlobal();
-                    this.atualizarEstadoBotaoAvancar();
-
-                    // Atualizar breadcrumb
-                    this.breadcrumb.update(1);
-
-                    alert("Todas as seleções foram resetadas!");
-                }
-            }
-
-            // FUNÇÃO CORRIGIDA: Avançar para alterações
-            avancarParaAlteracoes() {
-                const totalSelecoes = this.selectionManager.getTotalSelectedCount();
-                console.log('Total de seleções:', totalSelecoes);
-
-                if (totalSelecoes === 0) {
-                    alert('Selecione pelo menos uma subcategoria para avançar.');
-                    return;
-                }
-
-                // Encontrar a primeira função que tem seleções
-                const primeiraFuncaoComSelecoes = this.encontrarPrimeiraFuncaoComSelecoes();
-                
-                if (!primeiraFuncaoComSelecoes) {
-                    alert('Erro: Não foi possível determinar a primeira função com seleções.');
-                    return;
-                }
-
-                console.log('Primeira função com seleções:', primeiraFuncaoComSelecoes);
-
-                // Redirecionar para a página da primeira função
-                const paginaDestino = `/Home/${primeiraFuncaoComSelecoes}`;
-                console.log('Redirecionando para:', paginaDestino);
-                
-                // Salvar seleções antes de redirecionar
-                this.selectionManager.saveSelections();
-                
-                window.location.href = paginaDestino;
-            }
-
-            // FUNÇÃO CORRIGIDA: Encontrar a primeira função com seleções
-            encontrarPrimeiraFuncaoComSelecoes() {
-                const selecoes = this.selectionManager.selectedSubcategories;
-                console.log('Estrutura de seleções:', selecoes);
-
-                // Ordem das funções conforme definido no NIST CSF
-                const ordemFuncoes = ['Governanca', 'Identificar', 'Proteger', 'Detectar', 'Responder', 'Recuperar'];
-                
-                // Para cada função na ordem, verificar se tem seleções
-                for (const funcaoNome of ordemFuncoes) {
-                    // Encontrar o ID da função pelo nome
-                    const funcaoId = Object.keys(this.mapeamentoFuncoes).find(
-                        key => this.mapeamentoFuncoes[key] === funcaoNome
-                    );
-
-                    console.log(`Verificando função: ${funcaoNome} (ID: ${funcaoId})`);
-
-                    if (funcaoId && selecoes[funcaoId]) {
-                        // Verificar se esta função tem alguma categoria com subcategorias selecionadas
-                        const categorias = selecoes[funcaoId];
-                        for (const categoriaId in categorias) {
-                            if (categorias[categoriaId].length > 0) {
-                                console.log(`✓ Função ${funcaoNome} tem ${categorias[categoriaId].length} seleções na categoria ${categoriaId}`);
-                                return funcaoNome;
-                            }
-                        }
+                    // Remover da lista de seleções
+                    const index = selectedSubcategories[selectedFunction][selectedCategory].indexOf(subcategoriaId);
+                    if (index > -1) {
+                        selectedSubcategories[selectedFunction][selectedCategory].splice(index, 1);
                     }
                 }
 
-                // Se não encontrou nenhuma função com seleções, tenta uma abordagem alternativa
-                console.log('Tentando abordagem alternativa...');
-                
-                // Procura por qualquer função que tenha seleções, independente da ordem
-                for (const funcaoId in selecoes) {
-                    const categorias = selecoes[funcaoId];
-                    for (const categoriaId in categorias) {
-                        if (categorias[categoriaId].length > 0) {
-                            const funcaoNome = this.mapeamentoFuncoes[funcaoId];
-                            if (funcaoNome) {
-                                console.log(`✓ Encontrada função ${funcaoNome} com seleções (abordagem alternativa)`);
-                                return funcaoNome;
-                            }
-                        }
-                    }
-                }
+                // Atualizar contadores
+                updateLocalSelectionCount();
+                updateGlobalSelectionCount();
 
-                console.log('✗ Nenhuma função com seleções encontrada');
-                return null;
+                // Salvar seleções
+                saveSelections();
             }
 
-            atualizarContadorLocal() {
+            function updateLocalSelectionCount() {
                 const selectedCount = document.getElementById('selectedCount');
-                const count = this.selectionManager.getSelectedCountByCategory(
-                    this.currentFunction,
-                    this.currentCategory
-                );
+                let count = 0;
+
+                if (selectedSubcategories[selectedFunction] && selectedSubcategories[selectedFunction][selectedCategory]) {
+                    count = selectedSubcategories[selectedFunction][selectedCategory].length;
+                }
 
                 selectedCount.textContent =
                     count === 0 ? 'Nenhuma subcategoria selecionada nesta categoria' :
                         `${count} subcategoria${count !== 1 ? 's' : ''} selecionada${count !== 1 ? 's' : ''} nesta categoria`;
             }
 
-            atualizarContadorGlobal() {
+            function updateGlobalSelectionCount() {
                 const globalSelectedCount = document.getElementById('globalSelectedCount');
-                const total = this.selectionManager.getTotalSelectedCount();
+                let total = 0;
 
-                globalSelectedCount.textContent =
-                    `Total de ${total} subcategoria${total !== 1 ? 's' : ''} selecionada${total !== 1 ? 's' : ''} em todas as categorias`;
-            }
-
-            atualizarEstadoBotaoAvancar() {
-                const btnAvancar = document.getElementById('btnAvancar');
-                const total = this.selectionManager.getTotalSelectedCount();
-                btnAvancar.disabled = total === 0;
-                
-                // Atualizar o texto do botão para mostrar quantas seleções foram feitas
-                if (total > 0) {
-                    btnAvancar.textContent = `Avançar para Alterações (${total} selecionada${total !== 1 ? 's' : ''})`;
-                } else {
-                    btnAvancar.textContent = 'Avançar para Alterações';
+                // Contar todas as subcategorias selecionadas em todas as funções e categorias
+                for (const func in selectedSubcategories) {
+                    for (const categoria in selectedSubcategories[func]) {
+                        total += selectedSubcategories[func][categoria].length;
+                    }
                 }
+
+                globalSelectedCount.textContent = `Total de ${total} subcategoria${total !== 1 ? 's' : ''} selecionada${total !== 1 ? 's' : ''} em todas as categorias`;
             }
 
-            mostrarContainer(containerId) {
-                const container = document.getElementById(containerId);
-                container.classList.remove('hidden');
-                container.classList.add('visible');
+            function updateBreadcrumb(step) {
+                const breadcrumbItems = document.querySelectorAll('.breadcrumb div');
+                breadcrumbItems.forEach(item => item.classList.remove('active'));
+
+                if (step >= 1) breadcrumbItems[0].classList.add('active');
+                if (step >= 2) breadcrumbItems[1].classList.add('active');
+                if (step >= 3) breadcrumbItems[2].classList.add('active');
             }
 
-            ocultarContainer(containerId) {
-                const container = document.getElementById(containerId);
-                container.classList.add('hidden');
-                container.classList.remove('visible');
+            function desmarcarTodasSubcategorias() {
+                const checkboxes = document.querySelectorAll('#subcategoriasList .option-checkbox');
+
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        checkbox.checked = false;
+                        checkbox.closest('.option-label').classList.remove('selected');
+                    }
+                });
+
+                // Limpa a seleção da categoria atual
+                if (selectedSubcategories[selectedFunction] &&
+                    selectedSubcategories[selectedFunction][selectedCategory]) {
+                    selectedSubcategories[selectedFunction][selectedCategory] = [];
+                }
+
+                updateLocalSelectionCount();
+                updateGlobalSelectionCount();
+                saveSelections();
             }
 
-            mostrarErro(elementId, mensagem) {
-                const element = document.getElementById(elementId);
-                element.innerHTML = `<option value="">${mensagem}</option>`;
-                element.disabled = false;
+            function desmarcarTudo() {
+                // Resetar selects
+                document.getElementById('opcoesPrincipais').selectedIndex = 0;
+                document.getElementById('categorias').selectedIndex = 0;
+
+                // Esconder containers
+                document.getElementById('categoriasContainer').classList.add('hidden');
+                document.getElementById('subcategoriasContainer').classList.add('hidden');
+
+                // Limpar o objeto de seleção
+                initializeSelections();
+                saveSelections();
+
+                // Atualizar contadores
+                updateLocalSelectionCount();
+                updateGlobalSelectionCount();
+
+                // Atualizar breadcrumb
+                updateBreadcrumb(1);
+
+                alert("Todas as seleções foram resetadas!");
             }
 
-            mostrarErroSubcategorias(mensagem) {
-                const container = document.getElementById('subcategoriasList');
-                container.innerHTML = `<div class="error">${mensagem}</div>`;
-            }
-        }
+            function avancarParaAlteracoes() {
+                // Salvar no localStorage
+                localStorage.setItem('selectedFunction', selectedFunction);
+                localStorage.setItem('selectedCategory', selectedCategory);
+                localStorage.setItem('selectedSubcategories', JSON.stringify(selectedSubcategories));
 
-        // Inicializar a página
-        document.addEventListener('DOMContentLoaded', () => {
-            new PrecadastroPage();
-        });
-    </script>
+                // Redirecionar para a página de alterações
+                window.location.href = '/Home/Governanca';
+            }
+        </script>
+    </div>
 </body>
 
 </html>

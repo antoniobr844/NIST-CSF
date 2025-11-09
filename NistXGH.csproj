@@ -6,9 +6,9 @@
   </PropertyGroup>
   <ItemGroup>
    <PackageReferencea Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.26000" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.90" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Linq.Async" Version="6.0.3" />
+    <PackageReference Include="System.Linq.Async" Version="7.0.0-preview.1.g24680b5469" />
   </ItemGroup>
 </Project>

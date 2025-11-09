@@ -22,11 +22,11 @@ namespace NistXGH.Models
         [Column("DESCRICAO")]
         public string? DESCRICAO { get; set; }
 
-        // Relação N:1 com Categorias
+        // 🔗 Relação N:1 com Categorias
         [ForeignKey("CATEGORIA")]
         public Categorias? CategoriaNav { get; set; }
 
         [ForeignKey("FUNCAO")]
-        public virtual Funcoes? FuncaoNav { get; set; }
+        public virtual Funcoes FuncaoNav { get; set; }
     }
 }

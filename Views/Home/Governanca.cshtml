@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIST CSF - Alterações - Governança</title>
     <style>
-        /* MANTENHA O MESMO CSS DA PÁGINA RECUPERAR */
         * {
             margin: 0;
             padding: 0;
@@ -371,20 +370,35 @@
         </div>
 
         <div class="navigation">
-            <button class="btn-voltar" onclick="navegacao.navegarParaAnterior('governanca')">← Voltar para
-                Seleção</button>
+            <button class="btn-voltar" onclick="voltarParaAnterior()">← Voltar para Seleção</button>
             <button class="btn-salvar" onclick="salvarAlteracoes()">Salvar Alterações</button>
-            <button class="btn-avancar" onclick="navegacao.navegarParaProxima('governanca')">Avançar para Próxima
-                Função</button>
+            <button class="btn-avancar" onclick="avancarParaProxima()">Avançar para Próxima Função</button>
         </div>
     </div>
 
-    <script type="module">
-        import { NistNavigation } from '/js/modules/nistNavigation.js';
-
-        // Configuração específica da página
+    <script>
+        const ordemFuncoes = ["governanca", "identificar", "proteger", "detectar", "responder", "recuperar"];
         const funcaoAtual = "governanca";
-        let navegacao;
+
+        // Mapeamento dos IDs numéricos para nomes das funções
+        const mapeamentoFuncoes = {
+            '1': 'governanca',
+            '2': 'identificar',
+            '3': 'proteger',
+            '4': 'detectar',
+            '5': 'responder',
+            '6': 'recuperar'
+        };
+
+        // Dados das funções para exibição amigável
+        const functionNames = {
+            'governanca': 'Governança (GV)',
+            'identificar': 'Identificar (ID)',
+            'proteger': 'Proteger (PR)',
+            'detectar': 'Detectar (DE)',
+            'responder': 'Responder (RS)',
+            'recuperar': 'Recuperar (RC)'
+        };
 
         // Cache para dados
         let categoriasCache = {};
@@ -394,34 +408,37 @@
         let prioridadesData = [];
         let niveisData = [];
 
-        // Função fetchAPI CORRIGIDA (mesma da página Recuperar)
-        async function fetchAPI(url) {
-            try {
-                let urlCorrigida = url
-                    .replace('CenarioFuture', 'CenarioFuturo')
-                    .replace('Cenario?', 'CenarioAtual?')
-                    .replace('Categories', 'Categorias')
-                    .replace('Subcategories', 'Subcategorias');
+        // Função auxiliar para fetch com tratamento de erro
+        // Função auxiliar para fetch com tratamento de erro - CORRIGIDA
+       // Função fetchAPI CORRIGIDA
+async function fetchAPI(url) {
+    try {
+        // Corrigir TODOS os endpoints problemáticos
+        let urlCorrigida = url
+            .replace('CenarioFuture', 'CenarioFuturo') // Corrige o nome do endpoint futuro
+            .replace('Cenario?', 'CenarioAtual?') // ✅ CORREÇÃO: Cenario → CenarioAtual
+            .replace('Categories', 'Categorias')
+            .replace('Subcategories', 'Subcategorias');
 
-                console.log(`Fetching: ${urlCorrigida}`);
-                const response = await fetch(urlCorrigida);
+        console.log(`Fetching: ${urlCorrigida}`);
+        const response = await fetch(urlCorrigida);
 
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        console.warn(`Endpoint não encontrado (404): ${urlCorrigida}`);
-                        return null;
-                    }
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error(`Erro na API ${url}:`, error.message);
+        if (!response.ok) {
+            // Se for 404, não é erro crítico - pode ser que não existam dados
+            if (response.status === 404) {
+                console.warn(`Endpoint não encontrado (404): ${urlCorrigida}`);
                 return null;
             }
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
 
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Erro na API ${url}:`, error.message);
+        return null;
+    }
+}
         // Carregar prioridades
         async function carregarPrioridades() {
             try {
@@ -438,6 +455,7 @@
 
             } catch (error) {
                 console.error('Erro ao carregar prioridades:', error);
+                alert('Erro ao carregar prioridades. Verifique se a API está funcionando.');
             }
         }
 
@@ -457,6 +475,7 @@
 
             } catch (error) {
                 console.error('Erro ao carregar níveis:', error);
+                alert('Erro ao carregar níveis. Verifique se a API está funcionando.');
             }
         }
 
@@ -515,10 +534,7 @@
         // Carregar dados iniciais
         document.addEventListener('DOMContentLoaded', async function () {
             try {
-                console.log('=== INICIANDO CARREGAMENTO - GOVERNANCA ===');
-
-                // Inicializar navegação
-                navegacao = new NistNavigation();
+                console.log('=== INICIANDO CARREGAMENTO ===');
 
                 // Carregar catálogos primeiro
                 await carregarPrioridades();
@@ -554,15 +570,14 @@
                     return;
                 }
 
-                // Verificar se a governanca está selecionada
-                if (!navegacao.funcaoEstaSelecionada(selectedSubcategories, 'governanca')) {
+                // Verificar se a governança está selecionada
+                if (!governancaEstaSelecionada(selectedSubcategories)) {
                     safeUpdateElement('selectionInfo', `
                     <div class="success-message">
                         <h2>Governança não selecionada</h2>
                         <p>Avance para a próxima função.</p>
                     </div>
                 `);
-                    navegacao.navegarParaProxima('governanca');
                     return;
                 }
 
@@ -576,7 +591,7 @@
                 // Exibir os cenários
                 exibirCenarios(selectedSubcategories);
 
-                console.log('=== CARREGAMENTO CONCLUÍDO - GOVERNANCA ===');
+                console.log('=== CARREGAMENTO CONCLUÍDO ===');
 
             } catch (error) {
                 console.error('Erro crítico:', error);
@@ -589,48 +604,134 @@
             }
         });
 
-        // CORREÇÃO: Carregar dados atuais do banco
-        async function carregarDadosAtuais(selectedSubcategories) {
+        // Funções auxiliares
+        function getFunctionNameById(funcId) {
+            if (mapeamentoFuncoes[funcId]) {
+                return mapeamentoFuncoes[funcId];
+            }
+            const funcIdLower = funcId.toString().toLowerCase();
+            if (funcIdLower.includes('gv') || funcIdLower.includes('govern') || funcIdLower === '1') return 'governanca';
+            if (funcIdLower.includes('id') || funcIdLower.includes('identif') || funcIdLower === '2') return 'identificar';
+            if (funcIdLower.includes('pr') || funcIdLower.includes('proteg') || funcIdLower === '3') return 'proteger';
+            if (funcIdLower.includes('de') || funcIdLower.includes('detect') || funcIdLower === '4') return 'detectar';
+            if (funcIdLower.includes('rs') || funcIdLower.includes('respond') || funcIdLower === '5') return 'responder';
+            if (funcIdLower.includes('rc') || funcIdLower.includes('recuper') || funcIdLower === '6') return 'recuperar';
+            return funcId;
+        }
+
+        function governancaEstaSelecionada(selections) {
+            for (const funcId in selections) {
+                const functionName = getFunctionNameById(funcId);
+                if (functionName === 'governanca') {
+                    for (const category in selections[funcId]) {
+                        if (selections[funcId][category].length > 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Carregar informações detalhadas das categorias e subcategorias
+        async function carregarInformacoesDetalhadas(selectedSubcategories) {
             try {
                 for (const funcId in selectedSubcategories) {
-                    const functionName = navegacao.getFunctionNameById(funcId);
+                    const functionName = getFunctionNameById(funcId);
+
+                    // Carregar apenas para governança
                     if (functionName !== 'governanca') continue;
 
+                    // Buscar categorias da função
+                    try {
+                        const categorias = await fetchAPI(`/api/Categorias?funcaoId=${funcId}`);
+                        if (categorias && Array.isArray(categorias)) {
+                            categorias.forEach(categoria => {
+                                categoriasCache[categoria.id || categoria.ID] = categoria;
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Erro ao carregar categorias:', error);
+                    }
+
+                    // Carregar informações das subcategorias
                     for (const categoryId in selectedSubcategories[funcId]) {
                         for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
-                            try {
-                                const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoryId}`);
-                                if (dadosAtuais && Array.isArray(dadosAtuais) && dadosAtuais.length > 0) {
-                                    dadosAtuaisCache[subcategoryId] = {
-                                        prioridade: dadosAtuais[0].prioridade,
-                                        status: dadosAtuais[0].status,
-                                        politicasPro: dadosAtuais[0].politicasPro || '',
-                                        praticasInternas: dadosAtuais[0].praticasInternas || '',
-                                        funcoesResp: dadosAtuais[0].funcoesResp || '',
-                                        referenciasInfo: dadosAtuais[0].referenciasInfo || '',
-                                        artefatosEvi: dadosAtuais[0].artefatosEvi || ''
+                            if (!subcategoriasCache[subcategoryId]) {
+                                try {
+                                    const subcategoria = await fetchAPI(`/api/Subcategorias/${subcategoryId}`);
+                                    if (subcategoria) {
+                                        subcategoriasCache[subcategoryId] = subcategoria;
+                                    } else {
+                                        // Criar objeto fallback básico
+                                        subcategoriasCache[subcategoryId] = {
+                                            id: subcategoryId,
+                                            codigo: `SC-${subcategoryId}`,
+                                            descricao: 'Subcategoria não encontrada'
+                                        };
+                                    }
+                                } catch (error) {
+                                    console.error(`Erro ao carregar subcategoria ${subcategoryId}:`, error);
+                                    subcategoriasCache[subcategoryId] = {
+                                        id: subcategoryId,
+                                        codigo: `SC-${subcategoryId}`,
+                                        descricao: 'Erro ao carregar'
                                     };
                                 }
-                            } catch (error) {
-                                console.error(`Erro ao carregar dados atuais para subcategoria ${subcategoryId}:`, error);
                             }
                         }
                     }
                 }
             } catch (error) {
-                console.error('Erro ao carregar dados atuais:', error);
+                console.error('Erro ao carregar informações detalhadas:', error);
             }
         }
 
-        // CORREÇÃO: Carregar dados futuros do banco
+        // Carregar dados atuais do banco
+        // No carregarDadosAtuais, procure por:
+async function carregarDadosAtuais(selectedSubcategories) {
+    try {
+        for (const funcId in selectedSubcategories) {
+            const functionName = getFunctionNameById(funcId);
+            if (functionName !== 'governanca') continue;
+
+            for (const categoryId in selectedSubcategories[funcId]) {
+                for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
+                    // Buscar dados atuais - ✅ CORRIGIDO: Cenario → CenarioAtual
+                    try {
+                        const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoryId}`);
+                        if (dadosAtuais && Array.isArray(dadosAtuais) && dadosAtuais.length > 0) {
+                            dadosAtuaisCache[subcategoryId] = {
+                                prioridade: dadosAtuais[0].prioridade,
+                                status: dadosAtuais[0].status,
+                                politicasPro: dadosAtuais[0].politicasPro || '',
+                                praticasInternas: dadosAtuais[0].praticasInternas || '',
+                                funcoesResp: dadosAtuais[0].funcoesResp || '',
+                                referenciasInfo: dadosAtuais[0].referenciasInfo || '',
+                                artefatosEvi: dadosAtuais[0].artefatosEvi || ''
+                            };
+                        }
+                    } catch (error) {
+                        console.error(`Erro ao carregar dados atuais para subcategoria ${subcategoryId}:`, error);
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao carregar dados atuais:', error);
+    }
+}
+
+        // Carregar dados futuros do banco
         async function carregarDadosBanco(selectedSubcategories) {
             try {
                 for (const funcId in selectedSubcategories) {
-                    const functionName = navegacao.getFunctionNameById(funcId);
+                    const functionName = getFunctionNameById(funcId);
                     if (functionName !== 'governanca') continue;
 
                     for (const categoryId in selectedSubcategories[funcId]) {
                         for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
+                            // Buscar dados futuros
                             try {
                                 const dadosFuturos = await fetchAPI(`/api/CenarioFuturo?subcategoriaId=${subcategoryId}`);
                                 if (dadosFuturos && Array.isArray(dadosFuturos) && dadosFuturos.length > 0) {
@@ -655,56 +756,6 @@
             }
         }
 
-        // CORREÇÃO: Carregar informações detalhadas
-        async function carregarInformacoesDetalhadas(selectedSubcategories) {
-            try {
-                for (const funcId in selectedSubcategories) {
-                    const functionName = navegacao.getFunctionNameById(funcId);
-                    if (functionName !== 'governanca') continue;
-
-                    try {
-                        const categorias = await fetchAPI(`/api/Categorias?funcaoId=${funcId}`);
-                        if (categorias && Array.isArray(categorias)) {
-                            categorias.forEach(categoria => {
-                                categoriasCache[categoria.id || categoria.ID] = categoria;
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Erro ao carregar categorias:', error);
-                    }
-
-                    for (const categoryId in selectedSubcategories[funcId]) {
-                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
-                            if (!subcategoriasCache[subcategoryId]) {
-                                try {
-                                    const subcategoria = await fetchAPI(`/api/Subcategorias/${subcategoryId}`);
-                                    if (subcategoria) {
-                                        subcategoriasCache[subcategoryId] = subcategoria;
-                                    } else {
-                                        subcategoriasCache[subcategoryId] = {
-                                            id: subcategoryId,
-                                            codigo: `SC-${subcategoryId}`,
-                                            descricao: 'Subcategoria não encontrada'
-                                        };
-                                    }
-                                } catch (error) {
-                                    console.error(`Erro ao carregar subcategoria ${subcategoryId}:`, error);
-                                    subcategoriasCache[subcategoryId] = {
-                                        id: subcategoryId,
-                                        codigo: `SC-${subcategoryId}`,
-                                        descricao: 'Erro ao carregar'
-                                    };
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Erro ao carregar informações detalhadas:', error);
-            }
-        }
-
-        // Funções auxiliares para obter nomes
         function obterNomeCategoria(categoryId) {
             const categoria = categoriasCache[categoryId];
             if (categoria) {
@@ -723,7 +774,7 @@
             return `Subcategoria ${subcategoryId}`;
         }
 
-        // CORREÇÃO: Exibir cenários
+        // Exibir ambos os cenários
         function exibirCenarios(selectedSubcategories) {
             const currentContainer = document.getElementById('currentScenarioContainer');
             const futureContainer = document.getElementById('futureScenarioContainer');
@@ -736,16 +787,22 @@
 
             let totalSubcategories = 0;
 
+            // Limpar containers
             currentContainer.innerHTML = '';
             futureContainer.innerHTML = '';
 
+            // Para cada função e categoria, criar os formulários
             for (const funcId in selectedSubcategories) {
-                const functionName = navegacao.getFunctionNameById(funcId);
+                const functionName = getFunctionNameById(funcId);
+
+                // Mostrar apenas governança
                 if (functionName !== 'governanca') continue;
 
+                // Criar estrutura para cenário atual
                 const currentFunctionDiv = criarEstruturaFuncao(functionName);
                 const currentFunctionContent = currentFunctionDiv.querySelector('.function-content');
 
+                // Criar estrutura para cenário futuro
                 const futureFunctionDiv = criarEstruturaFuncao(functionName);
                 const futureFunctionContent = futureFunctionDiv.querySelector('.function-content');
 
@@ -755,16 +812,21 @@
                     if (selectedSubcategories[funcId][categoryId].length > 0) {
                         hasCategories = true;
 
+                        // Criar categoria para cenário atual
                         const currentCategoryDiv = criarEstruturaCategoria(categoryId);
                         const currentCategoryContent = currentCategoryDiv.querySelector('.category-content');
 
+                        // Criar categoria para cenário futuro
                         const futureCategoryDiv = criarEstruturaCategoria(categoryId);
                         const futureCategoryContent = futureCategoryDiv.querySelector('.category-content');
 
+                        // Adicionar subcategorias
                         selectedSubcategories[funcId][categoryId].forEach(subcategoryId => {
+                            // Adicionar ao cenário atual (somente leitura)
                             const currentSubcategoryDiv = criarFormularioAtual(subcategoryId, totalSubcategories);
                             currentCategoryContent.appendChild(currentSubcategoryDiv);
 
+                            // Adicionar ao cenário futuro (editável)
                             const futureSubcategoryDiv = criarFormularioFuturo(subcategoryId, totalSubcategories);
                             futureCategoryContent.appendChild(futureSubcategoryDiv);
 
@@ -780,6 +842,7 @@
                     currentContainer.appendChild(currentFunctionDiv);
                     futureContainer.appendChild(futureFunctionDiv);
 
+                    // Expandir por padrão
                     currentFunctionDiv.querySelector('.function-content').classList.add('expanded');
                     currentFunctionDiv.querySelector('.toggle-icon').classList.add('expanded');
                     futureFunctionDiv.querySelector('.function-content').classList.add('expanded');
@@ -787,6 +850,7 @@
                 }
             }
 
+            // Atualizar informações da seleção
             safeUpdateElement('selectionInfo', `
             <h2>Governança - Cenário Atual vs Futuro</h2>
             <p><strong>Total de subcategorias selecionadas:</strong> ${totalSubcategories}</p>
@@ -810,7 +874,7 @@
             }
         }
 
-        // CORREÇÃO: Criar estrutura da função
+        // Criar estrutura da função
         function criarEstruturaFuncao(functionName) {
             const functionDiv = document.createElement('div');
             functionDiv.className = 'function-section';
@@ -818,7 +882,7 @@
             const functionHeader = document.createElement('div');
             functionHeader.className = 'function-header';
             functionHeader.innerHTML = `
-            <h2>${navegacao.getFunctionDisplayName(functionName)}</h2>
+            <h2>${functionNames[functionName] || functionName}</h2>
             <span class="toggle-icon"></span>
         `;
 
@@ -836,7 +900,7 @@
             return functionDiv;
         }
 
-        // CORREÇÃO: Criar estrutura da categoria
+        // Criar estrutura da categoria
         function criarEstruturaCategoria(categoryId) {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category-section';
@@ -864,7 +928,7 @@
             return categoryDiv;
         }
 
-        // CORREÇÃO: Criar formulário para cenário atual
+        // Criar formulário para cenário atual (somente leitura) - COM TEXTAREAS
         function criarFormularioAtual(subcategoryId, formIndex) {
             const subcategoriaTexto = obterNomeSubcategoria(subcategoryId);
             const dadosAtuais = dadosAtuaisCache[subcategoryId] || {};
@@ -872,6 +936,7 @@
             const subcategoryDiv = document.createElement('div');
             subcategoryDiv.className = 'subcategory-item';
 
+            // Encontrar nomes das prioridades e níveis
             const prioridadeAtual = prioridadesData.find(p => p.id == dadosAtuais.prioridade) || {};
             const nivelAtual = niveisData.find(n => n.id == dadosAtuais.status) || {};
 
@@ -912,7 +977,7 @@
             return subcategoryDiv;
         }
 
-        // CORREÇÃO: Criar formulário para cenário futuro
+        // Criar formulário para cenário futuro (editável) - COM TEXTAREAS
         function criarFormularioFuturo(subcategoryId, formIndex) {
             const subcategoriaTexto = obterNomeSubcategoria(subcategoryId);
             const dadosFuturos = dadosFuturosCache[subcategoryId] || {};
@@ -982,7 +1047,53 @@
             return subcategoryDiv;
         }
 
-        // Funções auxiliares
+        // Funções de navegação
+        function voltarParaAnterior() {
+    const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+    const indiceAtual = ordemFuncoes.indexOf(funcaoAtual);
+
+    // Buscar funções anteriores (do índice atual para trás)
+    for (let i = indiceAtual - 1; i >= 0; i--) {
+        const funcaoAnterior = ordemFuncoes[i];
+        for (const funcId in selections) {
+            const functionName = getFunctionNameById(funcId);
+            if (functionName === funcaoAnterior) {
+                for (const category in selections[funcId]) {
+                    if (selections[funcId][category].length > 0) {
+                        window.location.href = `/Home/${funcaoAnterior.charAt(0).toUpperCase() + funcaoAnterior.slice(1)}`;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    // Se não encontrou nenhuma função anterior com seleções, volta para a seleção
+    window.location.href = '/Home/Precadastro';
+}
+
+        function avancarParaProxima() {
+            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+            const indiceAtual = ordemFuncoes.indexOf(funcaoAtual);
+
+            for (let i = indiceAtual + 1; i < ordemFuncoes.length; i++) {
+                const proximaFuncao = ordemFuncoes[i];
+                for (const funcId in selections) {
+                    const functionName = getFunctionNameById(funcId);
+                    if (functionName === proximaFuncao) {
+                        for (const category in selections[funcId]) {
+                            if (selections[funcId][category].length > 0) {
+                                window.location.href = `/Home/${proximaFuncao.charAt(0).toUpperCase() + proximaFuncao.slice(1)}`;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
+            window.location.href = '/Home';
+        }
+
         function removerSubcategoriaFutura(subcategoryId, btnElement) {
             const confirmacao = confirm("Deseja remover esta subcategoria do cenário futuro?");
             if (!confirmacao) return;
@@ -1000,11 +1111,12 @@
         `);
         }
 
-        // CORREÇÃO: Função para salvar alterações
+        // Função para salvar alterações - CORRIGIDA
         async function salvarAlteracoes() {
             try {
                 console.log('Iniciando salvamento de alterações...');
 
+                // Coletar todos os dados dos formulários futuros
                 const forms = document.querySelectorAll('#futureScenarioContainer .subcategory-item');
                 const dadosParaSalvar = [];
 
@@ -1034,6 +1146,7 @@
                     return;
                 }
 
+                // Enviar para a API
                 const response = await fetch('/api/CenarioFuturo', {
                     method: 'POST',
                     headers: {

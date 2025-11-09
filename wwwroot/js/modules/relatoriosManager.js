@@ -65,7 +65,7 @@ class RelatoriosManager {
 
             // Carregar dados em paralelo
             const [cenarios, subcategorias, funcoes] = await Promise.all([
-                this.fetchAPI('/api/CenarioFuturo'),
+                this.fetchAPI('/api/Cenarios/futuro/'),
                 this.fetchAPI('/api/Subcategorias'),
                 this.fetchAPI('/api/Funcoes')
             ]);

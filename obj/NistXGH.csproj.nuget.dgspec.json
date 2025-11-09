@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\projetos\\NistXGH_3.1\\NistXGH\\NistXGH.csproj": {}
+    "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj": {}
   },
   "projects": {
-    "C:\\projetos\\NistXGH_3.1\\NistXGH\\NistXGH.csproj": {
+    "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\projetos\\NistXGH_3.1\\NistXGH\\NistXGH.csproj",
+        "projectUniqueName": "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj",
         "projectName": "NistXGH",
-        "projectPath": "C:\\projetos\\NistXGH_3.1\\NistXGH\\NistXGH.csproj",
+        "projectPath": "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj",
         "packagesPath": "C:\\Users\\anton\\.nuget\\packages\\",
-        "outputPath": "C:\\projetos\\NistXGH_3.1\\NistXGH\\obj\\",
+        "outputPath": "C:\\projetos\\NistXGH_5.0\\NistXGH\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\anton\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -46,11 +46,11 @@
           "dependencies": {
             "Oracle.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.23.26000, )"
+              "version": "[9.23.90, )"
             },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
-              "version": "[23.26.0, )"
+              "version": "[23.9.1, )"
             },
             "System.Linq": {
               "target": "Package",
@@ -58,7 +58,7 @@
             },
             "System.Linq.Async": {
               "target": "Package",
-              "version": "[6.0.3, )"
+              "version": "[7.0.0-preview.1.g24680b5469, )"
             }
           },
           "imports": [

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIST CSF - Alterações - Recuperar</title>
+    <title>NIST CSF - Alterações</title>
     <style>
         * {
             margin: 0;
@@ -21,7 +21,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -50,42 +50,8 @@
             color: #3498db;
         }
 
-        .scenario-container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .scenario-section {
-            flex: 1;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .scenario-header {
-            background: #2c3e50;
-            color: white;
-            padding: 15px 20px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .scenario-content {
-            padding: 20px;
-        }
-
-        .current-scenario .scenario-header {
-            background: #7f8c8d;
-        }
-
-        .future-scenario .scenario-header {
-            background: #27ae60;
-        }
-
         .function-section {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
@@ -115,6 +81,7 @@
 
         .function-content.expanded {
             max-height: 5000px;
+            /* Valor suficientemente grande para expandir */
         }
 
         .category-section {
@@ -145,6 +112,7 @@
 
         .category-content.expanded {
             max-height: 5000px;
+            /* Valor suficientemente grande para expandir */
         }
 
         .subcategory-item {
@@ -161,8 +129,6 @@
             margin-bottom: 15px;
             color: #2c3e50;
             font-size: 1.1em;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 8px;
         }
 
         .form-group {
@@ -176,10 +142,9 @@
             color: #2c3e50;
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
+            min-height: 100px;
             padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
@@ -188,19 +153,12 @@
             resize: vertical;
         }
 
-        .form-group textarea {
-            min-height: 100px;
-        }
-
-        .form-check {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-check-input {
-            width: auto !important;
-            transform: scale(1.2);
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
         }
 
         .navigation {
@@ -245,39 +203,12 @@
             box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
         }
 
-        .btn-avancar {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-avancar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
-        }
-
         .error-message {
             background: #ffecec;
             color: #e10;
             padding: 15px;
             border-radius: 8px;
             border-left: 4px solid #e10;
-            margin-bottom: 20px;
-        }
-
-        .success-message {
-            background: #e8f5e9;
-            color: #27ae60;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #27ae60;
             margin-bottom: 20px;
         }
 
@@ -297,6 +228,19 @@
             color: #7f8c8d;
         }
 
+        .selection-summary {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .selection-summary h3 {
+            margin-bottom: 10px;
+            color: #27ae60;
+        }
+
         .remove-btn {
             background: transparent;
             border: none;
@@ -309,866 +253,414 @@
         .remove-btn:hover {
             transform: scale(1.2);
         }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-
-        .combo-container {
-            margin-bottom: 20px;
-        }
-
-        .readonly-field {
-            background-color: #f8f9fa;
-            color: #6c757d;
-            cursor: not-allowed;
-        }
-
-        .field-note {
-            font-size: 0.8em;
-            color: #6c757d;
-            margin-top: 5px;
-            font-style: italic;
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>NIST CSF - Alterações - Recuperar</h1>
+        <h1>NIST CSF - Fazer Alterações</h1>
 
         <div class="selection-info" id="selectionInfo">
             <h2>Carregando seleção...</h2>
         </div>
 
-        <div class="scenario-container">
-            <!-- Cenário Atual -->
-            <div class="scenario-section current-scenario">
-                <div class="scenario-header">
-                    CENÁRIO ATUAL (Dados do Banco - Somente Leitura)
-                </div>
-                <div class="scenario-content">
-                    <div id="currentScenarioContainer">
-                        <div class="loading">Carregando cenário atual...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cenário Futuro -->
-            <div class="scenario-section future-scenario">
-                <div class="scenario-header">
-                    CENÁRIO FUTURO (Editável)
-                </div>
-                <div class="scenario-content">
-                    <div id="futureScenarioContainer">
-                        <div class="loading">Carregando cenário futuro...</div>
-                    </div>
-                </div>
-            </div>
+        <div id="formContainer">
+            <!-- Formulários serão inseridos aqui via JavaScript -->
         </div>
 
         <div class="navigation">
-            <button class="btn-voltar" onclick="voltarParaAnterior()">← Voltar para Seleção</button>
-            <button class="btn-salvar" onclick="salvarAlteracoes()">Salvar Alterações</button>
-            <button class="btn-avancar" onclick="avancarParaProxima()">Avançar para Próxima Função</button>
+            <button class="btn-voltar" onclick="voltarParaSelecao()">← Voltar para Seleção</button>
+            <button class="btn-salvar" onclick="salvarAlteracoes()"> Salvar Alterações</button>
+            <button class="btn-salvar" onclick="avancarParaProxima()">Avançar</button>
         </div>
     </div>
 
     <script>
-        const ordemFuncoes = ["governanca", "identificar", "proteger", "detectar", "responder", "recuperar"];
-        const funcaoAtual = "recuperar";
-
-        // Mapeamento dos IDs numéricos para nomes das funções
-        const mapeamentoFuncoes = {
-            '1': 'governanca',
-            '2': 'identificar',
-            '3': 'proteger',
-            '4': 'detectar',
-            '5': 'responder',
-            '6': 'recuperar'
-        };
-
+        const ordemFuncoes = ["Governanca", "Identificar", "Proteger", "Detectar", "Responder", "Recuperar"];
+        const funcaoAtual = "Recuperar";
+        
         // Dados das funções para exibição amigável
         const functionNames = {
-            'governanca': 'Governança (GV)',
-            'identificar': 'Identificar (ID)',
-            'proteger': 'Proteger (PR)',
-            'detectar': 'Detectar (DE)',
-            'responder': 'Responder (RS)',
-            'recuperar': 'Recuperar (RC)'
+            'Governanca': 'Governança (GV)',
+            'Identificar': 'Identificar (ID)',
+            'Proteger': 'Proteger (PR)',
+            'Detectar': 'Detectar (DE)',
+            'Responder': 'Responder (RS)',
+            'Recuperar': 'Recuperar (RC)'
         };
 
-        // Cache para dados
-        let categoriasCache = {};
-        let subcategoriasCache = {};
-        let dadosAtuaisCache = {};
-        let dadosFuturosCache = {};
-        let prioridadesData = [];
-        let niveisData = [];
-
-        // Função auxiliar para fetch com tratamento de erro
-        // Função auxiliar para fetch com tratamento de erro - CORRIGIDA
-       // Função fetchAPI CORRIGIDA
-async function fetchAPI(url) {
-    try {
-        // Corrigir TODOS os endpoints problemáticos
-        let urlCorrigida = url
-            .replace('CenarioFuture', 'CenarioFuturo') // Corrige o nome do endpoint futuro
-            .replace('Cenario?', 'CenarioAtual?') // ✅ CORREÇÃO: Cenario → CenarioAtual
-            .replace('Categories', 'Categorias')
-            .replace('Subcategories', 'Subcategorias');
-
-        console.log(`Fetching: ${urlCorrigida}`);
-        const response = await fetch(urlCorrigida);
-
-        if (!response.ok) {
-            // Se for 404, não é erro crítico - pode ser que não existam dados
-            if (response.status === 404) {
-                console.warn(`Endpoint não encontrado (404): ${urlCorrigida}`);
-                return null;
-            }
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        // Função para verificar se a recuperar está selecionada
+        function recuperarEstaSelecionada(selections) {
+            return selections.recuperar && Object.keys(selections.recuperar).length > 0;
         }
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(`Erro na API ${url}:`, error.message);
-        return null;
-    }
-}
-        // Carregar prioridades
-        async function carregarPrioridades() {
+        // Carregar dados da seleção anterior
+        document.addEventListener('DOMContentLoaded', function () {
             try {
-                console.log('Carregando prioridades...');
-                const data = await fetchAPI('/api/Dados/prioridades');
-
-                if (data && Array.isArray(data)) {
-                    prioridadesData = data;
-                    console.log('Prioridades carregadas:', prioridadesData);
-                    preencherDropdownsPrioridades();
-                } else {
-                    throw new Error('Não foi possível carregar prioridades');
-                }
-
-            } catch (error) {
-                console.error('Erro ao carregar prioridades:', error);
-                alert('Erro ao carregar prioridades. Verifique se a API está funcionando.');
-            }
-        }
-
-        // Carregar níveis
-        async function carregarNiveis() {
-            try {
-                console.log('Carregando níveis...');
-                const data = await fetchAPI('/api/Dados/status');
-
-                if (data && Array.isArray(data)) {
-                    niveisData = data;
-                    console.log('Níveis carregados:', niveisData);
-                    preencherDropdownsNiveis();
-                } else {
-                    throw new Error('Não foi possível carregar níveis');
-                }
-
-            } catch (error) {
-                console.error('Erro ao carregar níveis:', error);
-                alert('Erro ao carregar níveis. Verifique se a API está funcionando.');
-            }
-        }
-
-        // Preencher dropdowns de prioridades
-        function preencherDropdownsPrioridades() {
-            const selects = document.querySelectorAll('select[id^="future-prioridade-"]');
-            console.log(`Preenchendo ${selects.length} dropdowns de prioridade`);
-
-            selects.forEach(select => {
-                if (!select) return;
-
-                select.innerHTML = '<option value="">Selecione a prioridade</option>';
-
-                prioridadesData.forEach(prioridade => {
-                    const option = document.createElement('option');
-                    option.value = prioridade.id;
-                    option.textContent = prioridade.nivel;
-                    select.appendChild(option);
-                });
-
-                select.disabled = false;
-            });
-        }
-
-        // Preencher dropdowns de níveis
-        function preencherDropdownsNiveis() {
-            const selects = document.querySelectorAll('select[id^="future-nivel-"]');
-            console.log(`Preenchendo ${selects.length} dropdowns de nível`);
-
-            selects.forEach(select => {
-                if (!select) return;
-
-                select.innerHTML = '<option value="">Selecione o nível</option>';
-
-                niveisData.forEach(nivel => {
-                    const option = document.createElement('option');
-                    option.value = nivel.id;
-                    option.textContent = nivel.nivel;
-                    select.appendChild(option);
-                });
-
-                select.disabled = false;
-            });
-        }
-
-        // Função segura para atualizar elementos
-        function safeUpdateElement(elementId, content) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.innerHTML = content;
-            } else {
-                console.warn(`Elemento ${elementId} não encontrado para atualização`);
-            }
-        }
-
-        // Carregar dados iniciais
-        document.addEventListener('DOMContentLoaded', async function () {
-            try {
-                console.log('=== INICIANDO CARREGAMENTO ===');
-
-                // Carregar catálogos primeiro
-                await carregarPrioridades();
-                await carregarNiveis();
-
-                // Carregar seleções do localStorage
-                let selectedSubcategories = {};
-                try {
-                    const storedSelections = localStorage.getItem('nistSelections');
-                    if (storedSelections) {
-                        selectedSubcategories = JSON.parse(storedSelections);
-                        console.log('Seleções carregadas:', selectedSubcategories);
-                    }
-                } catch (error) {
-                    console.error('Erro ao carregar localStorage:', error);
-                    safeUpdateElement('selectionInfo', `
-                    <div class="error-message">
-                        <h2>Erro ao carregar seleções</h2>
-                        <p>${error.message}</p>
-                    </div>
-                `);
-                    return;
-                }
+                const selectedSubcategories = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+                const selectionInfo = document.getElementById('selectionInfo');
+                const formContainer = document.getElementById('formContainer');
 
                 // Verificar se há dados válidos
                 if (Object.keys(selectedSubcategories).length === 0) {
-                    safeUpdateElement('selectionInfo', `
-                    <div class="error-message">
-                        <h2>Nenhuma seleção encontrada</h2>
-                        <p>Volte à página anterior para selecionar subcategorias.</p>
-                    </div>
-                `);
+                    selectionInfo.innerHTML = `
+                        <div class="error-message">
+                            <h2>Nenhuma seleção encontrada</h2>
+                            <p>Por favor, volte e faça uma seleção primeiro.</p>
+                        </div>
+                    `;
+                    document.querySelector('.btn-salvar').disabled = true;
                     return;
                 }
 
                 // Verificar se a recuperar está selecionada
-                if (!recuperarEstaSelecionada(selectedSubcategories)) {
-                    safeUpdateElement('selectionInfo', `
-                    <div class="success-message">
-                        <h2>recuperar não selecionada</h2>
-                        <p>Avance para a próxima função.</p>
-                    </div>
-                `);
+                const mostrarApenasRecuperar = recuperarEstaSelecionada(selectedSubcategories);
+                
+                // Filtrar seleções para mostrar apenas recuperar se estiver selecionada
+                const selecoesParaExibir = {};
+                if (mostrarApenasRecuperar) {
+                    selecoesParaExibir.recuperar = selectedSubcategories.recuperar;
+                } else {
+                    // Se recuperar não estiver selecionada, mostrar todas as funções
+                    for (const func in selectedSubcategories) {
+                        selecoesParaExibir[func] = selectedSubcategories[func];
+                    }
+                }
+
+                // Calcular total de subcategorias selecionadas
+                let totalSubcategories = 0;
+                for (const func in selecoesParaExibir) {
+                    for (const category in selecoesParaExibir[func]) {
+                        totalSubcategories += selecoesParaExibir[func][category].length;
+                    }
+                }
+
+                // Exibir informações da seleção
+                let infoHTML = `<h2>Resumo da Seleção</h2>
+                    <p><strong>Total de subcategorias selecionadas:</strong> ${totalSubcategories}</p>`;
+                
+                if (mostrarApenasRecuperar) {
+                    infoHTML += `<p><strong>Exibindo apenas:</strong> Recuperar (RC)</p>`;
+                }
+                
+                selectionInfo.innerHTML = infoHTML;
+
+                // Se não houver subcategorias selecionadas
+                if (totalSubcategories === 0) {
+                    formContainer.innerHTML = `
+                        <div class="empty-state">
+                            <h3>Nenhuma subcategoria selecionada</h3>
+                            <p>Volte à página anterior para selecionar subcategorias.</p>
+                        </div>
+                    `;
                     return;
                 }
 
-                // Carregar informações detalhadas
-                await carregarInformacoesDetalhadas(selectedSubcategories);
+                // Criar formulários para cada função, categoria e subcategoria
+                let formIndex = 0;
 
-                // Carregar dados do banco
-                await carregarDadosAtuais(selectedSubcategories);
-                await carregarDadosBanco(selectedSubcategories);
+                for (const func in selecoesParaExibir) {
+                    const functionDiv = document.createElement('div');
+                    functionDiv.className = 'function-section';
 
-                // Exibir os cenários
-                exibirCenarios(selectedSubcategories);
+                    const functionHeader = document.createElement('div');
+                    functionHeader.className = 'function-header';
+                    functionHeader.innerHTML = `
+                        <h2>${functionNames[func] || func}</h2>
+                        <span class="toggle-icon"></span>
+                    `;
 
-                console.log('=== CARREGAMENTO CONCLUÍDO ===');
+                    const functionContent = document.createElement('div');
+                    functionContent.className = 'function-content';
+
+                    // Adicionar evento de toggle para a função
+                    functionHeader.addEventListener('click', function () {
+                        functionContent.classList.toggle('expanded');
+                        functionHeader.querySelector('.toggle-icon').classList.toggle('expanded');
+                    });
+
+                    let hasCategories = false;
+
+                    for (const category in selecoesParaExibir[func]) {
+                        if (selecoesParaExibir[func][category].length > 0) {
+                            hasCategories = true;
+
+                            const categoryDiv = document.createElement('div');
+                            categoryDiv.className = 'category-section';
+
+                            const categoryHeader = document.createElement('div');
+                            categoryHeader.className = 'category-header';
+                            categoryHeader.innerHTML = `
+                                <h3>${category}</h3>
+                                <span class="toggle-icon"></span>
+                            `;
+
+                            const categoryContent = document.createElement('div');
+                            categoryContent.className = 'category-content';
+
+                            // Adicionar evento de toggle para a categoria
+                            categoryHeader.addEventListener('click', function () {
+                                categoryContent.classList.toggle('expanded');
+                                categoryHeader.querySelector('.toggle-icon').classList.toggle('expanded');
+                            });
+
+                            // Adicionar subcategorias
+                            selecoesParaExibir[func][category].forEach(subcategory => {
+                                const subcategoryDiv = document.createElement('div');
+                                subcategoryDiv.className = 'subcategory-item';
+
+                                // Verificar se é um objeto ou string
+                                const subcategoryText = typeof subcategory === 'object' ?
+                                    (subcategory.text || subcategory.value) :
+                                    subcategory;
+                                const subcategoryValue = typeof subcategory === 'object' ?
+                                    (subcategory.value || subcategory.text) :
+                                    subcategory;
+                                subcategoryDiv.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h4>${subcategoryText}</h4>
+        <button class="remove-btn" onclick="removerSubcategoria('${func}', '${category}', \`${subcategoryValue}\`, this)">X</button>
+    </div>
+    <div class="form-group">
+        <label for="resultado-${formIndex}">Resultado:</label>
+        <input id="resultado-${formIndex}" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="descricao-${formIndex}">Descrição:</label>
+        <input id="descricao-${formIndex}" class="form-control" />
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" id="incluidoPerfil-${formIndex}" class="form-check-input" />
+        <label class="form-check-label" for="incluidoPerfil-${formIndex}">Incluído no Perfil:</label>
+    </div>
+    <div class="form-group">
+        <label for="justificativa-${formIndex}">Justificativa:</label>
+        <input id="justificativa-${formIndex}" class="form-control" />
+    </div>
+    <div class="combo-container">
+        <label for="opcoesPrioridade-${formIndex}">Selecione uma prioridade:</label>
+        <select id="opcoesPrioridade-${formIndex}" onchange="mostrarSubOpcoes(this)">
+            <option value=""></option>
+            <option value="semClassificacao">Sem Classificação</option>
+            <option value="classificacaoum">Classificado 1</option>
+            <option value="classificacaodois">Classificado 2</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="status-${formIndex}">Selecione um Status:</label>
+        <select id="status-${formIndex}">
+            <option value="pendente">Pendente</option>
+            <option value="em-andamento">Em Andamento</option>
+            <option value="concluido">Concluído</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="politicasPro-${formIndex}">Políticas, Processos e Procedimentos Atuais:</label>
+        <input id="politicasPro-${formIndex}" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="praticasInternas-${formIndex}">Práticas internas:</label>
+        <input id="praticasInternas-${formIndex}" class="form-control" />
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" id="funcoesResp-${formIndex}" class="form-check-input" />
+        <label class="form-check-label" for="funcoesResp-${formIndex}">Funções e responsabilidades:</label>
+    </div>
+    <div class="form-group">
+        <label for="referenciasInfo-${formIndex}">Referências informativas:</label>
+        <input id="referenciasInfo-${formIndex}" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="artefatosEvi-${formIndex}">Artefatos e evidências:</label>
+        <input id="artefatosEvi-${formIndex}" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="notas-${formIndex}">Notas:</label>
+        <textarea id="notas-${formIndex}" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="observacoes-${formIndex}">Considerações:</label>
+        <textarea id="observacoes-${formIndex}" placeholder="Digite suas observações sobre esta subcategoria..."></textarea>
+    </div>
+    <input type="hidden" id="function-${formIndex}" value="${func}">
+    <input type="hidden" id="category-${formIndex}" value="${category}">
+    <input type="hidden" id="value-${formIndex}" value="${subcategoryValue}">
+`;
+
+                                categoryContent.appendChild(subcategoryDiv);
+                                formIndex++;
+                            });
+
+                            categoryDiv.appendChild(categoryHeader);
+                            categoryDiv.appendChild(categoryContent);
+                            functionContent.appendChild(categoryDiv);
+                        }
+                    }
+
+                    if (hasCategories) {
+                        functionDiv.appendChild(functionHeader);
+                        functionDiv.appendChild(functionContent);
+                        formContainer.appendChild(functionDiv);
+
+                        // Expandir a primeira função por padrão
+                        functionContent.classList.add('expanded');
+                        functionHeader.querySelector('.toggle-icon').classList.add('expanded');
+                    }
+                }
 
             } catch (error) {
-                console.error('Erro crítico:', error);
-                safeUpdateElement('selectionInfo', `
-                <div class="error-message">
-                    <h2>Erro ao carregar a página</h2>
-                    <p>${error.message}</p>
-                </div>
-            `);
+                console.error('Erro ao carregar dados:', error);
+                document.getElementById('selectionInfo').innerHTML = `
+                    <div class="error-message">
+                        <h2>Erro ao carregar os dados</h2>
+                        <p>Ocorreu um erro ao carregar sua seleção. Por favor, volte e tente novamente.</p>
+                    </div>
+                `;
+                document.querySelector('.btn-salvar').disabled = true;
             }
         });
 
-        // Funções auxiliares
-        function getFunctionNameById(funcId) {
-            if (mapeamentoFuncoes[funcId]) {
-                return mapeamentoFuncoes[funcId];
-            }
-            const funcIdLower = funcId.toString().toLowerCase();
-            if (funcIdLower.includes('gv') || funcIdLower.includes('govern') || funcIdLower === '1') return 'governanca';
-            if (funcIdLower.includes('id') || funcIdLower.includes('identif') || funcIdLower === '2') return 'identificar';
-            if (funcIdLower.includes('pr') || funcIdLower.includes('proteg') || funcIdLower === '3') return 'proteger';
-            if (funcIdLower.includes('de') || funcIdLower.includes('detect') || funcIdLower === '4') return 'detectar';
-            if (funcIdLower.includes('rs') || funcIdLower.includes('respond') || funcIdLower === '5') return 'responder';
-            if (funcIdLower.includes('rc') || funcIdLower.includes('recuper') || funcIdLower === '6') return 'recuperar';
-            return funcId;
+        function voltarParaSelecao() {
+            window.location.href = 'Responder';
         }
 
-        function recuperarEstaSelecionada(selections) {
-            for (const funcId in selections) {
-                const functionName = getFunctionNameById(funcId);
-                if (functionName === 'recuperar') {
-                    for (const category in selections[funcId]) {
-                        if (selections[funcId][category].length > 0) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        // Carregar informações detalhadas das categorias e subcategorias
-        async function carregarInformacoesDetalhadas(selectedSubcategories) {
+        function salvarAlteracoes() {
             try {
-                for (const funcId in selectedSubcategories) {
-                    const functionName = getFunctionNameById(funcId);
+                const alteracoes = [];
+                const formCount = document.querySelectorAll('.subcategory-item').length;
 
-                    // Carregar apenas para recuperar
-                    if (functionName !== 'recuperar') continue;
+                // Coletar dados dos formulários
+                for (let i = 0; i < formCount; i++) {
+                    const statusElement = document.getElementById(`status-${i}`);
+                    const observacoesElement = document.getElementById(`observacoes-${i}`);
+                    const functionElement = document.getElementById(`function-${i}`);
+                    const categoryElement = document.getElementById(`category-${i}`);
+                    const valueElement = document.getElementById(`value-${i}`);
 
-                    // Buscar categorias da função
-                    try {
-                        const categorias = await fetchAPI(`/api/Categorias?funcaoId=${funcId}`);
-                        if (categorias && Array.isArray(categorias)) {
-                            categorias.forEach(categoria => {
-                                categoriasCache[categoria.id || categoria.ID] = categoria;
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Erro ao carregar categorias:', error);
-                    }
-
-                    // Carregar informações das subcategorias
-                    for (const categoryId in selectedSubcategories[funcId]) {
-                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
-                            if (!subcategoriasCache[subcategoryId]) {
-                                try {
-                                    const subcategoria = await fetchAPI(`/api/Subcategorias/${subcategoryId}`);
-                                    if (subcategoria) {
-                                        subcategoriasCache[subcategoryId] = subcategoria;
-                                    } else {
-                                        // Criar objeto fallback básico
-                                        subcategoriasCache[subcategoryId] = {
-                                            id: subcategoryId,
-                                            codigo: `SC-${subcategoryId}`,
-                                            descricao: 'Subcategoria não encontrada'
-                                        };
-                                    }
-                                } catch (error) {
-                                    console.error(`Erro ao carregar subcategoria ${subcategoryId}:`, error);
-                                    subcategoriasCache[subcategoryId] = {
-                                        id: subcategoryId,
-                                        codigo: `SC-${subcategoryId}`,
-                                        descricao: 'Erro ao carregar'
-                                    };
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Erro ao carregar informações detalhadas:', error);
-            }
-        }
-
-        // Carregar dados atuais do banco
-        // No carregarDadosAtuais, procure por:
-async function carregarDadosAtuais(selectedSubcategories) {
-    try {
-        for (const funcId in selectedSubcategories) {
-            const functionName = getFunctionNameById(funcId);
-            if (functionName !== 'recuperar') continue;
-
-            for (const categoryId in selectedSubcategories[funcId]) {
-                for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
-                    // Buscar dados atuais - ✅ CORRIGIDO: Cenario → CenarioAtual
-                    try {
-                        const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoryId}`);
-                        if (dadosAtuais && Array.isArray(dadosAtuais) && dadosAtuais.length > 0) {
-                            dadosAtuaisCache[subcategoryId] = {
-                                prioridade: dadosAtuais[0].prioridade,
-                                status: dadosAtuais[0].status,
-                                politicasPro: dadosAtuais[0].politicasPro || '',
-                                praticasInternas: dadosAtuais[0].praticasInternas || '',
-                                funcoesResp: dadosAtuais[0].funcoesResp || '',
-                                referenciasInfo: dadosAtuais[0].referenciasInfo || '',
-                                artefatosEvi: dadosAtuais[0].artefatosEvi || ''
-                            };
-                        }
-                    } catch (error) {
-                        console.error(`Erro ao carregar dados atuais para subcategoria ${subcategoryId}:`, error);
-                    }
-                }
-            }
-        }
-    } catch (error) {
-        console.error('Erro ao carregar dados atuais:', error);
-    }
-}
-
-        // Carregar dados futuros do banco
-        async function carregarDadosBanco(selectedSubcategories) {
-            try {
-                for (const funcId in selectedSubcategories) {
-                    const functionName = getFunctionNameById(funcId);
-                    if (functionName !== 'recuperar') continue;
-
-                    for (const categoryId in selectedSubcategories[funcId]) {
-                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
-                            // Buscar dados futuros
-                            try {
-                                const dadosFuturos = await fetchAPI(`/api/CenarioFuturo?subcategoriaId=${subcategoryId}`);
-                                if (dadosFuturos && Array.isArray(dadosFuturos) && dadosFuturos.length > 0) {
-                                    dadosFuturosCache[subcategoryId] = {
-                                        prioridadeAlvo: dadosFuturos[0].prioridadeAlvo,
-                                        nivelAlvo: dadosFuturos[0].nivelAlvo,
-                                        politicasAlvo: dadosFuturos[0].politicasAlvo || '',
-                                        praticasAlvo: dadosFuturos[0].praticasAlvo || '',
-                                        funcoesAlvo: dadosFuturos[0].funcoesAlvo || '',
-                                        referenciasAlvo: dadosFuturos[0].referenciasAlvo || '',
-                                        artefatosAlvo: dadosFuturos[0].artefatosAlvo || ''
-                                    };
-                                }
-                            } catch (error) {
-                                console.error(`Erro ao carregar dados futuros para subcategoria ${subcategoryId}:`, error);
-                            }
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Erro ao carregar dados do banco:', error);
-            }
-        }
-
-        function obterNomeCategoria(categoryId) {
-            const categoria = categoriasCache[categoryId];
-            if (categoria) {
-                return `${categoria.codigo || categoria.CODIGO || ''} - ${categoria.nome || categoria.NOME || ''}`;
-            }
-            return `Categoria ${categoryId}`;
-        }
-
-        function obterNomeSubcategoria(subcategoryId) {
-            const subcategoria = subcategoriasCache[subcategoryId];
-            if (subcategoria) {
-                const codigoCompleto = subcategoria.codigo || subcategoria.CODIGO || `SC-${subcategoryId}`;
-                const descricao = subcategoria.subcategoria || subcategoria.SUBCATEGORIA || subcategoria.descricao || subcategoria.DESCRICAO || '';
-                return `${codigoCompleto} - ${descricao}`;
-            }
-            return `Subcategoria ${subcategoryId}`;
-        }
-
-        // Exibir ambos os cenários
-        function exibirCenarios(selectedSubcategories) {
-            const currentContainer = document.getElementById('currentScenarioContainer');
-            const futureContainer = document.getElementById('futureScenarioContainer');
-            const selectionInfo = document.getElementById('selectionInfo');
-
-            if (!currentContainer || !futureContainer) {
-                console.error('Containers não encontrados');
-                return;
-            }
-
-            let totalSubcategories = 0;
-
-            // Limpar containers
-            currentContainer.innerHTML = '';
-            futureContainer.innerHTML = '';
-
-            // Para cada função e categoria, criar os formulários
-            for (const funcId in selectedSubcategories) {
-                const functionName = getFunctionNameById(funcId);
-
-                // Mostrar apenas recuperar
-                if (functionName !== 'recuperar') continue;
-
-                // Criar estrutura para cenário atual
-                const currentFunctionDiv = criarEstruturaFuncao(functionName);
-                const currentFunctionContent = currentFunctionDiv.querySelector('.function-content');
-
-                // Criar estrutura para cenário futuro
-                const futureFunctionDiv = criarEstruturaFuncao(functionName);
-                const futureFunctionContent = futureFunctionDiv.querySelector('.function-content');
-
-                let hasCategories = false;
-
-                for (const categoryId in selectedSubcategories[funcId]) {
-                    if (selectedSubcategories[funcId][categoryId].length > 0) {
-                        hasCategories = true;
-
-                        // Criar categoria para cenário atual
-                        const currentCategoryDiv = criarEstruturaCategoria(categoryId);
-                        const currentCategoryContent = currentCategoryDiv.querySelector('.category-content');
-
-                        // Criar categoria para cenário futuro
-                        const futureCategoryDiv = criarEstruturaCategoria(categoryId);
-                        const futureCategoryContent = futureCategoryDiv.querySelector('.category-content');
-
-                        // Adicionar subcategorias
-                        selectedSubcategories[funcId][categoryId].forEach(subcategoryId => {
-                            // Adicionar ao cenário atual (somente leitura)
-                            const currentSubcategoryDiv = criarFormularioAtual(subcategoryId, totalSubcategories);
-                            currentCategoryContent.appendChild(currentSubcategoryDiv);
-
-                            // Adicionar ao cenário futuro (editável)
-                            const futureSubcategoryDiv = criarFormularioFuturo(subcategoryId, totalSubcategories);
-                            futureCategoryContent.appendChild(futureSubcategoryDiv);
-
-                            totalSubcategories++;
+                    if (statusElement && observacoesElement && functionElement && categoryElement && valueElement) {
+                        alteracoes.push({
+                            funcao: functionElement.value,
+                            categoria: categoryElement.value,
+                            subcategoria: valueElement.value,
+                            status: statusElement.value,
+                            observacoes: observacoesElement.value
                         });
-
-                        currentFunctionContent.appendChild(currentCategoryDiv);
-                        futureFunctionContent.appendChild(futureCategoryDiv);
                     }
                 }
 
-                if (hasCategories) {
-                    currentContainer.appendChild(currentFunctionDiv);
-                    futureContainer.appendChild(futureFunctionDiv);
+                // Salvar alterações
+                localStorage.setItem('alteracoesSalvas', JSON.stringify(alteracoes));
 
-                    // Expandir por padrão
-                    currentFunctionDiv.querySelector('.function-content').classList.add('expanded');
-                    currentFunctionDiv.querySelector('.toggle-icon').classList.add('expanded');
-                    futureFunctionDiv.querySelector('.function-content').classList.add('expanded');
-                    futureFunctionDiv.querySelector('.toggle-icon').classList.add('expanded');
-                }
-            }
-
-            // Atualizar informações da seleção
-            safeUpdateElement('selectionInfo', `
-            <h2>Recuperar - Cenário Atual vs Futuro</h2>
-            <p><strong>Total de subcategorias selecionadas:</strong> ${totalSubcategories}</p>
-            <p><strong>Função atual:</strong> Recuperar (RC)</p>
-            <p><em>O cenário atual mostra os dados existentes no banco (somente leitura). O cenário futuro permite editar os dados que serão salvos.</em></p>
-        `);
-
-            if (totalSubcategories === 0) {
-                currentContainer.innerHTML = `
-                <div class="empty-state">
-                    <h3>Nenhuma subcategoria de Recuperar selecionada</h3>
-                    <p>Avance para a próxima função ou volte para selecionar subcategorias.</p>
-                </div>
-            `;
-                futureContainer.innerHTML = `
-                <div class="empty-state">
-                    <h3>Nenhuma subcategoria de Recuperar selecionada</h3>
-                    <p>Avance para a próxima função ou volte para selecionar subcategorias.</p>
-                </div>
-            `;
-            }
-        }
-
-        // Criar estrutura da função
-        function criarEstruturaFuncao(functionName) {
-            const functionDiv = document.createElement('div');
-            functionDiv.className = 'function-section';
-
-            const functionHeader = document.createElement('div');
-            functionHeader.className = 'function-header';
-            functionHeader.innerHTML = `
-            <h2>${functionNames[functionName] || functionName}</h2>
-            <span class="toggle-icon"></span>
-        `;
-
-            const functionContent = document.createElement('div');
-            functionContent.className = 'function-content';
-
-            functionHeader.addEventListener('click', function () {
-                functionContent.classList.toggle('expanded');
-                functionHeader.querySelector('.toggle-icon').classList.toggle('expanded');
-            });
-
-            functionDiv.appendChild(functionHeader);
-            functionDiv.appendChild(functionContent);
-
-            return functionDiv;
-        }
-
-        // Criar estrutura da categoria
-        function criarEstruturaCategoria(categoryId) {
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'category-section';
-
-            const categoryHeader = document.createElement('div');
-            categoryHeader.className = 'category-header';
-
-            const categoriaNome = obterNomeCategoria(categoryId);
-            categoryHeader.innerHTML = `
-            <h3>${categoriaNome}</h3>
-            <span class="toggle-icon"></span>
-        `;
-
-            const categoryContent = document.createElement('div');
-            categoryContent.className = 'category-content';
-
-            categoryHeader.addEventListener('click', function () {
-                categoryContent.classList.toggle('expanded');
-                categoryHeader.querySelector('.toggle-icon').classList.toggle('expanded');
-            });
-
-            categoryDiv.appendChild(categoryHeader);
-            categoryDiv.appendChild(categoryContent);
-
-            return categoryDiv;
-        }
-
-        // Criar formulário para cenário atual (somente leitura) - COM TEXTAREAS
-        function criarFormularioAtual(subcategoryId, formIndex) {
-            const subcategoriaTexto = obterNomeSubcategoria(subcategoryId);
-            const dadosAtuais = dadosAtuaisCache[subcategoryId] || {};
-
-            const subcategoryDiv = document.createElement('div');
-            subcategoryDiv.className = 'subcategory-item';
-
-            // Encontrar nomes das prioridades e níveis
-            const prioridadeAtual = prioridadesData.find(p => p.id == dadosAtuais.prioridade) || {};
-            const nivelAtual = niveisData.find(n => n.id == dadosAtuais.status) || {};
-
-            subcategoryDiv.innerHTML = `
-        <h4>${subcategoriaTexto}</h4>
-        <div class="form-group">
-            <label>Prioridade:</label>
-            <input type="text" class="form-control readonly-field" 
-                   value="${prioridadeAtual.nivel || 'Não definida'}" readonly />
-        </div>
-        <div class="form-group">
-            <label>Nível:</label>
-            <input type="text" class="form-control readonly-field" 
-                   value="${nivelAtual.nivel || 'Não definido'}" readonly />
-        </div>
-        <div class="form-group">
-            <label>Políticas, Processos e Procedimentos Atuais:</label>
-            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.politicasPro || 'Não informado'}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Práticas internas:</label>
-            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.praticasInternas || 'Não informado'}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Funções e responsabilidades:</label>
-            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.funcoesResp || 'Não informado'}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Referências informativas:</label>
-            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.referenciasInfo || 'Não informado'}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Artefatos e evidências:</label>
-            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.artefatosEvi || 'Não informado'}</textarea>
-        </div>
-    `;
-
-            return subcategoryDiv;
-        }
-
-        // Criar formulário para cenário futuro (editável) - COM TEXTAREAS
-        function criarFormularioFuturo(subcategoryId, formIndex) {
-            const subcategoriaTexto = obterNomeSubcategoria(subcategoryId);
-            const dadosFuturos = dadosFuturosCache[subcategoryId] || {};
-
-            const subcategoryDiv = document.createElement('div');
-            subcategoryDiv.className = 'subcategory-item';
-
-            subcategoryDiv.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h4>${subcategoriaTexto}</h4>
-            <button class="remove-btn" onclick="removerSubcategoriaFutura('${subcategoryId}', this)">×</button>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-prioridade-${formIndex}">Prioridade:</label>
-            <select id="future-prioridade-${formIndex}" class="form-control">
-                <option value="">Selecione a prioridade</option>
-                ${prioridadesData.map(p =>
-                `<option value="${p.id}" ${dadosFuturos.prioridadeAlvo == p.id ? 'selected' : ''}>${p.nivel}</option>`
-            ).join('')}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-nivel-${formIndex}">Nível:</label>
-            <select id="future-nivel-${formIndex}" class="form-control">
-                <option value="">Selecione o nível</option>
-                ${niveisData.map(n =>
-                `<option value="${n.id}" ${dadosFuturos.nivelAlvo == n.id ? 'selected' : ''}>${n.status}</option>`
-            ).join('')}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-politicasPro-${formIndex}">Políticas, Processos e Procedimentos:</label>
-            <textarea id="future-politicasPro-${formIndex}" class="form-control" 
-                      rows="4" placeholder="Descreva as políticas, processos e procedimentos desejados...">${dadosFuturos.politicasAlvo || ''}</textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-praticasInternas-${formIndex}">Práticas internas:</label>
-            <textarea id="future-praticasInternas-${formIndex}" class="form-control" 
-                      rows="4" placeholder="Descreva as práticas internas a serem implementadas...">${dadosFuturos.praticasAlvo || ''}</textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-funcoesResp-${formIndex}">Funções e responsabilidades:</label>
-            <textarea id="future-funcoesResp-${formIndex}" class="form-control" 
-                      rows="4" placeholder="Descreva as funções e responsabilidades...">${dadosFuturos.funcoesAlvo || ''}</textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-referenciasInfo-${formIndex}">Referências informativas:</label>
-            <textarea id="future-referenciasInfo-${formIndex}" class="form-control" 
-                      rows="4" placeholder="Liste as referências informativas...">${dadosFuturos.referenciasAlvo || ''}</textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="future-artefatosEvi-${formIndex}">Artefatos e evidências:</label>
-            <textarea id="future-artefatosEvi-${formIndex}" class="form-control" 
-                      rows="4" placeholder="Descreva os artefatos e evidências...">${dadosFuturos.artefatosAlvo || ''}</textarea>
-        </div>
-        
-        <input type="hidden" id="future-subcategory-${formIndex}" value="${subcategoryId}">
-    `;
-
-            return subcategoryDiv;
-        }
-
-       // Funções de navegação
-        function voltarParaAnterior() {
-    const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
-    const indiceAtual = ordemFuncoes.indexOf(funcaoAtual);
-
-    // Buscar funções anteriores (do índice atual para trás)
-    for (let i = indiceAtual - 1; i >= 0; i--) {
-        const funcaoAnterior = ordemFuncoes[i];
-        for (const funcId in selections) {
-            const functionName = getFunctionNameById(funcId);
-            if (functionName === funcaoAnterior) {
-                for (const category in selections[funcId]) {
-                    if (selections[funcId][category].length > 0) {
-                        window.location.href = `/Home/${funcaoAnterior.charAt(0).toUpperCase() + funcaoAnterior.slice(1)}`;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    // Se não encontrou nenhuma função anterior com seleções, volta para a seleção
-    window.location.href = '/Home/Precadastro';
-}
-
-        function avancarParaProxima() {
-            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
-            const indiceAtual = ordemFuncoes.indexOf(funcaoAtual);
-
-            for (let i = indiceAtual + 1; i < ordemFuncoes.length; i++) {
-                const proximaFuncao = ordemFuncoes[i];
-                for (const funcId in selections) {
-                    const functionName = getFunctionNameById(funcId);
-                    if (functionName === proximaFuncao) {
-                        for (const category in selections[funcId]) {
-                            if (selections[funcId][category].length > 0) {
-                                window.location.href = `/Home/${proximaFuncao.charAt(0).toUpperCase() + proximaFuncao.slice(1)}`;
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-
-            window.location.href = '/Home';
-        }
-
-        function removerSubcategoriaFutura(subcategoryId, btnElement) {
-            const confirmacao = confirm("Deseja remover esta subcategoria do cenário futuro?");
-            if (!confirmacao) return;
-
-            const subcategoryItem = btnElement.closest('.subcategory-item');
-            subcategoryItem.remove();
-            atualizarInterfaceAposRemocao();
-        }
-
-        function atualizarInterfaceAposRemocao() {
-            const formCount = document.querySelectorAll('#futureScenarioContainer .subcategory-item').length;
-            safeUpdateElement('selectionInfo', `
-            <h2>Recuperar - Cenário Atual vs Futuro</h2>
-            <p><strong>Total de subcategorias no futuro:</strong> ${formCount}</p>
-        `);
-        }
-
-        // Função para salvar alterações - CORRIGIDA
-        async function salvarAlteracoes() {
-            try {
-                console.log('Iniciando salvamento de alterações...');
-
-                // Coletar todos os dados dos formulários futuros
-                const forms = document.querySelectorAll('#futureScenarioContainer .subcategory-item');
-                const dadosParaSalvar = [];
-
-                for (let i = 0; i < forms.length; i++) {
-                    const subcategoryId = document.getElementById(`future-subcategory-${i}`)?.value;
-
-                    if (!subcategoryId) continue;
-
-                    const dados = {
-                        subcategoriaId: parseInt(subcategoryId),
-                        prioridadeAlvo: document.getElementById(`future-prioridade-${i}`)?.value || null,
-                        nivelAlvo: document.getElementById(`future-nivel-${i}`)?.value || null,
-                        politicasAlvo: document.getElementById(`future-politicasPro-${i}`)?.value || '',
-                        praticasAlvo: document.getElementById(`future-praticasInternas-${i}`)?.value || '',
-                        funcoesAlvo: document.getElementById(`future-funcoesResp-${i}`)?.value || '',
-                        referenciasAlvo: document.getElementById(`future-referenciasInfo-${i}`)?.value || '',
-                        artefatosAlvo: document.getElementById(`future-artefatosEvi-${i}`)?.value || ''
-                    };
-
-                    dadosParaSalvar.push(dados);
-                }
-
-                console.log('Dados para salvar:', dadosParaSalvar);
-
-                if (dadosParaSalvar.length === 0) {
-                    alert('Nenhum dado para salvar.');
-                    return;
-                }
-
-                // Enviar para a API
-                const response = await fetch('/api/CenarioFuturo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dadosParaSalvar)
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Erro HTTP:', response.status, errorText);
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-
-                const resultado = await response.json();
-                console.log('Salvamento bem-sucedido:', resultado);
                 alert('Alterações salvas com sucesso!');
+                // Redirecionar para outra página se necessário
+                // window.location.href = 'obrigado.html';
 
             } catch (error) {
                 console.error('Erro ao salvar alterações:', error);
-                alert('Erro ao salvar alterações: ' + error.message);
+                alert('Ocorreu um erro ao salvar as alterações. Por favor, tente novamente.');
             }
+        }
+        
+        function removerSubcategoria(func, category, subcategoryValue, btnElement) {
+            const confirmacao = confirm("Deseja remover esta subcategoria?");
+            if (!confirmacao) return;
+
+            // Carrega dados do localStorage
+            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+
+            if (
+                selections[func] &&
+                selections[func][category]
+            ) {
+                selections[func][category] = selections[func][category].filter(item => {
+                    const val = typeof item === 'object' ? item.value || item.text : item;
+                    return val !== subcategoryValue;
+                });
+
+                // Se a categoria ficou vazia, remove
+                if (selections[func][category].length === 0) {
+                    delete selections[func][category];
+                }
+
+                // Se a função ficou vazia, remove
+                if (Object.keys(selections[func]).length === 0) {
+                    delete selections[func];
+                }
+
+                // Atualiza localStorage
+                localStorage.setItem('nistSelections', JSON.stringify(selections));
+            }
+
+            // Remover visualmente a subcategoria
+            const subcategoryItem = btnElement.closest('.subcategory-item');
+            const categoryContent = subcategoryItem.closest('.category-content');
+            const categorySection = subcategoryItem.closest('.category-section');
+            const functionSection = subcategoryItem.closest('.function-section');
+
+            subcategoryItem.remove();
+
+            // Se não restarem subcategorias na categoria, remover a categoria do DOM
+            if (categoryContent && categoryContent.querySelectorAll('.subcategory-item').length === 0) {
+                categorySection.remove();
+            }
+
+            // Se não restarem categorias na função, remover a função do DOM
+            if (functionSection && functionSection.querySelectorAll('.category-section').length === 0) {
+                functionSection.remove();
+            }
+
+            // Atualizar resumo
+            atualizarResumoSelecao();
+
+            // Se não restar nenhuma subcategoria, mostrar mensagem
+            if (document.querySelectorAll('.subcategory-item').length === 0) {
+                document.getElementById('formContainer').innerHTML = `
+            <div class="empty-state">
+                <h3>Nenhuma subcategoria selecionada</h3>
+                <p>Volte à página anterior para selecionar subcategorias.</p>
+            </div>
+        `;
+                document.querySelector('.btn-salvar').disabled = true;
+                document.getElementById('selectionInfo').innerHTML = `
+            <div class="error-message">
+                <h2>Nenhuma seleção encontrada</h2>
+                <p>Por favor, volte e faça uma seleção primeiro.</p>
+            </div>
+        `;
+            }
+        }
+
+        function atualizarResumoSelecao() {
+            const formCount = document.querySelectorAll('.subcategory-item').length;
+            const selectionInfo = document.getElementById('selectionInfo');
+
+            selectionInfo.innerHTML = `
+        <h2>Resumo da Seleção</h2>
+        <p><strong>Total de subcategorias selecionadas:</strong> ${formCount}</p>
+    `;
+        }
+
+        function avancarParaProxima() {
+            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+            let achouAtual = false;
+
+            for (const func of ordemFuncoes) {
+                if (!achouAtual) {
+                    if (func === funcaoAtual) achouAtual = true;
+                    continue;
+                }
+                if (selections[func] && Object.keys(selections[func]).length > 0) {
+                    window.location.href = `${func}`;
+                    return;
+                }
+            }
+
+            window.location.href = "Relatorios";
+        }
+
+        function mostrarSubOpcoes(selectElement) {
+            // Implementar lógica para mostrar subopções se necessário
+            console.log("Prioridade selecionada:", selectElement.value);
         }
     </script>
 </body>

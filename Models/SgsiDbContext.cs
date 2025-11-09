@@ -8,7 +8,7 @@ public class SgsiDbContext : DbContext
         : base(options) { }
 
     public DbSet<CenarioAtual> CenariosAtual { get; set; }
-    public DbSet<CenarioFuturo> CenariosFuturos { get; set; }
+    public DbSet<CenarioFuturo> CenariosFuturo { get; set; }
     public DbSet<Funcoes> Funcoes { get; set; }
     public DbSet<Categorias> Categorias { get; set; }
     public DbSet<Subcategorias> Subcategorias { get; set; }

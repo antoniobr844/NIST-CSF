@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using NistXGH.Models;
 
 namespace NistXGH.Models
 {
@@ -14,37 +13,42 @@ namespace NistXGH.Models
         [Column("PRIORIDADE_ALVO")]
         public int? PRIORIDADE_ALVO { get; set; }
 
-        [ForeignKey(nameof(PRIORIDADE_ALVO))]
-        public PrioridadeTb Prioridade { get; set; }
+        [ForeignKey("PRIORIDADE_ALVO")]
+        public virtual PrioridadeTb Prioridade { get; set; }
 
         [Column("NIVEL_ALVO")]
         public int? NIVEL_ALVO { get; set; }
 
-        [ForeignKey(nameof(NIVEL_ALVO))]
-        public StatusTb Nivel { get; set; }
+        [ForeignKey("NIVEL_ALVO")]
+        public virtual StatusTb Nivel { get; set; }
 
+        // 🚨 CORREÇÃO 2: Tornar propriedades de string nullable (string?)
         [Column("POLIT_ALVO")]
-        public string POLIT_ALVO { get; set; }
+        public string? POLIT_ALVO { get; set; } // CLOB
 
         [Column("PRAT_ALVO")]
-        public string PRAT_ALVO { get; set; }
+        public string? PRAT_ALVO { get; set; } // CLOB
 
         [Column("ARTEF_ALVO")]
-        public string ARTEF_ALVO { get; set; }
+        [StringLength(200)]
+        public string? ARTEF_ALVO { get; set; }
 
         [Column("FUNC_ALVO")]
-        public string FUNC_ALVO { get; set; }
+        [StringLength(200)]
+        public string? FUNC_ALVO { get; set; }
 
         [Column("REF_INFO_ALVO")]
-        public string REF_INFO_ALVO { get; set; }
+        [StringLength(50)]
+        public string? REF_INFO_ALVO { get; set; }
 
         [Column("SUBCATEGORIA")]
         public int SUBCATEGORIA { get; set; }
 
         [Column("DATA_REGISTRO")]
-        public DateTime DATA_REGISTRO { get; set; }
+        public DateTime? DATA_REGISTRO { get; set; }
 
         [ForeignKey("SUBCATEGORIA")]
         public virtual Subcategorias SubcategoriaNav { get; set; }
+
     }
 }
