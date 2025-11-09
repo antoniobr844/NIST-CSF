@@ -47,15 +47,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult SalvarAlteracoes(Governanca model)
-    {
-        // Aqui você salva no banco de dados
-        // model contém todas as alterações feitas
-
-        return RedirectToAction("Sucesso");
-    }
-
     public IActionResult Sucesso()
     {
         return View();
@@ -73,14 +64,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult SalvarAlteracoes(Identificar model)
-    {
-        // Aqui você salva no banco de dados
-        // model contém todas as alterações feitas
-
-        return RedirectToAction("Sucesso");
-    }
 
     public IActionResult Proteger()
     {
@@ -94,14 +77,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult SalvarAlteracoes(Proteger model)
-    {
-        // Aqui você salva no banco de dados
-        // model contém todas as alterações feitas
-
-        return RedirectToAction("Sucesso");
-    }
 
     public IActionResult Detectar()
     {
@@ -115,14 +90,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult SalvarAlteracoes(Detectar model)
-    {
-        // Aqui você salva no banco de dados
-        // model contém todas as alterações feitas
-
-        return RedirectToAction("Sucesso");
-    }
 
     public IActionResult Responder()
     {
@@ -136,14 +103,7 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult SalvarAlteracoes(Responder model)
-    {
-        // Aqui você salva no banco de dados
-        // model contém todas as alterações feitas
 
-        return RedirectToAction("Sucesso");
-    }
 
     public IActionResult Recuperar()
     {
@@ -157,14 +117,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult SalvarAlteracoes(Recuperar model)
-    {
-        // Aqui você salva no banco de dados
-        // model contém todas as alterações feitas
-
-        return RedirectToAction("Sucesso");
-    }
 
     // API para obter as opções principais
     [HttpGet]

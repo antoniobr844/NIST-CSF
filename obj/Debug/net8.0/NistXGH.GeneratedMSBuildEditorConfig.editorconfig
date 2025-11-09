@@ -9,79 +9,81 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = NistXGH
 build_property.RootNamespace = NistXGH
-build_property.ProjectDir = C:\projetos\NistXGH\
+build_property.ProjectDir = C:\projetos\NistXGH_2.1\NistXGH\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\projetos\NistXGH
+build_property.MSBuildProjectDirectory = C:\projetos\NistXGH_2.1\NistXGH
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[C:/projetos/NistXGH/Views/Home/Cadastro.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Cadastro.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWRhc3Ryby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Consultas.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Consultas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb25zdWx0YXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Detectar.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Detectar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEZXRlY3Rhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Governanca.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Governanca.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHb3Zlcm5hbmNhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Identificar.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Identificar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJZGVudGlmaWNhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Index.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Precadastro.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Precadastro.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcmVjYWRhc3Ryby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Privacy.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Proteger.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Proteger.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm90ZWdlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Recuperar.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Recuperar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWN1cGVyYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Relatorios.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Relatorios.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWxhdG9yaW9zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Home/Responder.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Home/Responder.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZXNwb25kZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Shared/Error.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/_ViewImports.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/_ViewStart.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projetos/NistXGH/Views/Shared/_Layout.cshtml]
+[C:/projetos/NistXGH_2.1/NistXGH/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-3wqisrxk1q

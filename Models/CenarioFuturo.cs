@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NistXGH.Models;
 
 namespace NistXGH.Models
 {
@@ -43,6 +44,7 @@ namespace NistXGH.Models
         [Column("DATA_REGISTRO")]
         public DateTime DATA_REGISTRO { get; set; }
 
+        [ForeignKey("SUBCATEGORIA")]
         public virtual Subcategorias SubcategoriaNav { get; set; }
     }
 }
