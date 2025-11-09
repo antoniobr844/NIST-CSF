@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIST CSF - Alterações - Governança</title>
     <style>
+        /* MANTENHA O MESMO CSS DA PÁGINA RECUPERAR */
         * {
             margin: 0;
             padding: 0;
@@ -43,6 +44,11 @@
             border-radius: 10px;
             margin-bottom: 30px;
             border-left: 4px solid #3498db;
+        }
+
+        .selection-info h2 {
+            margin-bottom: 15px;
+            color: #3498db;
         }
 
         .scenario-container {
@@ -96,6 +102,11 @@
             align-items: center;
         }
 
+        .function-header h2 {
+            margin: 0;
+            font-size: 1.4em;
+        }
+
         .function-content {
             padding: 0;
             max-height: 0;
@@ -118,6 +129,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .category-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.2em;
         }
 
         .category-content {
@@ -174,6 +191,17 @@
 
         .form-group textarea {
             min-height: 100px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-check-input {
+            width: auto !important;
+            transform: scale(1.2);
         }
 
         .navigation {
@@ -289,6 +317,10 @@
             color: #666;
         }
 
+        .combo-container {
+            margin-bottom: 20px;
+        }
+
         .readonly-field {
             background-color: #f8f9fa;
             color: #6c757d;
@@ -339,35 +371,20 @@
         </div>
 
         <div class="navigation">
-            <button class="btn-voltar" onclick="voltarParaSelecao()">← Voltar para Seleção</button>
+            <button class="btn-voltar" onclick="navegacao.navegarParaAnterior('governanca')">← Voltar para
+                Seleção</button>
             <button class="btn-salvar" onclick="salvarAlteracoes()">Salvar Alterações</button>
-            <button class="btn-avancar" onclick="avancarParaProxima()">Avançar para Próxima Função</button>
+            <button class="btn-avancar" onclick="navegacao.navegarParaProxima('governanca')">Avançar para Próxima
+                Função</button>
         </div>
     </div>
 
-    <script>
-        // CONSTANTES E CONFIGURAÇÕES
-        const ordemFuncoes = ["governanca", "identificar", "proteger", "detectar", "responder", "recuperar"];
+    <script type="module">
+        import { NistNavigation } from '/js/modules/nistNavigation.js';
+
+        // Configuração específica da página
         const funcaoAtual = "governanca";
-
-        // Mapeamento baseado nos IDs do seu sistema
-        const mapeamentoFuncoes = {
-            '1': 'governanca',      // GV
-            '2': 'identificar',     // ID  
-            '3': 'proteger',        // PR
-            '4': 'detectar',        // DE
-            '5': 'responder',       // RS
-            '6': 'recuperar'        // RC
-        };
-
-        const functionNames = {
-            'governanca': 'Governança (GV)',
-            'identificar': 'Identificar (ID)',
-            'proteger': 'Proteger (PR)',
-            'detectar': 'Detectar (DE)',
-            'responder': 'Responder (RS)',
-            'recuperar': 'Recuperar (RC)'
-        };
+        let navegacao;
 
         // Cache para dados
         let categoriasCache = {};
@@ -377,364 +394,423 @@
         let prioridadesData = [];
         let niveisData = [];
 
-        // FUNÇÃO PRINCIPAL DE CARREGAMENTO - COMPLETAMENTE REESCRITA
-        document.addEventListener('DOMContentLoaded', async function () {
-            console.log('=== INICIANDO CARREGAMENTO DA GOVERNANÇA ===');
-            
-            try {
-                // 1. Carregar catálogos primeiro
-                await carregarCatálogos();
-
-                // 2. Carregar e processar seleções do localStorage
-                const selecoes = await processarSelecoesLocalStorage();
-                if (!selecoes) return;
-
-                // 3. Exibir cenários
-                await exibirCenarios(selecoes);
-
-                console.log('=== CARREGAMENTO CONCLUÍDO ===');
-
-            } catch (error) {
-                console.error('Erro crítico no carregamento:', error);
-                mostrarErroCritico(error);
-            }
-        });
-
-        // FUNÇÃO CORRIGIDA: Carregar todos os catálogos
-        async function carregarCatálogos() {
-            console.log('Carregando catálogos...');
-            
-            // Carregar prioridades
-            try {
-                const prioridades = await fetchAPI('/api/Dados/prioridades');
-                if (prioridades && Array.isArray(prioridades)) {
-                    prioridadesData = prioridades;
-                    console.log('Prioridades carregadas:', prioridadesData);
-                } else {
-                    // Dados mock para teste
-                    prioridadesData = [
-                        { id: 1, nivel: 'Baixa' },
-                        { id: 2, nivel: 'Média' },
-                        { id: 3, nivel: 'Alta' }
-                    ];
-                    console.log('Usando prioridades mock');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar prioridades:', error);
-                prioridadesData = [
-                    { id: 1, nivel: 'Baixa' },
-                    { id: 2, nivel: 'Média' },
-                    { id: 3, nivel: 'Alta' }
-                ];
-            }
-
-            // Carregar níveis
-            try {
-                const niveis = await fetchAPI('/api/Dados/status');
-                if (niveis && Array.isArray(niveis)) {
-                    niveisData = niveis;
-                    console.log('Níveis carregados:', niveisData);
-                } else {
-                    // Dados mock para teste
-                    niveisData = [
-                        { id: 1, nivel: 'Inicial' },
-                        { id: 2, nivel: 'Em Desenvolvimento' },
-                        { id: 3, nivel: 'Definido' },
-                        { id: 4, nivel: 'Gerenciado' },
-                        { id: 5, nivel: 'Otimizado' }
-                    ];
-                    console.log('Usando níveis mock');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar níveis:', error);
-                niveisData = [
-                    { id: 1, nivel: 'Inicial' },
-                    { id: 2, nivel: 'Em Desenvolvimento' },
-                    { id: 3, nivel: 'Definido' },
-                    { id: 4, nivel: 'Gerenciado' },
-                    { id: 5, nivel: 'Otimizado' }
-                ];
-            }
-        }
-
-        // FUNÇÃO CORRIGIDA: Processar seleções do localStorage
-        async function processarSelecoesLocalStorage() {
-            try {
-                const storedSelections = localStorage.getItem('nistSelections');
-                console.log('Dados brutos do localStorage:', storedSelections);
-                
-                if (!storedSelections) {
-                    mostrarErro('Nenhuma seleção encontrada no localStorage');
-                    return null;
-                }
-
-                const selections = JSON.parse(storedSelections);
-                console.log('Seleções parseadas:', selections);
-
-                // ANALISAR ESTRUTURA DOS DADOS
-                console.log('Analisando estrutura dos dados...');
-                
-                // ESTRUTURA: {"1":{"1":[3]},"3":{"15":[]}}
-                // Isso significa: Função 1 (Governança), Categoria 1, Subcategoria 3
-                let selecoesGovernanca = [];
-                
-                for (const funcaoId in selections) {
-                    const functionName = getFunctionNameById(funcaoId);
-                    console.log(`Função ${funcaoId}: ${functionName}`);
-                    
-                    if (functionName === 'governanca') {
-                        const categorias = selections[funcaoId];
-                        for (const categoriaId in categorias) {
-                            const subcategorias = categorias[categoriaId];
-                            console.log(`Categoria ${categoriaId}, Subcategorias:`, subcategorias);
-                            
-                            if (subcategorias && subcategorias.length > 0) {
-                                selecoesGovernanca.push({
-                                    funcaoId: funcaoId,
-                                    categoriaId: categoriaId,
-                                    subcategorias: subcategorias
-                                });
-                            }
-                        }
-                    }
-                }
-
-                console.log('Seleções de governança encontradas:', selecoesGovernanca);
-
-                if (selecoesGovernanca.length === 0) {
-                    mostrarMensagemNaoSelecionada();
-                    return null;
-                }
-
-                // Carregar informações detalhadas
-                await carregarInformacoesDetalhadas(selecoesGovernanca);
-                
-                return selecoesGovernanca;
-
-            } catch (error) {
-                console.error('Erro ao processar localStorage:', error);
-                mostrarErro('Erro ao processar seleções: ' + error.message);
-                return null;
-            }
-        }
-
-        // FUNÇÃO CORRIGIDA: Carregar informações detalhadas
-        async function carregarInformacoesDetalhadas(selecoesGovernanca) {
-            console.log('Carregando informações detalhadas...');
-            
-            for (const selecao of selecoesGovernanca) {
-                const { funcaoId, categoriaId, subcategorias } = selecao;
-
-                // Carregar categoria
-                if (!categoriasCache[categoriaId]) {
-                    try {
-                        const categoria = await fetchAPI(`/api/Categorias/${categoriaId}`);
-                        if (categoria) {
-                            categoriasCache[categoriaId] = categoria;
-                            console.log(`Categoria ${categoriaId} carregada:`, categoria);
-                        } else {
-                            // Fallback
-                            categoriasCache[categoriaId] = {
-                                id: categoriaId,
-                                codigo: `CAT-${categoriaId}`,
-                                nome: `Categoria ${categoriaId}`
-                            };
-                        }
-                    } catch (error) {
-                        console.error(`Erro ao carregar categoria ${categoriaId}:`, error);
-                        categoriasCache[categoriaId] = {
-                            id: categoriaId,
-                            codigo: `CAT-${categoriaId}`,
-                            nome: `Categoria ${categoriaId}`
-                        };
-                    }
-                }
-
-                // Carregar subcategorias
-                for (const subcategoriaId of subcategorias) {
-                    if (!subcategoriasCache[subcategoriaId]) {
-                        try {
-                            const subcategoria = await fetchAPI(`/api/Subcategorias/${subcategoriaId}`);
-                            if (subcategoria) {
-                                subcategoriasCache[subcategoriaId] = subcategoria;
-                                console.log(`Subcategoria ${subcategoriaId} carregada:`, subcategoria);
-                            } else {
-                                // Fallback
-                                subcategoriasCache[subcategoriaId] = {
-                                    id: subcategoriaId,
-                                    codigo: `SC-${subcategoriaId}`,
-                                    descricao: `Subcategoria ${subcategoriaId}`,
-                                    subcategoria: `Subcategoria ${subcategoriaId}`
-                                };
-                            }
-                        } catch (error) {
-                            console.error(`Erro ao carregar subcategoria ${subcategoriaId}:`, error);
-                            subcategoriasCache[subcategoriaId] = {
-                                id: subcategoriaId,
-                                codigo: `SC-${subcategoriaId}`,
-                                descricao: `Subcategoria ${subcategoriaId}`,
-                                subcategoria: `Subcategoria ${subcategoriaId}`
-                            };
-                        }
-                    }
-                }
-            }
-        }
-
-        // FUNÇÃO CORRIGIDA: Exibir cenários
-        async function exibirCenarios(selecoesGovernanca) {
-            const currentContainer = document.getElementById('currentScenarioContainer');
-            const futureContainer = document.getElementById('futureScenarioContainer');
-            
-            currentContainer.innerHTML = '';
-            futureContainer.innerHTML = '';
-
-            let totalSubcategories = 0;
-
-            // Criar estrutura para governança
-            const currentFunctionDiv = criarEstruturaFuncao('governanca');
-            const futureFunctionDiv = criarEstruturaFuncao('governanca');
-
-            for (const selecao of selecoesGovernanca) {
-                const { categoriaId, subcategorias } = selecao;
-
-                const currentCategoryDiv = criarEstruturaCategoria(categoriaId);
-                const futureCategoryDiv = criarEstruturaCategoria(categoriaId);
-
-                for (const subcategoriaId of subcategorias) {
-                    const globalIndex = totalSubcategories;
-                    
-                    // Carregar dados do banco para esta subcategoria
-                    await carregarDadosSubcategoria(subcategoriaId);
-                    
-                    const currentSub = criarFormularioAtual(subcategoriaId, globalIndex);
-                    const futureSub = criarFormularioFuturo(subcategoriaId, globalIndex);
-                    
-                    currentCategoryDiv.querySelector('.category-content').appendChild(currentSub);
-                    futureCategoryDiv.querySelector('.category-content').appendChild(futureSub);
-                    
-                    totalSubcategories++;
-                }
-
-                currentFunctionDiv.querySelector('.function-content').appendChild(currentCategoryDiv);
-                futureFunctionDiv.querySelector('.function-content').appendChild(futureCategoryDiv);
-            }
-
-            currentContainer.appendChild(currentFunctionDiv);
-            futureContainer.appendChild(futureFunctionDiv);
-
-            // Atualizar informações
-            safeUpdateElement('selectionInfo', `
-                <h2>Governança - Cenário Atual vs Futuro</h2>
-                <p><strong>Total de subcategorias selecionadas:</strong> ${totalSubcategories}</p>
-                <p><em>Cenário atual: dados existentes | Cenário futuro: dados a serem salvos</em></p>
-            `);
-
-            // Expandir tudo por padrão
-            expandirTodosOsElementos();
-        }
-
-        // FUNÇÃO AUXILIAR: Carregar dados da subcategoria
-        async function carregarDadosSubcategoria(subcategoriaId) {
-            // Dados atuais
-            if (!dadosAtuaisCache[subcategoriaId]) {
-                try {
-                    const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoriaId}`);
-                    if (dadosAtuais && Array.isArray(dadosAtuais) && dadosAtuais.length > 0) {
-                        dadosAtuaisCache[subcategoriaId] = dadosAtuais[0];
-                    }
-                } catch (error) {
-                    console.error(`Erro ao carregar dados atuais para ${subcategoriaId}:`, error);
-                }
-            }
-
-            // Dados futuros
-            if (!dadosFuturosCache[subcategoriaId]) {
-                try {
-                    const dadosFuturos = await fetchAPI(`/api/CenarioFuturo?subcategoriaId=${subcategoriaId}`);
-                    if (dadosFuturos && Array.isArray(dadosFuturos) && dadosFuturos.length > 0) {
-                        dadosFuturosCache[subcategoriaId] = dadosFuturos[0];
-                    }
-                } catch (error) {
-                    console.error(`Erro ao carregar dados futuros para ${subcategoriaId}:`, error);
-                }
-            }
-        }
-
-        // FUNÇÃO AUXILIAR: Expandir todos os elementos
-        function expandirTodosOsElementos() {
-            const functionContents = document.querySelectorAll('.function-content');
-            const categoryContents = document.querySelectorAll('.category-content');
-            const toggleIcons = document.querySelectorAll('.toggle-icon');
-
-            functionContents.forEach(content => content.classList.add('expanded'));
-            categoryContents.forEach(content => content.classList.add('expanded'));
-            toggleIcons.forEach(icon => icon.classList.add('expanded'));
-        }
-
-        // FUNÇÃO AUXILIAR: Fetch API
+        // Função fetchAPI CORRIGIDA (mesma da página Recuperar)
         async function fetchAPI(url) {
             try {
-                console.log(`Fetching: ${url}`);
-                const response = await fetch(url);
-                
+                let urlCorrigida = url
+                    .replace('CenarioFuture', 'CenarioFuturo')
+                    .replace('Cenario?', 'CenarioAtual?')
+                    .replace('Categories', 'Categorias')
+                    .replace('Subcategories', 'Subcategorias');
+
+                console.log(`Fetching: ${urlCorrigida}`);
+                const response = await fetch(urlCorrigida);
+
                 if (!response.ok) {
                     if (response.status === 404) {
-                        console.warn(`Endpoint não encontrado: ${url}`);
+                        console.warn(`Endpoint não encontrado (404): ${urlCorrigida}`);
                         return null;
                     }
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
-                
-                return await response.json();
+
+                const data = await response.json();
+                return data;
             } catch (error) {
-                console.error(`Erro na API ${url}:`, error);
+                console.error(`Erro na API ${url}:`, error.message);
                 return null;
             }
         }
 
-        // FUNÇÃO AUXILIAR: Obter nome da função pelo ID
-        function getFunctionNameById(funcId) {
-            return mapeamentoFuncoes[funcId] || funcId;
+        // Carregar prioridades
+        async function carregarPrioridades() {
+            try {
+                console.log('Carregando prioridades...');
+                const data = await fetchAPI('/api/Dados/prioridades');
+
+                if (data && Array.isArray(data)) {
+                    prioridadesData = data;
+                    console.log('Prioridades carregadas:', prioridadesData);
+                    preencherDropdownsPrioridades();
+                } else {
+                    throw new Error('Não foi possível carregar prioridades');
+                }
+
+            } catch (error) {
+                console.error('Erro ao carregar prioridades:', error);
+            }
         }
 
-        // FUNÇÃO AUXILIAR: Atualizar elemento de forma segura
+        // Carregar níveis
+        async function carregarNiveis() {
+            try {
+                console.log('Carregando níveis...');
+                const data = await fetchAPI('/api/Dados/status');
+
+                if (data && Array.isArray(data)) {
+                    niveisData = data;
+                    console.log('Níveis carregados:', niveisData);
+                    preencherDropdownsNiveis();
+                } else {
+                    throw new Error('Não foi possível carregar níveis');
+                }
+
+            } catch (error) {
+                console.error('Erro ao carregar níveis:', error);
+            }
+        }
+
+        // Preencher dropdowns de prioridades
+        function preencherDropdownsPrioridades() {
+            const selects = document.querySelectorAll('select[id^="future-prioridade-"]');
+            console.log(`Preenchendo ${selects.length} dropdowns de prioridade`);
+
+            selects.forEach(select => {
+                if (!select) return;
+
+                select.innerHTML = '<option value="">Selecione a prioridade</option>';
+
+                prioridadesData.forEach(prioridade => {
+                    const option = document.createElement('option');
+                    option.value = prioridade.id;
+                    option.textContent = prioridade.nivel;
+                    select.appendChild(option);
+                });
+
+                select.disabled = false;
+            });
+        }
+
+        // Preencher dropdowns de níveis
+        function preencherDropdownsNiveis() {
+            const selects = document.querySelectorAll('select[id^="future-nivel-"]');
+            console.log(`Preenchendo ${selects.length} dropdowns de nível`);
+
+            selects.forEach(select => {
+                if (!select) return;
+
+                select.innerHTML = '<option value="">Selecione o nível</option>';
+
+                niveisData.forEach(nivel => {
+                    const option = document.createElement('option');
+                    option.value = nivel.id;
+                    option.textContent = nivel.nivel;
+                    select.appendChild(option);
+                });
+
+                select.disabled = false;
+            });
+        }
+
+        // Função segura para atualizar elementos
         function safeUpdateElement(elementId, content) {
             const element = document.getElementById(elementId);
-            if (element) element.innerHTML = content;
+            if (element) {
+                element.innerHTML = content;
+            } else {
+                console.warn(`Elemento ${elementId} não encontrado para atualização`);
+            }
         }
 
-        // FUNÇÃO AUXILIAR: Mostrar erro
-        function mostrarErro(mensagem) {
-            safeUpdateElement('selectionInfo', `
-                <div class="error-message">
-                    <h2>Erro</h2>
-                    <p>${mensagem}</p>
-                </div>
-            `);
-        }
+        // Carregar dados iniciais
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                console.log('=== INICIANDO CARREGAMENTO - GOVERNANCA ===');
 
-        // FUNÇÃO AUXILIAR: Mostrar mensagem de não selecionada
-        function mostrarMensagemNaoSelecionada() {
-            safeUpdateElement('selectionInfo', `
-                <div class="success-message">
-                    <h2>Governança não selecionada</h2>
-                    <p>Avance para a próxima função com seleções.</p>
-                </div>
-            `);
-        }
+                // Inicializar navegação
+                navegacao = new NistNavigation();
 
-        // FUNÇÃO AUXILIAR: Mostrar erro crítico
-        function mostrarErroCritico(error) {
-            safeUpdateElement('selectionInfo', `
+                // Carregar catálogos primeiro
+                await carregarPrioridades();
+                await carregarNiveis();
+
+                // Carregar seleções do localStorage
+                let selectedSubcategories = {};
+                try {
+                    const storedSelections = localStorage.getItem('nistSelections');
+                    if (storedSelections) {
+                        selectedSubcategories = JSON.parse(storedSelections);
+                        console.log('Seleções carregadas:', selectedSubcategories);
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar localStorage:', error);
+                    safeUpdateElement('selectionInfo', `
+                    <div class="error-message">
+                        <h2>Erro ao carregar seleções</h2>
+                        <p>${error.message}</p>
+                    </div>
+                `);
+                    return;
+                }
+
+                // Verificar se há dados válidos
+                if (Object.keys(selectedSubcategories).length === 0) {
+                    safeUpdateElement('selectionInfo', `
+                    <div class="error-message">
+                        <h2>Nenhuma seleção encontrada</h2>
+                        <p>Volte à página anterior para selecionar subcategorias.</p>
+                    </div>
+                `);
+                    return;
+                }
+
+                // Verificar se a governanca está selecionada
+                if (!navegacao.funcaoEstaSelecionada(selectedSubcategories, 'governanca')) {
+                    safeUpdateElement('selectionInfo', `
+                    <div class="success-message">
+                        <h2>Governança não selecionada</h2>
+                        <p>Avance para a próxima função.</p>
+                    </div>
+                `);
+                    navegacao.navegarParaProxima('governanca');
+                    return;
+                }
+
+                // Carregar informações detalhadas
+                await carregarInformacoesDetalhadas(selectedSubcategories);
+
+                // Carregar dados do banco
+                await carregarDadosAtuais(selectedSubcategories);
+                await carregarDadosBanco(selectedSubcategories);
+
+                // Exibir os cenários
+                exibirCenarios(selectedSubcategories);
+
+                console.log('=== CARREGAMENTO CONCLUÍDO - GOVERNANCA ===');
+
+            } catch (error) {
+                console.error('Erro crítico:', error);
+                safeUpdateElement('selectionInfo', `
                 <div class="error-message">
                     <h2>Erro ao carregar a página</h2>
                     <p>${error.message}</p>
                 </div>
             `);
+            }
+        });
+
+        // CORREÇÃO: Carregar dados atuais do banco
+        async function carregarDadosAtuais(selectedSubcategories) {
+            try {
+                for (const funcId in selectedSubcategories) {
+                    const functionName = navegacao.getFunctionNameById(funcId);
+                    if (functionName !== 'governanca') continue;
+
+                    for (const categoryId in selectedSubcategories[funcId]) {
+                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
+                            try {
+                                const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoryId}`);
+                                if (dadosAtuais && Array.isArray(dadosAtuais) && dadosAtuais.length > 0) {
+                                    dadosAtuaisCache[subcategoryId] = {
+                                        prioridade: dadosAtuais[0].prioridade,
+                                        status: dadosAtuais[0].status,
+                                        politicasPro: dadosAtuais[0].politicasPro || '',
+                                        praticasInternas: dadosAtuais[0].praticasInternas || '',
+                                        funcoesResp: dadosAtuais[0].funcoesResp || '',
+                                        referenciasInfo: dadosAtuais[0].referenciasInfo || '',
+                                        artefatosEvi: dadosAtuais[0].artefatosEvi || ''
+                                    };
+                                }
+                            } catch (error) {
+                                console.error(`Erro ao carregar dados atuais para subcategoria ${subcategoryId}:`, error);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dados atuais:', error);
+            }
         }
 
-        // FUNÇÕES DE CRIAÇÃO DE ESTRUTURA (mantenha as originais)
+        // CORREÇÃO: Carregar dados futuros do banco
+        async function carregarDadosBanco(selectedSubcategories) {
+            try {
+                for (const funcId in selectedSubcategories) {
+                    const functionName = navegacao.getFunctionNameById(funcId);
+                    if (functionName !== 'governanca') continue;
+
+                    for (const categoryId in selectedSubcategories[funcId]) {
+                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
+                            try {
+                                const dadosFuturos = await fetchAPI(`/api/CenarioFuturo?subcategoriaId=${subcategoryId}`);
+                                if (dadosFuturos && Array.isArray(dadosFuturos) && dadosFuturos.length > 0) {
+                                    dadosFuturosCache[subcategoryId] = {
+                                        prioridadeAlvo: dadosFuturos[0].prioridadeAlvo,
+                                        nivelAlvo: dadosFuturos[0].nivelAlvo,
+                                        politicasAlvo: dadosFuturos[0].politicasAlvo || '',
+                                        praticasAlvo: dadosFuturos[0].praticasAlvo || '',
+                                        funcoesAlvo: dadosFuturos[0].funcoesAlvo || '',
+                                        referenciasAlvo: dadosFuturos[0].referenciasAlvo || '',
+                                        artefatosAlvo: dadosFuturos[0].artefatosAlvo || ''
+                                    };
+                                }
+                            } catch (error) {
+                                console.error(`Erro ao carregar dados futuros para subcategoria ${subcategoryId}:`, error);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dados do banco:', error);
+            }
+        }
+
+        // CORREÇÃO: Carregar informações detalhadas
+        async function carregarInformacoesDetalhadas(selectedSubcategories) {
+            try {
+                for (const funcId in selectedSubcategories) {
+                    const functionName = navegacao.getFunctionNameById(funcId);
+                    if (functionName !== 'governanca') continue;
+
+                    try {
+                        const categorias = await fetchAPI(`/api/Categorias?funcaoId=${funcId}`);
+                        if (categorias && Array.isArray(categorias)) {
+                            categorias.forEach(categoria => {
+                                categoriasCache[categoria.id || categoria.ID] = categoria;
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Erro ao carregar categorias:', error);
+                    }
+
+                    for (const categoryId in selectedSubcategories[funcId]) {
+                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
+                            if (!subcategoriasCache[subcategoryId]) {
+                                try {
+                                    const subcategoria = await fetchAPI(`/api/Subcategorias/${subcategoryId}`);
+                                    if (subcategoria) {
+                                        subcategoriasCache[subcategoryId] = subcategoria;
+                                    } else {
+                                        subcategoriasCache[subcategoryId] = {
+                                            id: subcategoryId,
+                                            codigo: `SC-${subcategoryId}`,
+                                            descricao: 'Subcategoria não encontrada'
+                                        };
+                                    }
+                                } catch (error) {
+                                    console.error(`Erro ao carregar subcategoria ${subcategoryId}:`, error);
+                                    subcategoriasCache[subcategoryId] = {
+                                        id: subcategoryId,
+                                        codigo: `SC-${subcategoryId}`,
+                                        descricao: 'Erro ao carregar'
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar informações detalhadas:', error);
+            }
+        }
+
+        // Funções auxiliares para obter nomes
+        function obterNomeCategoria(categoryId) {
+            const categoria = categoriasCache[categoryId];
+            if (categoria) {
+                return `${categoria.codigo || categoria.CODIGO || ''} - ${categoria.nome || categoria.NOME || ''}`;
+            }
+            return `Categoria ${categoryId}`;
+        }
+
+        function obterNomeSubcategoria(subcategoryId) {
+            const subcategoria = subcategoriasCache[subcategoryId];
+            if (subcategoria) {
+                const codigoCompleto = subcategoria.codigo || subcategoria.CODIGO || `SC-${subcategoryId}`;
+                const descricao = subcategoria.subcategoria || subcategoria.SUBCATEGORIA || subcategoria.descricao || subcategoria.DESCRICAO || '';
+                return `${codigoCompleto} - ${descricao}`;
+            }
+            return `Subcategoria ${subcategoryId}`;
+        }
+
+        // CORREÇÃO: Exibir cenários
+        function exibirCenarios(selectedSubcategories) {
+            const currentContainer = document.getElementById('currentScenarioContainer');
+            const futureContainer = document.getElementById('futureScenarioContainer');
+            const selectionInfo = document.getElementById('selectionInfo');
+
+            if (!currentContainer || !futureContainer) {
+                console.error('Containers não encontrados');
+                return;
+            }
+
+            let totalSubcategories = 0;
+
+            currentContainer.innerHTML = '';
+            futureContainer.innerHTML = '';
+
+            for (const funcId in selectedSubcategories) {
+                const functionName = navegacao.getFunctionNameById(funcId);
+                if (functionName !== 'governanca') continue;
+
+                const currentFunctionDiv = criarEstruturaFuncao(functionName);
+                const currentFunctionContent = currentFunctionDiv.querySelector('.function-content');
+
+                const futureFunctionDiv = criarEstruturaFuncao(functionName);
+                const futureFunctionContent = futureFunctionDiv.querySelector('.function-content');
+
+                let hasCategories = false;
+
+                for (const categoryId in selectedSubcategories[funcId]) {
+                    if (selectedSubcategories[funcId][categoryId].length > 0) {
+                        hasCategories = true;
+
+                        const currentCategoryDiv = criarEstruturaCategoria(categoryId);
+                        const currentCategoryContent = currentCategoryDiv.querySelector('.category-content');
+
+                        const futureCategoryDiv = criarEstruturaCategoria(categoryId);
+                        const futureCategoryContent = futureCategoryDiv.querySelector('.category-content');
+
+                        selectedSubcategories[funcId][categoryId].forEach(subcategoryId => {
+                            const currentSubcategoryDiv = criarFormularioAtual(subcategoryId, totalSubcategories);
+                            currentCategoryContent.appendChild(currentSubcategoryDiv);
+
+                            const futureSubcategoryDiv = criarFormularioFuturo(subcategoryId, totalSubcategories);
+                            futureCategoryContent.appendChild(futureSubcategoryDiv);
+
+                            totalSubcategories++;
+                        });
+
+                        currentFunctionContent.appendChild(currentCategoryDiv);
+                        futureFunctionContent.appendChild(futureCategoryDiv);
+                    }
+                }
+
+                if (hasCategories) {
+                    currentContainer.appendChild(currentFunctionDiv);
+                    futureContainer.appendChild(futureFunctionDiv);
+
+                    currentFunctionDiv.querySelector('.function-content').classList.add('expanded');
+                    currentFunctionDiv.querySelector('.toggle-icon').classList.add('expanded');
+                    futureFunctionDiv.querySelector('.function-content').classList.add('expanded');
+                    futureFunctionDiv.querySelector('.toggle-icon').classList.add('expanded');
+                }
+            }
+
+            safeUpdateElement('selectionInfo', `
+            <h2>Governança - Cenário Atual vs Futuro</h2>
+            <p><strong>Total de subcategorias selecionadas:</strong> ${totalSubcategories}</p>
+            <p><strong>Função atual:</strong> Governança (GV)</p>
+            <p><em>O cenário atual mostra os dados existentes no banco (somente leitura). O cenário futuro permite editar os dados que serão salvos.</em></p>
+        `);
+
+            if (totalSubcategories === 0) {
+                currentContainer.innerHTML = `
+                <div class="empty-state">
+                    <h3>Nenhuma subcategoria de Governança selecionada</h3>
+                    <p>Avance para a próxima função ou volte para selecionar subcategorias.</p>
+                </div>
+            `;
+                futureContainer.innerHTML = `
+                <div class="empty-state">
+                    <h3>Nenhuma subcategoria de Governança selecionada</h3>
+                    <p>Avance para a próxima função ou volte para selecionar subcategorias.</p>
+                </div>
+            `;
+            }
+        }
+
+        // CORREÇÃO: Criar estrutura da função
         function criarEstruturaFuncao(functionName) {
             const functionDiv = document.createElement('div');
             functionDiv.className = 'function-section';
@@ -742,9 +818,9 @@
             const functionHeader = document.createElement('div');
             functionHeader.className = 'function-header';
             functionHeader.innerHTML = `
-                <h2>${functionNames[functionName] || functionName}</h2>
-                <span class="toggle-icon"></span>
-            `;
+            <h2>${navegacao.getFunctionDisplayName(functionName)}</h2>
+            <span class="toggle-icon"></span>
+        `;
 
             const functionContent = document.createElement('div');
             functionContent.className = 'function-content';
@@ -760,6 +836,7 @@
             return functionDiv;
         }
 
+        // CORREÇÃO: Criar estrutura da categoria
         function criarEstruturaCategoria(categoryId) {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category-section';
@@ -767,13 +844,11 @@
             const categoryHeader = document.createElement('div');
             categoryHeader.className = 'category-header';
 
-            const categoria = categoriasCache[categoryId] || { codigo: `CAT-${categoryId}`, nome: `Categoria ${categoryId}` };
-            const categoriaNome = `${categoria.codigo} - ${categoria.nome}`;
-
+            const categoriaNome = obterNomeCategoria(categoryId);
             categoryHeader.innerHTML = `
-                <h3>${categoriaNome}</h3>
-                <span class="toggle-icon"></span>
-            `;
+            <h3>${categoriaNome}</h3>
+            <span class="toggle-icon"></span>
+        `;
 
             const categoryContent = document.createElement('div');
             categoryContent.className = 'category-content';
@@ -789,142 +864,198 @@
             return categoryDiv;
         }
 
+        // CORREÇÃO: Criar formulário para cenário atual
         function criarFormularioAtual(subcategoryId, formIndex) {
-            const subcategoria = subcategoriasCache[subcategoryId] || { 
-                codigo: `SC-${subcategoryId}`, 
-                descricao: `Subcategoria ${subcategoryId}` 
-            };
-            const dados = dadosAtuaisCache[subcategoryId] || {};
+            const subcategoriaTexto = obterNomeSubcategoria(subcategoryId);
+            const dadosAtuais = dadosAtuaisCache[subcategoryId] || {};
 
             const subcategoryDiv = document.createElement('div');
             subcategoryDiv.className = 'subcategory-item';
 
-            const prioridade = prioridadesData.find(p => p.id == dados.prioridade) || {};
-            const nivel = niveisData.find(n => n.id == dados.status) || {};
+            const prioridadeAtual = prioridadesData.find(p => p.id == dadosAtuais.prioridade) || {};
+            const nivelAtual = niveisData.find(n => n.id == dadosAtuais.status) || {};
 
             subcategoryDiv.innerHTML = `
-                <h4>${subcategoria.codigo} - ${subcategoria.descricao}</h4>
-                <div class="form-group">
-                    <label>Prioridade:</label>
-                    <input type="text" class="form-control readonly-field" 
-                           value="${prioridade.nivel || 'Não definida'}" readonly />
-                </div>
-                <div class="form-group">
-                    <label>Nível:</label>
-                    <input type="text" class="form-control readonly-field" 
-                           value="${nivel.nivel || 'Não definido'}" readonly />
-                </div>
-                <div class="form-group">
-                    <label>Políticas, Processos e Procedimentos Atuais:</label>
-                    <textarea class="form-control readonly-field" rows="4" readonly>${dados.politicasPro || 'Não informado'}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Práticas internas:</label>
-                    <textarea class="form-control readonly-field" rows="4" readonly>${dados.praticasInternas || 'Não informado'}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Funções e responsabilidades:</label>
-                    <textarea class="form-control readonly-field" rows="4" readonly>${dados.funcoesResp || 'Não informado'}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Referências informativas:</label>
-                    <textarea class="form-control readonly-field" rows="4" readonly>${dados.referenciasInfo || 'Não informado'}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Artefatos e evidências:</label>
-                    <textarea class="form-control readonly-field" rows="4" readonly>${dados.artefatosEvi || 'Não informado'}</textarea>
-                </div>
-            `;
+        <h4>${subcategoriaTexto}</h4>
+        <div class="form-group">
+            <label>Prioridade:</label>
+            <input type="text" class="form-control readonly-field" 
+                   value="${prioridadeAtual.nivel || 'Não definida'}" readonly />
+        </div>
+        <div class="form-group">
+            <label>Nível:</label>
+            <input type="text" class="form-control readonly-field" 
+                   value="${nivelAtual.nivel || 'Não definido'}" readonly />
+        </div>
+        <div class="form-group">
+            <label>Políticas, Processos e Procedimentos Atuais:</label>
+            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.politicasPro || 'Não informado'}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Práticas internas:</label>
+            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.praticasInternas || 'Não informado'}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Funções e responsabilidades:</label>
+            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.funcoesResp || 'Não informado'}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Referências informativas:</label>
+            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.referenciasInfo || 'Não informado'}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Artefatos e evidências:</label>
+            <textarea class="form-control readonly-field" rows="4" readonly>${dadosAtuais.artefatosEvi || 'Não informado'}</textarea>
+        </div>
+    `;
 
             return subcategoryDiv;
         }
 
+        // CORREÇÃO: Criar formulário para cenário futuro
         function criarFormularioFuturo(subcategoryId, formIndex) {
-            const subcategoria = subcategoriasCache[subcategoryId] || { 
-                codigo: `SC-${subcategoryId}`, 
-                descricao: `Subcategoria ${subcategoryId}` 
-            };
-            const dados = dadosFuturosCache[subcategoryId] || {};
+            const subcategoriaTexto = obterNomeSubcategoria(subcategoryId);
+            const dadosFuturos = dadosFuturosCache[subcategoryId] || {};
 
             const subcategoryDiv = document.createElement('div');
             subcategoryDiv.className = 'subcategory-item';
 
             subcategoryDiv.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4>${subcategoria.codigo} - ${subcategoria.descricao}</h4>
-                    <button class="remove-btn" onclick="removerSubcategoriaFutura('${subcategoryId}', this)">×</button>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-prioridade-${formIndex}">Prioridade:</label>
-                    <select id="future-prioridade-${formIndex}" class="form-control">
-                        <option value="">Selecione a prioridade</option>
-                        ${prioridadesData.map(p => 
-                            `<option value="${p.id}" ${dados.prioridadeAlvo == p.id ? 'selected' : ''}>${p.nivel}</option>`
-                        ).join('')}
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-nivel-${formIndex}">Nível:</label>
-                    <select id="future-nivel-${formIndex}" class="form-control">
-                        <option value="">Selecione o nível</option>
-                        ${niveisData.map(n => 
-                            `<option value="${n.id}" ${dados.nivelAlvo == n.id ? 'selected' : ''}>${n.nivel}</option>`
-                        ).join('')}
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-politicasPro-${formIndex}">Políticas, Processos e Procedimentos:</label>
-                    <textarea id="future-politicasPro-${formIndex}" class="form-control" rows="4">${dados.politicasAlvo || ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-praticasInternas-${formIndex}">Práticas internas:</label>
-                    <textarea id="future-praticasInternas-${formIndex}" class="form-control" rows="4">${dados.praticasAlvo || ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-funcoesResp-${formIndex}">Funções e responsabilidades:</label>
-                    <textarea id="future-funcoesResp-${formIndex}" class="form-control" rows="4">${dados.funcoesAlvo || ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-referenciasInfo-${formIndex}">Referências informativas:</label>
-                    <textarea id="future-referenciasInfo-${formIndex}" class="form-control" rows="4">${dados.referenciasAlvo || ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="future-artefatosEvi-${formIndex}">Artefatos e evidências:</label>
-                    <textarea id="future-artefatosEvi-${formIndex}" class="form-control" rows="4">${dados.artefatosAlvo || ''}</textarea>
-                </div>
-                
-                <input type="hidden" id="future-subcategory-${formIndex}" value="${subcategoryId}">
-            `;
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4>${subcategoriaTexto}</h4>
+            <button class="remove-btn" onclick="removerSubcategoriaFutura('${subcategoryId}', this)">×</button>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-prioridade-${formIndex}">Prioridade:</label>
+            <select id="future-prioridade-${formIndex}" class="form-control">
+                <option value="">Selecione a prioridade</option>
+                ${prioridadesData.map(p =>
+                `<option value="${p.id}" ${dadosFuturos.prioridadeAlvo == p.id ? 'selected' : ''}>${p.nivel}</option>`
+            ).join('')}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-nivel-${formIndex}">Nível:</label>
+            <select id="future-nivel-${formIndex}" class="form-control">
+                <option value="">Selecione o nível</option>
+                ${niveisData.map(n =>
+                `<option value="${n.id}" ${dadosFuturos.nivelAlvo == n.id ? 'selected' : ''}>${n.status}</option>`
+            ).join('')}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-politicasPro-${formIndex}">Políticas, Processos e Procedimentos:</label>
+            <textarea id="future-politicasPro-${formIndex}" class="form-control" 
+                      rows="4" placeholder="Descreva as políticas, processos e procedimentos desejados...">${dadosFuturos.politicasAlvo || ''}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-praticasInternas-${formIndex}">Práticas internas:</label>
+            <textarea id="future-praticasInternas-${formIndex}" class="form-control" 
+                      rows="4" placeholder="Descreva as práticas internas a serem implementadas...">${dadosFuturos.praticasAlvo || ''}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-funcoesResp-${formIndex}">Funções e responsabilidades:</label>
+            <textarea id="future-funcoesResp-${formIndex}" class="form-control" 
+                      rows="4" placeholder="Descreva as funções e responsabilidades...">${dadosFuturos.funcoesAlvo || ''}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-referenciasInfo-${formIndex}">Referências informativas:</label>
+            <textarea id="future-referenciasInfo-${formIndex}" class="form-control" 
+                      rows="4" placeholder="Liste as referências informativas...">${dadosFuturos.referenciasAlvo || ''}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="future-artefatosEvi-${formIndex}">Artefatos e evidências:</label>
+            <textarea id="future-artefatosEvi-${formIndex}" class="form-control" 
+                      rows="4" placeholder="Descreva os artefatos e evidências...">${dadosFuturos.artefatosAlvo || ''}</textarea>
+        </div>
+        
+        <input type="hidden" id="future-subcategory-${formIndex}" value="${subcategoryId}">
+    `;
 
             return subcategoryDiv;
         }
 
-        // FUNÇÕES DE NAVEGAÇÃO
-        function voltarParaSelecao() {
-            window.location.href = '/Home/Precadastro';
-        }
-
-        function avancarParaProxima() {
-            // Lógica para encontrar próxima função com seleções
-            window.location.href = '/Home/Identificar'; // Ajuste conforme necessário
-        }
-
+        // Funções auxiliares
         function removerSubcategoriaFutura(subcategoryId, btnElement) {
-            if (confirm("Deseja remover esta subcategoria do cenário futuro?")) {
-                btnElement.closest('.subcategory-item').remove();
-            }
+            const confirmacao = confirm("Deseja remover esta subcategoria do cenário futuro?");
+            if (!confirmacao) return;
+
+            const subcategoryItem = btnElement.closest('.subcategory-item');
+            subcategoryItem.remove();
+            atualizarInterfaceAposRemocao();
         }
 
-        function salvarAlteracoes() {
-            alert('Funcionalidade de salvar será implementada!');
-            // Implemente a lógica de salvamento aqui
+        function atualizarInterfaceAposRemocao() {
+            const formCount = document.querySelectorAll('#futureScenarioContainer .subcategory-item').length;
+            safeUpdateElement('selectionInfo', `
+            <h2>Governança - Cenário Atual vs Futuro</h2>
+            <p><strong>Total de subcategorias no futuro:</strong> ${formCount}</p>
+        `);
+        }
+
+        // CORREÇÃO: Função para salvar alterações
+        async function salvarAlteracoes() {
+            try {
+                console.log('Iniciando salvamento de alterações...');
+
+                const forms = document.querySelectorAll('#futureScenarioContainer .subcategory-item');
+                const dadosParaSalvar = [];
+
+                for (let i = 0; i < forms.length; i++) {
+                    const subcategoryId = document.getElementById(`future-subcategory-${i}`)?.value;
+
+                    if (!subcategoryId) continue;
+
+                    const dados = {
+                        subcategoriaId: parseInt(subcategoryId),
+                        prioridadeAlvo: document.getElementById(`future-prioridade-${i}`)?.value || null,
+                        nivelAlvo: document.getElementById(`future-nivel-${i}`)?.value || null,
+                        politicasAlvo: document.getElementById(`future-politicasPro-${i}`)?.value || '',
+                        praticasAlvo: document.getElementById(`future-praticasInternas-${i}`)?.value || '',
+                        funcoesAlvo: document.getElementById(`future-funcoesResp-${i}`)?.value || '',
+                        referenciasAlvo: document.getElementById(`future-referenciasInfo-${i}`)?.value || '',
+                        artefatosAlvo: document.getElementById(`future-artefatosEvi-${i}`)?.value || ''
+                    };
+
+                    dadosParaSalvar.push(dados);
+                }
+
+                console.log('Dados para salvar:', dadosParaSalvar);
+
+                if (dadosParaSalvar.length === 0) {
+                    alert('Nenhum dado para salvar.');
+                    return;
+                }
+
+                const response = await fetch('/api/CenarioFuturo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dadosParaSalvar)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Erro HTTP:', response.status, errorText);
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+
+                const resultado = await response.json();
+                console.log('Salvamento bem-sucedido:', resultado);
+                alert('Alterações salvas com sucesso!');
+
+            } catch (error) {
+                console.error('Erro ao salvar alterações:', error);
+                alert('Erro ao salvar alterações: ' + error.message);
+            }
         }
     </script>
 </body>

@@ -409,36 +409,34 @@
         let niveisData = [];
 
         // Função auxiliar para fetch com tratamento de erro
-        // Função auxiliar para fetch com tratamento de erro - CORRIGIDA
-       // Função fetchAPI CORRIGIDA
-async function fetchAPI(url) {
-    try {
-        // Corrigir TODOS os endpoints problemáticos
-        let urlCorrigida = url
-            .replace('CenarioFuture', 'CenarioFuturo') // Corrige o nome do endpoint futuro
-            .replace('Cenario?', 'CenarioAtual?') // ✅ CORREÇÃO: Cenario → CenarioAtual
-            .replace('Categories', 'Categorias')
-            .replace('Subcategories', 'Subcategorias');
+        // FUNÇÃO FETCHAPI - CORRIGIDA
+        async function fetchAPI(url) {
+            try {
+                // CORREÇÃO: Corrige TODOS os problemas de endpoints
+                let urlCorrigida = url
+                    .replace('CenarioFuture', 'CenarioFuturo') // Nome do controller
+                    .replace('subcategoryiaId', 'subcategoriaId') // ✅ CORREÇÃO DO TYPO
+                    .replace('Categories', 'Categorias')
+                    .replace('Subcategories', 'Subcategorias');
 
-        console.log(`Fetching: ${urlCorrigida}`);
-        const response = await fetch(urlCorrigida);
+                console.log(`Fetching: ${urlCorrigida}`);
+                const response = await fetch(urlCorrigida);
 
-        if (!response.ok) {
-            // Se for 404, não é erro crítico - pode ser que não existam dados
-            if (response.status === 404) {
-                console.warn(`Endpoint não encontrado (404): ${urlCorrigida}`);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.warn(`Endpoint não encontrado (404): ${urlCorrigida}`);
+                        return null;
+                    }
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error(`Erro na API ${url}:`, error.message);
                 return null;
             }
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(`Erro na API ${url}:`, error.message);
-        return null;
-    }
-}
         // Carregar prioridades
         async function carregarPrioridades() {
             try {
@@ -688,39 +686,41 @@ async function fetchAPI(url) {
         }
 
         // Carregar dados atuais do banco
-        // No carregarDadosAtuais, procure por:
-async function carregarDadosAtuais(selectedSubcategories) {
-    try {
-        for (const funcId in selectedSubcategories) {
-            const functionName = getFunctionNameById(funcId);
-            if (functionName !== 'proteger') continue;
+        // CORREÇÃO: Carregar dados atuais
+        async function carregarDadosAtuais(selectedSubcategories) {
+            try {
+                for (const funcId in selectedSubcategories) {
+                    const functionName = getFunctionNameById(funcId);
+                    if (functionName !== 'proteger') continue;
 
-            for (const categoryId in selectedSubcategories[funcId]) {
-                for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
-                    // Buscar dados atuais - ✅ CORRIGIDO: Cenario → CenarioAtual
-                    try {
-                        const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoryId}`);
-                        if (dadosAtuais && Array.isArray(dadosAtuais) && dadosAtuais.length > 0) {
-                            dadosAtuaisCache[subcategoryId] = {
-                                prioridade: dadosAtuais[0].prioridade,
-                                status: dadosAtuais[0].status,
-                                politicasPro: dadosAtuais[0].politicasPro || '',
-                                praticasInternas: dadosAtuais[0].praticasInternas || '',
-                                funcoesResp: dadosAtuais[0].funcoesResp || '',
-                                referenciasInfo: dadosAtuais[0].referenciasInfo || '',
-                                artefatosEvi: dadosAtuais[0].artefatosEvi || ''
-                            };
+                    for (const categoryId in selectedSubcategories[funcId]) {
+                        for (const subcategoryId of selectedSubcategories[funcId][categoryId]) {
+                            // CORREÇÃO: Use subcategoriaId (sem o "y" extra)
+                            try {
+                                const dadosAtuais = await fetchAPI(`/api/CenarioAtual?subcategoriaId=${subcategoryId}`);
+
+                                // CORREÇÃO: O endpoint retorna um objeto, não array
+                                if (dadosAtuais && typeof dadosAtuais === 'object') {
+                                    dadosAtuaisCache[subcategoryId] = {
+                                        prioridade: dadosAtuais.prioridadeAtual || dadosAtuais.PRIOR_ATUAL,
+                                        status: dadosAtuais.nivelAtual || dadosAtuais.NIVEL_ATUAL,
+                                        politicasPro: dadosAtuais.politicasAtual || dadosAtuais.POLIT_ATUAL || '',
+                                        praticasInternas: dadosAtuais.praticasAtual || dadosAtuais.PRAT_ATUAL || '',
+                                        funcoesResp: dadosAtuais.funcoesResp || dadosAtuais.FUNC_RESP || '',
+                                        referenciasInfo: dadosAtuais.referenciasInfo || dadosAtuais.REF_INFO || '',
+                                        artefatosEvi: dadosAtuais.artefatosEvi || dadosAtuais.ARTEF_ATUAL || ''
+                                    };
+                                }
+                            } catch (error) {
+                                console.error(`Erro ao carregar dados atuais para subcategoria ${subcategoryId}:`, error);
+                            }
                         }
-                    } catch (error) {
-                        console.error(`Erro ao carregar dados atuais para subcategoria ${subcategoryId}:`, error);
                     }
                 }
+            } catch (error) {
+                console.error('Erro ao carregar dados atuais:', error);
             }
         }
-    } catch (error) {
-        console.error('Erro ao carregar dados atuais:', error);
-    }
-}
 
         // Carregar dados futuros do banco
         async function carregarDadosBanco(selectedSubcategories) {
@@ -1049,28 +1049,28 @@ async function carregarDadosAtuais(selectedSubcategories) {
 
         // Funções de navegação
         function voltarParaAnterior() {
-    const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
-    const indiceAtual = ordemFuncoes.indexOf(funcaoAtual);
+            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+            const indiceAtual = ordemFuncoes.indexOf(funcaoAtual);
 
-    // Buscar funções anteriores (do índice atual para trás)
-    for (let i = indiceAtual - 1; i >= 0; i--) {
-        const funcaoAnterior = ordemFuncoes[i];
-        for (const funcId in selections) {
-            const functionName = getFunctionNameById(funcId);
-            if (functionName === funcaoAnterior) {
-                for (const category in selections[funcId]) {
-                    if (selections[funcId][category].length > 0) {
-                        window.location.href = `/Home/${funcaoAnterior.charAt(0).toUpperCase() + funcaoAnterior.slice(1)}`;
-                        return;
+            // Buscar funções anteriores (do índice atual para trás)
+            for (let i = indiceAtual - 1; i >= 0; i--) {
+                const funcaoAnterior = ordemFuncoes[i];
+                for (const funcId in selections) {
+                    const functionName = getFunctionNameById(funcId);
+                    if (functionName === funcaoAnterior) {
+                        for (const category in selections[funcId]) {
+                            if (selections[funcId][category].length > 0) {
+                                window.location.href = `/Home/${funcaoAnterior.charAt(0).toUpperCase() + funcaoAnterior.slice(1)}`;
+                                return;
+                            }
+                        }
                     }
                 }
             }
-        }
-    }
 
-    // Se não encontrou nenhuma função anterior com seleções, volta para a seleção
-    window.location.href = '/Home/Precadastro';
-}
+            // Se não encontrou nenhuma função anterior com seleções, volta para a seleção
+            window.location.href = '/Home/Precadastro';
+        }
 
         function avancarParaProxima() {
             const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
@@ -1111,7 +1111,7 @@ async function carregarDadosAtuais(selectedSubcategories) {
         `);
         }
 
-        // Função para salvar alterações - CORRIGIDA
+        // Função para salvar alterações
         async function salvarAlteracoes() {
             try {
                 console.log('Iniciando salvamento de alterações...');
@@ -1125,15 +1125,16 @@ async function carregarDadosAtuais(selectedSubcategories) {
 
                     if (!subcategoryId) continue;
 
+                    // CORREÇÃO: Use os nomes de propriedades que o controller espera
                     const dados = {
-                        subcategoriaId: parseInt(subcategoryId),
-                        prioridadeAlvo: document.getElementById(`future-prioridade-${i}`)?.value || null,
-                        nivelAlvo: document.getElementById(`future-nivel-${i}`)?.value || null,
-                        politicasAlvo: document.getElementById(`future-politicasPro-${i}`)?.value || '',
-                        praticasAlvo: document.getElementById(`future-praticasInternas-${i}`)?.value || '',
-                        funcoesAlvo: document.getElementById(`future-funcoesResp-${i}`)?.value || '',
-                        referenciasAlvo: document.getElementById(`future-referenciasInfo-${i}`)?.value || '',
-                        artefatosAlvo: document.getElementById(`future-artefatosEvi-${i}`)?.value || ''
+                        SUBCATEGORIA: parseInt(subcategoryId), // Nome exato que o DTO espera
+                        PRIORIDADE_ALVO: document.getElementById(`future-prioridade-${i}`)?.value || null,
+                        NIVEL_ALVO: document.getElementById(`future-nivel-${i}`)?.value || null,
+                        POLIT_ALVO: document.getElementById(`future-politicasPro-${i}`)?.value || '',
+                        PRAT_ALVO: document.getElementById(`future-praticasInternas-${i}`)?.value || '',
+                        FUNC_ALVO: document.getElementById(`future-funcoesResp-${i}`)?.value || '',
+                        REF_INFO_ALVO: document.getElementById(`future-referenciasInfo-${i}`)?.value || '',
+                        ARTEF_ALVO: document.getElementById(`future-artefatosEvi-${i}`)?.value || ''
                     };
 
                     dadosParaSalvar.push(dados);
@@ -1146,8 +1147,8 @@ async function carregarDadosAtuais(selectedSubcategories) {
                     return;
                 }
 
-                // Enviar para a API
-                const response = await fetch('/api/CenarioFuturo', {
+                // CORREÇÃO: Endpoint correto com "/salvar"
+                const response = await fetch('/api/CenarioFuturo/salvar', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

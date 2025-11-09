@@ -1,0 +1,567 @@
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\Users\INGRIDNA\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\Users\INGRIDNA\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\Users\INGRIDNA\OneDrive - Companhia Paulista De Trens Metropolitanos\CSI - DFIO\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\Users\antoniigue\OneDrive - Companhia Paulista De Trens Metropolitanos\Arquivos de INGRID AMARAL DO NASCIMENTO - CSI - DFIO\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\NistXGH\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\NistXGH\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\NistXGH\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\NistXGH\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\NistXGH\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\NistXGH\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\NistXGH\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\NistXGH - Copy\bin\Debug\net8.0\appsettings.Development.json
+C:\NistXGH - Copy\bin\Debug\net8.0\appsettings.json
+C:\NistXGH - Copy\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\NistXGH - Copy\bin\Debug\net8.0\NistXGH.exe
+C:\NistXGH - Copy\bin\Debug\net8.0\NistXGH.deps.json
+C:\NistXGH - Copy\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\NistXGH - Copy\bin\Debug\net8.0\NistXGH.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\NistXGH.pdb
+C:\NistXGH - Copy\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\NistXGH - Copy\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets.build.json
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets.development.json
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\NistXGH - Copy\obj\Debug\net8.0\staticwebassets.pack.json
+C:\NistXGH - Copy\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\NistXGH - Copy\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\NistXGH - Copy\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.dll
+C:\NistXGH - Copy\obj\Debug\net8.0\refint\NistXGH.dll
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.pdb
+C:\NistXGH - Copy\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\NistXGH - Copy\obj\Debug\net8.0\ref\NistXGH.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\appsettings.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\NistXGH.exe
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\NistXGH.deps.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\NistXGH.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\NistXGH.pdb
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\refint\NistXGH.dll
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.pdb
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\Users\antoniigue\Documents\NistXGH - Copy\NistXGH - Copy\obj\Debug\net8.0\ref\NistXGH.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\appsettings.Development.json
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\appsettings.json
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\NistXGH.exe
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\NistXGH.deps.json
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\NIST-CSF\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.sourcelink.json
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets.build.json
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets.development.json
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\staticwebassets.pack.json
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\refint\NistXGH.dll
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\projetos\NistXGH\NIST-CSF\obj\Debug\net8.0\ref\NistXGH.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\projetos\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\projetos\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\projetos\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\projetos\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\projetos\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\projetos\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Oracle.EntityFrameworkCore.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.Linq.Async.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.sourcelink.json
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\projetos\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\projetos\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\projetos\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\projetos\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\projetos\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Oracle.EntityFrameworkCore.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Linq.Async.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.sourcelink.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\Users\antoniigue\Downloads\NistXGH_2.1\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.endpoints.json
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Oracle.EntityFrameworkCore.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Linq.Async.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_2.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.sourcelink.json
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\projetos\NistXGH_2.1\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.endpoints.json
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Oracle.EntityFrameworkCore.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.Linq.Async.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.0\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.sourcelink.json
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\projetos\NistXGH_3.0\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\appsettings.Development.json
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\appsettings.json
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.runtime.json
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.staticwebassets.endpoints.json
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.exe
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.deps.json
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.runtimeconfig.json
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Oracle.EntityFrameworkCore.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.Linq.Async.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+C:\projetos\NistXGH_3.1\NistXGH\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.AssemblyReference.cache
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.GeneratedMSBuildEditorConfig.editorconfig
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfoInputs.cache
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.AssemblyInfo.cs
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.CoreCompileInputs.cache
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.MvcApplicationPartsAssemblyInfo.cache
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cache
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.RazorAssemblyInfo.cs
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.sourcelink.json
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\scopedcss\bundle\NistXGH.styles.css
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\scopedcss\projectbundle\NistXGH.bundle.scp.css
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets.build.json
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets.development.json
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssets.props
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.NistXGH.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.build.NistXGH.props
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.NistXGH.props
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.NistXGH.props
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\staticwebassets.pack.json
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.csproj.Up2Date
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.dll
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\refint\NistXGH.dll
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.pdb
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\NistXGH.genruntimeconfig.cache
+C:\projetos\NistXGH_3.1\NistXGH\obj\Debug\net8.0\ref\NistXGH.dll

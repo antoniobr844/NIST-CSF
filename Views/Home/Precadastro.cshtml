@@ -361,18 +361,18 @@
                 }
             }
 
-            // FUNÇÃO CORRIGIDA: Determinar a primeira função com seleções
+            // FUNÇÃO CORRIGIDA: Avançar para alterações
             avancarParaAlteracoes() {
-                const selections = this.selectionManager.getSelections();
-                console.log('Seleções atuais:', selections);
+                const totalSelecoes = this.selectionManager.getTotalSelectedCount();
+                console.log('Total de seleções:', totalSelecoes);
 
-                if (Object.keys(selections).length === 0) {
+                if (totalSelecoes === 0) {
                     alert('Selecione pelo menos uma subcategoria para avançar.');
                     return;
                 }
 
                 // Encontrar a primeira função que tem seleções
-                const primeiraFuncaoComSelecoes = this.encontrarPrimeiraFuncaoComSelecoes(selections);
+                const primeiraFuncaoComSelecoes = this.encontrarPrimeiraFuncaoComSelecoes();
                 
                 if (!primeiraFuncaoComSelecoes) {
                     alert('Erro: Não foi possível determinar a primeira função com seleções.');
@@ -385,11 +385,17 @@
                 const paginaDestino = `/Home/${primeiraFuncaoComSelecoes}`;
                 console.log('Redirecionando para:', paginaDestino);
                 
+                // Salvar seleções antes de redirecionar
+                this.selectionManager.saveSelections();
+                
                 window.location.href = paginaDestino;
             }
 
-            // NOVA FUNÇÃO: Encontrar a primeira função com seleções
-            encontrarPrimeiraFuncaoComSelecoes(selections) {
+            // FUNÇÃO CORRIGIDA: Encontrar a primeira função com seleções
+            encontrarPrimeiraFuncaoComSelecoes() {
+                const selecoes = this.selectionManager.selectedSubcategories;
+                console.log('Estrutura de seleções:', selecoes);
+
                 // Ordem das funções conforme definido no NIST CSF
                 const ordemFuncoes = ['Governanca', 'Identificar', 'Proteger', 'Detectar', 'Responder', 'Recuperar'];
                 
@@ -400,12 +406,14 @@
                         key => this.mapeamentoFuncoes[key] === funcaoNome
                     );
 
-                    if (funcaoId && selections[funcaoId]) {
+                    console.log(`Verificando função: ${funcaoNome} (ID: ${funcaoId})`);
+
+                    if (funcaoId && selecoes[funcaoId]) {
                         // Verificar se esta função tem alguma categoria com subcategorias selecionadas
-                        const categorias = selections[funcaoId];
+                        const categorias = selecoes[funcaoId];
                         for (const categoriaId in categorias) {
                             if (categorias[categoriaId].length > 0) {
-                                console.log(`Função ${funcaoNome} tem seleções na categoria ${categoriaId}`);
+                                console.log(`✓ Função ${funcaoNome} tem ${categorias[categoriaId].length} seleções na categoria ${categoriaId}`);
                                 return funcaoNome;
                             }
                         }
@@ -416,19 +424,20 @@
                 console.log('Tentando abordagem alternativa...');
                 
                 // Procura por qualquer função que tenha seleções, independente da ordem
-                for (const funcaoId in selections) {
-                    const categorias = selections[funcaoId];
+                for (const funcaoId in selecoes) {
+                    const categorias = selecoes[funcaoId];
                     for (const categoriaId in categorias) {
                         if (categorias[categoriaId].length > 0) {
                             const funcaoNome = this.mapeamentoFuncoes[funcaoId];
                             if (funcaoNome) {
-                                console.log(`Encontrada função ${funcaoNome} com seleções (abordagem alternativa)`);
+                                console.log(`✓ Encontrada função ${funcaoNome} com seleções (abordagem alternativa)`);
                                 return funcaoNome;
                             }
                         }
                     }
                 }
 
+                console.log('✗ Nenhuma função com seleções encontrada');
                 return null;
             }
 

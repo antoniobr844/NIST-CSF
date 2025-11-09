@@ -1,183 +1,87 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NistXGH.Models; // Adicione este using
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NistXGH.Models;
+using NistXGH.Models.Dto;
 
-namespace NistXGH.Controllers // Adicione o namespace
+namespace NistXGH.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class CenarioFuturoController : ControllerBase
     {
         private readonly SgsiDbContext _context;
-        private readonly ILogger<CenarioFuturoController> _logger;
 
-        public CenarioFuturoController(SgsiDbContext context, ILogger<CenarioFuturoController> logger)
+        public CenarioFuturoController(SgsiDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
-        // GET: api/CenarioFuturo
+
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetCenarioFuturo()
+        public async Task<IActionResult> Get([FromQuery] int subcategoriaId)
         {
             try
             {
-                _logger.LogInformation("Buscando todos os cenários futuros");
+                var cenario = await _context.Set<CenarioFuturo>()
+                    .FirstOrDefaultAsync(c => c.SUBCATEGORIA == subcategoriaId);
 
-                var cenarioFuturo = await _context.CenariosFuturos
-                    .Include(c => c.Prioridade)
-                    .Include(c => c.Nivel)
-                    .Include(c => c.SubcategoriaNav)
-                    .ThenInclude(s => s.FuncaoNav)
-                    .Select(c => new
-                    {
-                        c.ID,
-                        c.SUBCATEGORIA,
-                        Prioridade = c.Prioridade != null ? c.Prioridade.NIVEL : null,
-                        Nivel = c.Nivel != null ? c.Nivel.STATUS : null,
-                        c.POLIT_ALVO,
-                        c.PRAT_ALVO,
-                        c.ARTEF_ALVO,
-                        c.FUNC_ALVO,
-                        c.REF_INFO_ALVO,
-                        c.DATA_REGISTRO,
-                        SubcategoriaInfo = c.SubcategoriaNav != null
-                            ? new
-                            {
-                                CodigoFuncao = c.SubcategoriaNav.FuncaoNav != null
-                                    ? c.SubcategoriaNav.FuncaoNav.CODIGO
-                                    : null,
-                                Categoria = c.SubcategoriaNav.CATEGORIA,
-                                CodigoSubcategoria = c.SubcategoriaNav.SUBCATEGORIA,
-                            }
-                            : null,
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
-
-                return Ok(cenarioFuturo);
+                return Ok(cenario ?? new CenarioFuturo());
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao buscar cenários futuros");
-                return StatusCode(500, new { error = ex.Message, stackTrace = ex.StackTrace });
+                return StatusCode(500, $"Erro interno: {ex.Message}");
             }
         }
-
-        // POST: api/CenarioFuturo
-        [HttpPost]
-        public async Task<ActionResult> SalvarCenarioFuturo([FromBody] List<CenarioFuturoDto> cenarios)
+        
+        // POST: api/CenarioFuturo/salvar
+        [HttpPost("salvar")]
+        public async Task<IActionResult> Salvar([FromBody] List<CenarioFuturoDto> lista)
         {
-            try
-            {
-                _logger.LogInformation($"Salvando {cenarios.Count} cenários futuros");
+            if (lista == null || lista.Count == 0)
+                return BadRequest("Nenhum dado enviado.");
 
-                foreach (var cenarioDto in cenarios)
+            foreach (var item in lista)
+            {
+                // Verifica se já existe um registro para essa subcategoria
+                var existente = await _context.Set<CenarioFuturo>()
+                    .FirstOrDefaultAsync(c => c.SUBCATEGORIA == item.SUBCATEGORIA);
+
+                if (existente != null)
                 {
-                    // Verificar se já existe
-                    var existing = await _context.CenariosFuturos.FirstOrDefaultAsync(c =>
-                        c.SUBCATEGORIA == cenarioDto.SubcategoriaId
-                    );
-
-                    if (existing != null)
-                    {
-                        // Atualizar existente
-                        existing.PRIORIDADE_ALVO = cenarioDto.PrioridadeAlvo;
-                        existing.NIVEL_ALVO = cenarioDto.NivelAlvo;
-                        existing.POLIT_ALVO = cenarioDto.PoliticasAlvo;
-                        existing.PRAT_ALVO = cenarioDto.PraticasAlvo;
-                        existing.FUNC_ALVO = cenarioDto.FuncoesAlvo;
-                        existing.REF_INFO_ALVO = cenarioDto.ReferenciasAlvo;
-                        existing.ARTEF_ALVO = cenarioDto.ArtefatosAlvo;
-                        existing.SUBCATEGORIA = cenarioDto.SubcategoriaId;
-                        existing.DATA_REGISTRO = DateTime.Now;
-
-                        _context.CenariosFuturos.Update(existing);
-                    }
-                    else
-                    {
-                        // Criar novo
-                        var novoCenario = new CenarioFuturo // Mudei para CenarioFuturo
-                        {
-                            PRIORIDADE_ALVO = cenarioDto.PrioridadeAlvo,
-                            NIVEL_ALVO = cenarioDto.NivelAlvo,
-                            POLIT_ALVO = cenarioDto.PoliticasAlvo,
-                            PRAT_ALVO = cenarioDto.PraticasAlvo,
-                            FUNC_ALVO = cenarioDto.FuncoesAlvo,
-                            REF_INFO_ALVO = cenarioDto.ReferenciasAlvo,
-                            ARTEF_ALVO = cenarioDto.ArtefatosAlvo,
-                            SUBCATEGORIA = cenarioDto.SubcategoriaId,
-                            DATA_REGISTRO = DateTime.Now,
-                        };
-
-                        await _context.CenariosFuturos.AddAsync(novoCenario);
-                    }
+                    // Atualiza campos
+                    existente.POLIT_ALVO = item.POLIT_ALVO;
+                    existente.PRAT_ALVO = item.PRAT_ALVO;
+                    existente.ARTEF_ALVO = item.ARTEF_ALVO;
+                    existente.FUNC_ALVO = item.FUNC_ALVO;
+                    existente.REF_INFO_ALVO = item.REF_INFO_ALVO;
+                    existente.PRIORIDADE_ALVO = item.PRIORIDADE_ALVO;
+                    existente.NIVEL_ALVO = item.NIVEL_ALVO;
+                    existente.DATA_REGISTRO = DateTime.Now;
+                    _context.Update(existente);
                 }
-
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Cenários futuros salvos com sucesso");
-
-                return Ok(new { message = "Dados salvos com sucesso!" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao salvar cenários futuros");
-                return StatusCode(500, new { error = ex.Message });
-            }
-        }
-
-        // GET: api/CenarioFuturo/com-subcategorias-formatadas
-        [HttpGet("com-subcategorias-formatadas")]
-        public async Task<ActionResult<IEnumerable<object>>> GetCenarioFuturoComSubcategoriasFormatadas()
-        {
-            try
-            {
-                var cenarios = await _context.CenariosFuturos
-                    .Include(c => c.SubcategoriaNav)
-                    .ThenInclude(s => s.FuncaoNav)
-                    .Select(c => new
+                else
+                {
+                    // Cria novo registro
+                    var novo = new CenarioFuturo
                     {
-                        id = c.ID,
-                        subcategoriaFormatada = c.SubcategoriaNav != null
-                            ? $"{c.SubcategoriaNav.FuncaoNav.CODIGO}.{c.SubcategoriaNav.CATEGORIA}-{c.SubcategoriaNav.SUBCATEGORIA}"
-                            : $"ID: {c.SUBCATEGORIA}",
-                        prioridade = c.Prioridade != null ? c.Prioridade.NIVEL : null,
-                        nivel = c.Nivel != null ? c.Nivel.STATUS : null,
-                        politica = c.POLIT_ALVO,
-                        pratica = c.PRAT_ALVO,
-                        artefato = c.ARTEF_ALVO,
-                        funcao = c.FUNC_ALVO,
-                        referencia = c.REF_INFO_ALVO,
-                        dataRegistro = c.DATA_REGISTRO,
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
-
-                return Ok(cenarios);
+                        SUBCATEGORIA = item.SUBCATEGORIA,
+                        POLIT_ALVO = item.POLIT_ALVO,
+                        PRAT_ALVO = item.PRAT_ALVO,
+                        ARTEF_ALVO = item.ARTEF_ALVO,
+                        FUNC_ALVO = item.FUNC_ALVO,
+                        REF_INFO_ALVO = item.REF_INFO_ALVO,
+                        PRIORIDADE_ALVO = item.PRIORIDADE_ALVO,
+                        NIVEL_ALVO = item.NIVEL_ALVO,
+                        DATA_REGISTRO = DateTime.Now
+                    };
+                    _context.Add(novo);
+                }
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = ex.Message });
-            }
-        }
 
-        // DTO para receber os dados do frontend
-        public class CenarioFuturoDto
-        {
-            public int? PrioridadeAlvo { get; set; }
-            public int? NivelAlvo { get; set; }
-            public string PoliticasAlvo { get; set; }
-            public string PraticasAlvo { get; set; }
-            public string FuncoesAlvo { get; set; }
-            public string ReferenciasAlvo { get; set; }
-            public string ArtefatosAlvo { get; set; }
-            public int SubcategoriaId { get; set; }
-            public DateTime DataRegistro { get; set; }
+            await _context.SaveChangesAsync();
+            return Ok(new { sucesso = true, mensagem = "Cenário Futuro salvo com sucesso!" });
         }
     }
+
 }
