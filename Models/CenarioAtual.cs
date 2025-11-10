@@ -10,19 +10,16 @@ namespace NistXGH.Models
         [Key]
         public int ID { get; set; }
 
-        [Display(Name = "Incluído no Perfil")]
-        public bool INC_PERFIL { get; set; } = true;
-
         [StringLength(255, ErrorMessage = "A descrição deve ter no máximo 255 caracteres")]
         public string JUSTIFICATIVA { get; set; }
 
         [StringLength(255, ErrorMessage = "A prioridade deve ter no máximo 255 caracteres")]
         [Display(Name = "Prioridade atual")]
-        public string PRIOR_ATUAL { get; set; }
+        public int PRIOR_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O status deve ter no máximo 255 caracteres")]
         [Display(Name = "Nível atual")]
-        public string NIVEL_ATUAL { get; set; }
+        public int STATUS_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Políticas, processos e procedimentos atuais")]
@@ -51,8 +48,10 @@ namespace NistXGH.Models
         [Display(Name = "Considerações")]
         public string CONSIDERACOES { get; set; }
 
+        public long VERSAO { get; set; }
+
         [ForeignKey("SUBCATEGORIA")]
-        public string SUBCATEGORIA { get; set; }
+        public int SUBCATEGORIA { get; set; }
 
         [Display(Name = "Data de Registro")]
         public DateTime DATA_REGISTRO { get; set; }

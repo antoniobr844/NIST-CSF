@@ -13,14 +13,8 @@ namespace NistXGH.Models
         [Column("PRIORIDADE_ALVO")]
         public int? PRIORIDADE_ALVO { get; set; }
 
-        [ForeignKey("PRIORIDADE_ALVO")]
-        public virtual PrioridadeTb Prioridade { get; set; }
-
         [Column("NIVEL_ALVO")]
         public int? NIVEL_ALVO { get; set; }
-
-        [ForeignKey("NIVEL_ALVO")]
-        public virtual StatusTb Nivel { get; set; }
 
         // 🚨 CORREÇÃO 2: Tornar propriedades de string nullable (string?)
         [Column("POLIT_ALVO")]
@@ -47,8 +41,16 @@ namespace NistXGH.Models
         [Column("DATA_REGISTRO")]
         public DateTime? DATA_REGISTRO { get; set; }
 
+        public long VERSAO { get; set; }
+
         [ForeignKey("SUBCATEGORIA")]
         public virtual Subcategorias SubcategoriaNav { get; set; }
+
+        [ForeignKey("PRIORIDADE_ALVO")]
+        public virtual PrioridadeTb Prioridade { get; set; }
+
+        [ForeignKey("NIVEL_ALVO")]
+        public virtual StatusTb Nivel { get; set; }
 
     }
 }

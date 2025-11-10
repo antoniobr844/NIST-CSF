@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
 using NistXGH.Models.Dto;
 using NistXGH.Services;
+using System.Data;
+using Oracle.ManagedDataAccess.Client;
 
 namespace NistXGH.Controllers
 {
@@ -28,12 +30,12 @@ namespace NistXGH.Controllers
         {
             try
             {
-                _logger.LogInformation("Buscando cenário atual para subcategoria {SubcategoriaId}", subcategoriaId);
+                _logger.LogInformation("Buscando cenário atual MAIS RECENTE para subcategoria {SubcategoriaId}", subcategoriaId);
 
-                // Buscar o MAIS RECENTE - usando DATA_REGISTRO
-                var cenario = await _context.CenarioAtual
+                // Buscar o MAIS RECENTE - usando VERSAO
+                var cenario = await _context.Set<CenarioAtual>()
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
-                    .OrderByDescending(c => c.DATA_REGISTRO)
+                    .OrderByDescending(c => c.VERSAO)
                     .FirstOrDefaultAsync();
 
                 if (cenario == null)
@@ -66,51 +68,39 @@ namespace NistXGH.Controllers
         }
 
         [HttpPost("atual/salvar")]
-        // 🚨 CORREÇÃO: Receber uma lista de DTOs em vez de um único objeto
-        public async Task<IActionResult> SalvarCenarioAtual([FromBody] List<CenarioAtualDto> lista)
+        public async Task<IActionResult> SalvarCenarioAtual([FromBody] CenarioAtualDto cenarioDto)
         {
-            if (lista == null || lista.Count == 0)
-                return BadRequest("Nenhum dado enviado.");
+            if (cenarioDto == null)
+                return BadRequest("Dados inválidos.");
 
             try
             {
-                var resultados = new List<object>();
-
-                foreach (var cenarioDto in lista)
+                // ✅ SEMPRE CRIAR NOVO REGISTRO
+                var novoCenario = new CenarioAtual
                 {
-                    // ✅ SEMPRE CRIAR NOVO REGISTRO
-                    var novoCenario = new CenarioAtual
-                    {
-                        SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
-                        // Ajuste para permitir NULL no DB se o campo for opcional (conforme correção anterior)
-                        JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA ?? "Registro atualizado via sistema NIST CSF",
-                        PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL,
-                        STATUS_ATUAL = cenarioDto.STATUS_ATUAL,
-                        POLIT_ATUAL = string.IsNullOrEmpty(cenarioDto.POLIT_ATUAL) ? null : cenarioDto.POLIT_ATUAL,
-                        PRAT_ATUAL = string.IsNullOrEmpty(cenarioDto.PRAT_ATUAL) ? null : cenarioDto.PRAT_ATUAL,
-                        FUNC_RESP = string.IsNullOrEmpty(cenarioDto.FUNC_RESP) ? null : cenarioDto.FUNC_RESP,
-                        REF_INFO = string.IsNullOrEmpty(cenarioDto.REF_INFO) ? null : cenarioDto.REF_INFO,
-                        EVID_ATUAL = string.IsNullOrEmpty(cenarioDto.EVID_ATUAL) ? null : cenarioDto.EVID_ATUAL,
-                        NOTAS = string.IsNullOrEmpty(cenarioDto.NOTAS) ? null : cenarioDto.NOTAS,
-                        CONSIDERACOES = string.IsNullOrEmpty(cenarioDto.CONSIDERACOES) ? null : cenarioDto.CONSIDERACOES,
-                        DATA_REGISTRO = DateTime.Now
-                    };
+                    SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
+                    JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA ?? "Registro atualizado via sistema NIST CSF",
+                    PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL,
+                    STATUS_ATUAL = cenarioDto.STATUS_ATUAL,
+                    POLIT_ATUAL = cenarioDto.POLIT_ATUAL ?? "Não informado",
+                    PRAT_ATUAL = cenarioDto.PRAT_ATUAL ?? "Não informado",
+                    FUNC_RESP = cenarioDto.FUNC_RESP ?? "Não informado",
+                    REF_INFO = cenarioDto.REF_INFO ?? "Não informado",
+                    EVID_ATUAL = cenarioDto.EVID_ATUAL ?? "Não informado",
+                    NOTAS = cenarioDto.NOTAS ?? "Sem notas adicionais",
+                    CONSIDERACOES = cenarioDto.CONSIDERACOES ?? "Sem considerações adicionais",
+                    DATA_REGISTRO = DateTime.Now,
+                    VERSAO = DateTime.Now.Ticks
+                };
 
-                    _context.CenarioAtual.Add(novoCenario);
-                    resultados.Add(new
-                    {
-                        subcategoriaId = novoCenario.SUBCATEGORIA,
-                        id = novoCenario.ID
-                    });
-                }
-
+                _context.CenarioAtual.Add(novoCenario);
                 await _context.SaveChangesAsync();
 
                 return Ok(new
                 {
                     sucesso = true,
-                    mensagem = $"Novos registros de Cenário Atual ({lista.Count}) criados com sucesso!",
-                    registros = resultados
+                    mensagem = "Novo registro de Cenário Atual criado com sucesso!",
+                    id = novoCenario.ID
                 });
             }
             catch (Exception ex)
@@ -127,12 +117,12 @@ namespace NistXGH.Controllers
         {
             try
             {
-                _logger.LogInformation("Buscando cenário futuro para subcategoria {SubcategoriaId}", subcategoriaId);
+                _logger.LogInformation("Buscando cenário futuro MAIS RECENTE para subcategoria {SubcategoriaId}", subcategoriaId);
 
-                // Buscar o MAIS RECENTE - usando DATA_REGISTRO
-                var cenario = await _context.CenarioFuturo
+                // Buscar o MAIS RECENTE - usando VERSAO
+                var cenario = await _context.Set<CenarioFuturo>()
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
-                    .OrderByDescending(c => c.DATA_REGISTRO)
+                    .OrderByDescending(c => c.VERSAO)
                     .FirstOrDefaultAsync();
 
                 if (cenario == null)
@@ -163,11 +153,11 @@ namespace NistXGH.Controllers
         [HttpPost("futuro/salvar")]
         public async Task<IActionResult> SalvarCenarioFuturo([FromBody] List<CenarioFuturoDto> lista)
         {
+            if (lista == null || lista.Count == 0)
+                return BadRequest("Nenhum dado enviado.");
+
             try
             {
-                if (lista == null || lista.Count == 0)
-                    return BadRequest("Nenhum dado enviado.");
-
                 var resultados = new List<object>();
 
                 foreach (var item in lista)
@@ -176,15 +166,15 @@ namespace NistXGH.Controllers
                     var novoCenario = new CenarioFuturo
                     {
                         SUBCATEGORIA = item.SUBCATEGORIA,
+                        POLIT_ALVO = item.POLIT_ALVO,
+                        PRAT_ALVO = item.PRAT_ALVO,
+                        ARTEF_ALVO = item.ARTEF_ALVO,
+                        FUNC_ALVO = item.FUNC_ALVO,
+                        REF_INFO_ALVO = item.REF_INFO_ALVO,
                         PRIORIDADE_ALVO = item.PRIORIDADE_ALVO,
                         NIVEL_ALVO = item.NIVEL_ALVO,
-                        // Conversão para NULL se for string vazia para as colunas CLOB/String
-                        POLIT_ALVO = string.IsNullOrEmpty(item.POLIT_ALVO) ? null : item.POLIT_ALVO,
-                        PRAT_ALVO = string.IsNullOrEmpty(item.PRAT_ALVO) ? null : item.PRAT_ALVO,
-                        ARTEF_ALVO = string.IsNullOrEmpty(item.ARTEF_ALVO) ? null : item.ARTEF_ALVO,
-                        FUNC_ALVO = string.IsNullOrEmpty(item.FUNC_ALVO) ? null : item.FUNC_ALVO,
-                        REF_INFO_ALVO = string.IsNullOrEmpty(item.REF_INFO_ALVO) ? null : item.REF_INFO_ALVO,
-                        DATA_REGISTRO = DateTime.Now
+                        DATA_REGISTRO = DateTime.Now,
+                        VERSAO = DateTime.Now.Ticks
                     };
 
                     _context.CenarioFuturo.Add(novoCenario);
@@ -232,7 +222,7 @@ namespace NistXGH.Controllers
                 {
                     var maisRecente = await _context.CenarioFuturo
                         .Where(c => c.SUBCATEGORIA == subcategoriaId)
-                        .OrderByDescending(c => c.DATA_REGISTRO)
+                        .OrderByDescending(c => c.VERSAO)
                         .FirstOrDefaultAsync();
 
                     if (maisRecente != null)
@@ -324,7 +314,7 @@ namespace NistXGH.Controllers
             {
                 var historico = await _context.CenarioAtual
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
-                    .OrderByDescending(c => c.DATA_REGISTRO)
+                    .OrderByDescending(c => c.VERSAO)
                     .ToListAsync();
 
                 return Ok(historico);
@@ -342,7 +332,7 @@ namespace NistXGH.Controllers
             {
                 var historico = await _context.CenarioFuturo
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
-                    .OrderByDescending(c => c.DATA_REGISTRO)
+                    .OrderByDescending(c => c.VERSAO)
                     .ToListAsync();
 
                 return Ok(historico);
@@ -351,28 +341,6 @@ namespace NistXGH.Controllers
             {
                 return StatusCode(500, $"Erro ao buscar histórico: {ex.Message}");
             }
-
         }
-        // ========== IMPLEMENTAÇÃO FUTURA ==========
-
-        /* [HttpGet("atual/formatados")]
-          public async Task<ActionResult> GetCenariosAtualFormatados()
-          {
-              // Futuro: similar ao futuro/formatados
-          }
-
-          // ========== CONSULTAS ESPECIAIS ==========
-
-          [HttpGet("comparativo")]
-          public async Task<ActionResult> GetComparativo([FromQuery] int subcategoriaId)
-          {
-              // Futuro: retorna atual + futuro para comparação
-          }
-
-          [HttpGet("resumo-por-funcao")]
-          public async Task<ActionResult> GetResumoPorFuncao()
-          {
-              // Futuro: agrupado por função
-          }*/
     }
 }
