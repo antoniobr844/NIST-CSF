@@ -56,8 +56,5 @@ namespace NistXGH.Models
 
         [Display(Name = "Data de Registro")]
         public DateTime DATA_REGISTRO { get; set; }
-
-        [StringLength(50, ErrorMessage = "O ícone deve ter no máximo 50 caracteres")]
-        public string ICONE { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj": {}
+    "C:\\projetos\\NistXGH_\\NIST-CSF\\NistXGH.csproj": {}
   },
   "projects": {
-    "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj": {
+    "C:\\projetos\\NistXGH_\\NIST-CSF\\NistXGH.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj",
+        "projectUniqueName": "C:\\projetos\\NistXGH_\\NIST-CSF\\NistXGH.csproj",
         "projectName": "NistXGH",
-        "projectPath": "C:\\projetos\\NistXGH_5.0\\NistXGH\\NistXGH.csproj",
+        "projectPath": "C:\\projetos\\NistXGH_\\NIST-CSF\\NistXGH.csproj",
         "packagesPath": "C:\\Users\\anton\\.nuget\\packages\\",
-        "outputPath": "C:\\projetos\\NistXGH_5.0\\NistXGH\\obj\\",
+        "outputPath": "C:\\projetos\\NistXGH_\\NIST-CSF\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\anton\\AppData\\Roaming\\NuGet\\NuGet.Config"
