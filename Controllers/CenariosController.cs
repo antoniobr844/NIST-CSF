@@ -31,7 +31,7 @@ namespace NistXGH.Controllers
                 _logger.LogInformation("Buscando cenário atual para subcategoria {SubcategoriaId}", subcategoriaId);
 
                 // Buscar o MAIS RECENTE - usando DATA_REGISTRO
-                var cenario = await _context.CenarioAtual
+                var cenario = await _context.CenariosAtual
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
                     .OrderByDescending(c => c.DATA_REGISTRO)
                     .FirstOrDefaultAsync();
@@ -44,7 +44,7 @@ namespace NistXGH.Controllers
                         SUBCATEGORIA = subcategoriaId,
                         JUSTIFICATIVA = "Registro a ser preenchido",
                         PRIOR_ATUAL = 0,
-                        STATUS_ATUAL = 0,
+                        STATUS_ATUAL = "",
                         POLIT_ATUAL = "Não informado",
                         PRAT_ATUAL = "Não informado",
                         FUNC_RESP = "Não informado",
@@ -81,11 +81,10 @@ namespace NistXGH.Controllers
                     // ✅ SEMPRE CRIAR NOVO REGISTRO
                     var novoCenario = new CenarioAtual
                     {
-                        SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
+                        SUBCATEGORIA = CenarioAtualDto.SUBCATEGORIA,
                         // Ajuste para permitir NULL no DB se o campo for opcional (conforme correção anterior)
-                        JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA ?? "Registro atualizado via sistema NIST CSF",
-                        PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL,
-                        STATUS_ATUAL = cenarioDto.STATUS_ATUAL,
+                        JUSTIFICATIVA = CenarioAtualDto.PRIOR_ATUAL,
+                        STATUS_ATUAL = CenarioAtualDto.STATUS_ATUAL,
                         POLIT_ATUAL = string.IsNullOrEmpty(cenarioDto.POLIT_ATUAL) ? null : cenarioDto.POLIT_ATUAL,
                         PRAT_ATUAL = string.IsNullOrEmpty(cenarioDto.PRAT_ATUAL) ? null : cenarioDto.PRAT_ATUAL,
                         FUNC_RESP = string.IsNullOrEmpty(cenarioDto.FUNC_RESP) ? null : cenarioDto.FUNC_RESP,
@@ -96,7 +95,7 @@ namespace NistXGH.Controllers
                         DATA_REGISTRO = DateTime.Now
                     };
 
-                    _context.CenarioAtual.Add(novoCenario);
+                    _context.CenariosAtual.Add(novoCenario);
                     resultados.Add(new
                     {
                         subcategoriaId = novoCenario.SUBCATEGORIA,
@@ -130,7 +129,7 @@ namespace NistXGH.Controllers
                 _logger.LogInformation("Buscando cenário futuro para subcategoria {SubcategoriaId}", subcategoriaId);
 
                 // Buscar o MAIS RECENTE - usando DATA_REGISTRO
-                var cenario = await _context.CenarioFuturo
+                var cenario = await _context.CenariosFuturo
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
                     .OrderByDescending(c => c.DATA_REGISTRO)
                     .FirstOrDefaultAsync();
@@ -187,7 +186,7 @@ namespace NistXGH.Controllers
                         DATA_REGISTRO = DateTime.Now
                     };
 
-                    _context.CenarioFuturo.Add(novoCenario);
+                    _context.CenariosFuturo.Add(novoCenario);
                     resultados.Add(new
                     {
                         subcategoriaId = item.SUBCATEGORIA,
@@ -221,7 +220,7 @@ namespace NistXGH.Controllers
                 _logger.LogInformation("Buscando cenários futuros formatados...");
 
                 // Busca apenas os MAIS RECENTES de cada subcategoria
-                var subcategoriaIds = await _context.CenarioFuturo
+                var subcategoriaIds = await _context.CenariosFuturo
                     .Select(c => c.SUBCATEGORIA)
                     .Distinct()
                     .ToListAsync();
@@ -230,7 +229,7 @@ namespace NistXGH.Controllers
 
                 foreach (var subcategoriaId in subcategoriaIds)
                 {
-                    var maisRecente = await _context.CenarioFuturo
+                    var maisRecente = await _context.CenariosFuturo
                         .Where(c => c.SUBCATEGORIA == subcategoriaId)
                         .OrderByDescending(c => c.DATA_REGISTRO)
                         .FirstOrDefaultAsync();
@@ -322,7 +321,7 @@ namespace NistXGH.Controllers
         {
             try
             {
-                var historico = await _context.CenarioAtual
+                var historico = await _context.CenariosAtual
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
                     .OrderByDescending(c => c.DATA_REGISTRO)
                     .ToListAsync();
@@ -340,7 +339,7 @@ namespace NistXGH.Controllers
         {
             try
             {
-                var historico = await _context.CenarioFuturo
+                var historico = await _context.CenariosFuturo
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
                     .OrderByDescending(c => c.DATA_REGISTRO)
                     .ToListAsync();

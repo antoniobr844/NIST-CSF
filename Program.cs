@@ -12,7 +12,6 @@ builder.Services.AddDbContext<SgsiDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("SgsiDbContext"))
 );
 
-builder.Services.AddScoped<IDadosService, DadosService>();
 
 var app = builder.Build();
 

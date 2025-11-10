@@ -17,7 +17,7 @@ namespace NistXGH.Models
         public int FUNCAO { get; set; }
 
         [Column("SUBCATEGORIA")]
-        public string? SUBCATEGORIA { get; set; }
+        public int? SUBCATEGORIA { get; set; }
 
         [Column("DESCRICAO")]
         public string? DESCRICAO { get; set; }

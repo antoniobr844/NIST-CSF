@@ -22,7 +22,7 @@ namespace NistXGH.Models
 
         [StringLength(255, ErrorMessage = "O status deve ter no máximo 255 caracteres")]
         [Display(Name = "Nível atual")]
-        public string NIVEL_ATUAL { get; set; }
+        public string STATUS_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O campo deve ter no máximo 255 caracteres")]
         [Display(Name = "Políticas, processos e procedimentos atuais")]
@@ -52,7 +52,7 @@ namespace NistXGH.Models
         public string CONSIDERACOES { get; set; }
 
         [ForeignKey("SUBCATEGORIA")]
-        public string SUBCATEGORIA { get; set; }
+        public int SUBCATEGORIA { get; set; }
 
         [Display(Name = "Data de Registro")]
         public DateTime DATA_REGISTRO { get; set; }
