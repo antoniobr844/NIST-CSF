@@ -157,7 +157,7 @@ namespace NistXGH.Services
             // ✅ CORREÇÃO: A função vem através da categoria
             var codigoFuncao = subcategoria.CategoriaNav?.FuncaoNav?.CODIGO ?? "??";
             var codigoCategoria = subcategoria.CategoriaNav?.CODIGO ?? "??";
-            var numeroSubcategoria = subcategoria.SUBCATEGORIA ?? "??";
+            var numeroSubcategoria = subcategoria.SUBCATEGORIA;
 
             return $"{codigoFuncao}.{codigoCategoria}-{numeroSubcategoria}";
         }

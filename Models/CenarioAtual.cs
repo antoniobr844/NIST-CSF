@@ -18,7 +18,7 @@ namespace NistXGH.Models
 
         [StringLength(255, ErrorMessage = "A prioridade deve ter no máximo 255 caracteres")]
         [Display(Name = "Prioridade atual")]
-        public string PRIOR_ATUAL { get; set; }
+        public int PRIOR_ATUAL { get; set; }
 
         [StringLength(255, ErrorMessage = "O status deve ter no máximo 255 caracteres")]
         [Display(Name = "Nível atual")]

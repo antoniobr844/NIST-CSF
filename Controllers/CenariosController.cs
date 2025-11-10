@@ -66,7 +66,6 @@ namespace NistXGH.Controllers
         }
 
         [HttpPost("atual/salvar")]
-        // 🚨 CORREÇÃO: Receber uma lista de DTOs em vez de um único objeto
         public async Task<IActionResult> SalvarCenarioAtual([FromBody] List<CenarioAtualDto> lista)
         {
             if (lista == null || lista.Count == 0)
@@ -74,41 +73,42 @@ namespace NistXGH.Controllers
 
             try
             {
-                var resultados = new List<object>();
+                var novosCenarios = new List<CenarioAtual>();
 
                 foreach (var cenarioDto in lista)
                 {
-                    // ✅ SEMPRE CRIAR NOVO REGISTRO
                     var novoCenario = new CenarioAtual
                     {
-                        SUBCATEGORIA = CenarioAtualDto.SUBCATEGORIA,
-                        // Ajuste para permitir NULL no DB se o campo for opcional (conforme correção anterior)
-                        JUSTIFICATIVA = CenarioAtualDto.PRIOR_ATUAL,
-                        STATUS_ATUAL = CenarioAtualDto.STATUS_ATUAL,
-                        POLIT_ATUAL = string.IsNullOrEmpty(cenarioDto.POLIT_ATUAL) ? null : cenarioDto.POLIT_ATUAL,
-                        PRAT_ATUAL = string.IsNullOrEmpty(cenarioDto.PRAT_ATUAL) ? null : cenarioDto.PRAT_ATUAL,
-                        FUNC_RESP = string.IsNullOrEmpty(cenarioDto.FUNC_RESP) ? null : cenarioDto.FUNC_RESP,
-                        REF_INFO = string.IsNullOrEmpty(cenarioDto.REF_INFO) ? null : cenarioDto.REF_INFO,
-                        EVID_ATUAL = string.IsNullOrEmpty(cenarioDto.EVID_ATUAL) ? null : cenarioDto.EVID_ATUAL,
-                        NOTAS = string.IsNullOrEmpty(cenarioDto.NOTAS) ? null : cenarioDto.NOTAS,
-                        CONSIDERACOES = string.IsNullOrEmpty(cenarioDto.CONSIDERACOES) ? null : cenarioDto.CONSIDERACOES,
+                        SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
+                        JUSTIFICATIVA = string.IsNullOrWhiteSpace(cenarioDto.JUSTIFICATIVA) ? null : cenarioDto.JUSTIFICATIVA,
+                        PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL,
+                        STATUS_ATUAL = cenarioDto.STATUS_ATUAL,
+                        POLIT_ATUAL = string.IsNullOrWhiteSpace(cenarioDto.POLIT_ATUAL) ? null : cenarioDto.POLIT_ATUAL,
+                        PRAT_ATUAL = string.IsNullOrWhiteSpace(cenarioDto.PRAT_ATUAL) ? null : cenarioDto.PRAT_ATUAL,
+                        FUNC_RESP = string.IsNullOrWhiteSpace(cenarioDto.FUNC_RESP) ? null : cenarioDto.FUNC_RESP,
+                        REF_INFO = string.IsNullOrWhiteSpace(cenarioDto.REF_INFO) ? null : cenarioDto.REF_INFO,
+                        EVID_ATUAL = string.IsNullOrWhiteSpace(cenarioDto.EVID_ATUAL) ? null : cenarioDto.EVID_ATUAL,
+                        NOTAS = string.IsNullOrWhiteSpace(cenarioDto.NOTAS) ? null : cenarioDto.NOTAS,
+                        CONSIDERACOES = string.IsNullOrWhiteSpace(cenarioDto.CONSIDERACOES) ? null : cenarioDto.CONSIDERACOES,
                         DATA_REGISTRO = DateTime.Now
                     };
 
-                    _context.CenariosAtual.Add(novoCenario);
-                    resultados.Add(new
-                    {
-                        subcategoriaId = novoCenario.SUBCATEGORIA,
-                        id = novoCenario.ID
-                    });
+                    novosCenarios.Add(novoCenario);
                 }
 
+                _context.CenariosAtual.AddRange(novosCenarios);
                 await _context.SaveChangesAsync();
+
+                var resultados = novosCenarios.Select(c => new
+                {
+                    subcategoriaId = c.SUBCATEGORIA,
+                    id = c.ID
+                });
 
                 return Ok(new
                 {
                     sucesso = true,
-                    mensagem = $"Novos registros de Cenário Atual ({lista.Count}) criados com sucesso!",
+                    mensagem = $"Novos registros de Cenário Atual ({novosCenarios.Count}) criados com sucesso!",
                     registros = resultados
                 });
             }
@@ -118,6 +118,7 @@ namespace NistXGH.Controllers
                 return StatusCode(500, $"Erro ao salvar: {ex.Message}");
             }
         }
+
 
         // ========== CENÁRIO FUTURO ==========
 
