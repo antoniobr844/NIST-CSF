@@ -4,666 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIST CSF - Alterações</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c3e50;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .selection-info {
-            background: #e8f4fc;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border-left: 4px solid #3498db;
-        }
-
-        .selection-info h2 {
-            margin-bottom: 15px;
-            color: #3498db;
-        }
-
-        .function-section {
-            margin-bottom: 30px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .function-header {
-            background: #3498db;
-            color: white;
-            padding: 15px 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .function-header h2 {
-            margin: 0;
-            font-size: 1.4em;
-        }
-
-        .function-content {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .function-content.expanded {
-            max-height: 5000px;
-            /* Valor suficientemente grande para expandir */
-        }
-
-        .category-section {
-            border-bottom: 1px solid #eee;
-        }
-
-        .category-header {
-            background: #f8f9fa;
-            padding: 12px 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .category-header h3 {
-            margin: 0;
-            color: #2c3e50;
-            font-size: 1.2em;
-        }
-
-        .category-content {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .category-content.expanded {
-            max-height: 5000px;
-            /* Valor suficientemente grande para expandir */
-        }
-
-        .subcategory-item {
-            background: #ffffff;
-            padding: 20px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .subcategory-item:last-child {
-            border-bottom: none;
-        }
-
-        .subcategory-item h4 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-size: 1.1em;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .form-group textarea {
-            width: 100%;
-            min-height: 100px;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 14px;
-            resize: vertical;
-        }
-
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .btn-voltar {
-            background: #95a5a6;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background: #7f8c8d;
-        }
-
-        .btn-salvar {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
-        }
-
-        .btn-salvar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
-        }
-
-        .error-message {
-            background: #ffecec;
-            color: #e10;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #e10;
-            margin-bottom: 20px;
-        }
-
-        .toggle-icon::after {
-            content: "▼";
-            font-size: 0.8em;
-            transition: transform 0.3s;
-        }
-
-        .toggle-icon.expanded::after {
-            transform: rotate(180deg);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
-        }
-
-        .selection-summary {
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #27ae60;
-        }
-
-        .selection-summary h3 {
-            margin-bottom: 10px;
-            color: #27ae60;
-        }
-
-        .remove-btn {
-            background: transparent;
-            border: none;
-            font-size: 1.2em;
-            color: #e74c3c;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .remove-btn:hover {
-            transform: scale(1.2);
-        }
-    </style>
+    <title>NIST CSF - Alterações - Proteger</title>
+    <link rel="stylesheet" href="/css/pages/alteracoes.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>NIST CSF - Fazer Alterações</h1>
+        <h1>NIST CSF - Alterações - Proteger</h1>
 
         <div class="selection-info" id="selectionInfo">
             <h2>Carregando seleção...</h2>
         </div>
 
-        <div id="formContainer">
-            <!-- Formulários serão inseridos aqui via JavaScript -->
+        <div class="scenario-container">
+            <!-- Cenário Futuro (AGORA somente leitura) -->
+            <div class="scenario-section future-scenario">
+                <div class="scenario-header">
+                    CENÁRIO FUTURO (Dados do Banco - Somente Leitura)
+                </div>
+                <div class="scenario-content">
+                    <div id="futureScenarioContainer">
+                        <div class="loading">Carregando cenário futuro...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cenário Atual (AGORA editável) -->
+            <div class="scenario-section current-scenario">
+                <div class="scenario-header">
+                    CENÁRIO ATUAL (Editável)
+                </div>
+                <div class="scenario-content">
+                    <div id="currentScenarioContainer">
+                        <div class="loading">Carregando cenário atual...</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="navigation">
-            <button class="btn-voltar" onclick="voltarParaAnterior()">← Voltar</button>
-            <button class="btn-salvar" onclick="salvarAlteracoes()"> Salvar Alterações</button>
-            <button class="btn-salvar" onclick="avancarParaProxima()">Avançar</button>
+            <button class="btn-voltar" onclick="app.voltarParaAnterior()">← Voltar para Seleção</button>
+            <button class="btn-salvar" onclick="app.salvarAlteracoes()">Salvar Alterações</button>
+            <button class="btn-avancar" onclick="app.avancarParaProxima()">Avançar para Próxima Função</button>
         </div>
     </div>
 
+    <!-- Carrega o js externo -->
+    <script src="/js/core/nist-core.js"></script>
+
     <script>
-        const ordemFuncoes = ["governanca", "identificar", "proteger", "detectar", "responder", "recuperar"];
-        const funcaoAtual = "Proteger";
-        
-        // Dados das funções para exibição amigável
-        const functionNames = {
-            'governanca': 'Governança (GV)',
-            'identificar': 'Identificar (ID)',
-            'proteger': 'Proteger (PR)',
-            'detectar': 'Detectar (DE)',
-            'responder': 'Responder (RS)',
-            'recuperar': 'Recuperar (RC)'
-        };
+        // Variável global para acesso
+        let app;
 
-        // Função para verificar se a Proteger está selecionada
-        function protegerEstaSelecionada(selections) {
-            return selections.proteger && Object.keys(selections.proteger).length > 0;
-        }
-
-        // Carregar dados da seleção anterior
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
             try {
-                const selectedSubcategories = JSON.parse(localStorage.getItem('nistSelections') || '{}');
-                const selectionInfo = document.getElementById('selectionInfo');
-                const formContainer = document.getElementById('formContainer');
+                console.log('=== INICIANDO CARREGAMENTO ===');
 
-                // Verificar se há dados válidos
-                if (Object.keys(selectedSubcategories).length === 0) {
-                    selectionInfo.innerHTML = `
-                        <div class="error-message">
-                            <h2>Nenhuma seleção encontrada</h2>
-                            <p>Por favor, volte e faça uma seleção primeiro.</p>
-                        </div>
-                    `;
-                    document.querySelector('.btn-salvar').disabled = true;
-                    return;
-                }
-
-                // Verificar se a Proteger está selecionada
-                const mostrarApenasProteger = protegerEstaSelecionada(selectedSubcategories);
-                
-                // Filtrar seleções para mostrar apenas Proteger se estiver selecionada
-                const selecoesParaExibir = {};
-                if (mostrarApenasProteger) {
-                    // Mostrar apenas Proteger
-                    if (selectedSubcategories.proteger) {
-                        selecoesParaExibir.proteger = selectedSubcategories.proteger;
-                    }
-                } else {
-                    // Se Proteger não estiver selecionada, mostrar todas as funções
-                    for (const func in selectedSubcategories) {
-                        selecoesParaExibir[func] = selectedSubcategories[func];
-                    }
-                }
-
-                // Calcular total de subcategorias selecionadas
-                let totalSubcategories = 0;
-                for (const func in selecoesParaExibir) {
-                    for (const category in selecoesParaExibir[func]) {
-                        totalSubcategories += selecoesParaExibir[func][category].length;
-                    }
-                }
-
-                // Exibir informações da seleção
-                let infoHTML = `<h2>Resumo da Seleção</h2>
-                    <p><strong>Total de subcategorias selecionadas:</strong> ${totalSubcategories}</p>`;
-                
-                if (mostrarApenasProteger) {
-                    infoHTML += `<p><strong>Exibindo apenas:</strong> Proteger (PR)</p>`;
-                }
-                
-                selectionInfo.innerHTML = infoHTML;
-
-                // Se não houver subcategorias selecionadas
-                if (totalSubcategories === 0) {
-                    formContainer.innerHTML = `
-                        <div class="empty-state">
-                            <h3>Nenhuma subcategoria selecionada</h3>
-                            <p>Volte à página anterior para selecionar subcategorias.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Criar formulários para cada função, categoria e subcategoria
-                let formIndex = 0;
-
-                for (const func in selecoesParaExibir) {
-                    const functionDiv = document.createElement('div');
-                    functionDiv.className = 'function-section';
-
-                    const functionHeader = document.createElement('div');
-                    functionHeader.className = 'function-header';
-                    functionHeader.innerHTML = `
-                        <h2>${functionNames[func] || func}</h2>
-                        <span class="toggle-icon"></span>
-                    `;
-
-                    const functionContent = document.createElement('div');
-                    functionContent.className = 'function-content';
-
-                    // Adicionar evento de toggle para a função
-                    functionHeader.addEventListener('click', function () {
-                        functionContent.classList.toggle('expanded');
-                        functionHeader.querySelector('.toggle-icon').classList.toggle('expanded');
-                    });
-
-                    let hasCategories = false;
-
-                    for (const category in selecoesParaExibir[func]) {
-                        if (selecoesParaExibir[func][category].length > 0) {
-                            hasCategories = true;
-
-                            const categoryDiv = document.createElement('div');
-                            categoryDiv.className = 'category-section';
-
-                            const categoryHeader = document.createElement('div');
-                            categoryHeader.className = 'category-header';
-                            categoryHeader.innerHTML = `
-                                <h3>${category}</h3>
-                                <span class="toggle-icon"></span>
-                            `;
-
-                            const categoryContent = document.createElement('div');
-                            categoryContent.className = 'category-content';
-
-                            // Adicionar evento de toggle para a categoria
-                            categoryHeader.addEventListener('click', function () {
-                                categoryContent.classList.toggle('expanded');
-                                categoryHeader.querySelector('.toggle-icon').classList.toggle('expanded');
-                            });
-
-                            // Adicionar subcategorias
-                            selecoesParaExibir[func][category].forEach(subcategory => {
-                                const subcategoryDiv = document.createElement('div');
-                                subcategoryDiv.className = 'subcategory-item';
-
-                                // Verificar se é um objeto ou string
-                                const subcategoryText = typeof subcategory === 'object' ?
-                                    (subcategory.text || subcategory.value) :
-                                    subcategory;
-                                const subcategoryValue = typeof subcategory === 'object' ?
-                                    (subcategory.value || subcategory.text) :
-                                    subcategory;
-                                subcategoryDiv.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h4>${subcategoryText}</h4>
-        <button class="remove-btn" onclick="removerSubcategoria('${func}', '${category}', \`${subcategoryValue}\`, this)">X</button>
-    </div>
-    <div class="form-group">
-        <label for="resultado-${formIndex}">Resultado:</label>
-        <input id="resultado-${formIndex}" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="descricao-${formIndex}">Descrição:</label>
-        <input id="descricao-${formIndex}" class="form-control" />
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" id="incluidoPerfil-${formIndex}" class="form-check-input" />
-        <label class="form-check-label" for="incluidoPerfil-${formIndex}">Incluído no Perfil:</label>
-    </div>
-    <div class="form-group">
-        <label for="justificativa-${formIndex}">Justificativa:</label>
-        <input id="justificativa-${formIndex}" class="form-control" />
-    </div>
-    <div class="combo-container">
-        <label for="opcoesPrioridade-${formIndex}">Selecione uma prioridade:</label>
-        <select id="opcoesPrioridade-${formIndex}" onchange="mostrarSubOpcoes(this)">
-            <option value=""></option>
-            <option value="semClassificacao">Sem Classificação</option>
-            <option value="classificacaoum">Classificado 1</option>
-            <option value="classificacaodois">Classificado 2</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="status-${formIndex}">Selecione um Status:</label>
-        <select id="status-${formIndex}">
-            <option value="pendente">Pendente</option>
-            <option value="em-andamento">Em Andamento</option>
-            <option value="concluido">Concluído</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="politicasPro-${formIndex}">Políticas, Processos e Procedimentos Atuais:</label>
-        <input id="politicasPro-${formIndex}" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="praticasInternas-${formIndex}">Práticas internas:</label>
-        <input id="praticasInternas-${formIndex}" class="form-control" />
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" id="funcoesResp-${formIndex}" class="form-check-input" />
-        <label class="form-check-label" for="funcoesResp-${formIndex}">Funções e responsabilidades:</label>
-    </div>
-    <div class="form-group">
-        <label for="referenciasInfo-${formIndex}">Referências informativas:</label>
-        <input id="referenciasInfo-${formIndex}" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="artefatosEvi-${formIndex}">Artefatos e evidências:</label>
-        <input id="artefatosEvi-${formIndex}" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="notas-${formIndex}">Notas:</label>
-        <textarea id="notas-${formIndex}" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="observacoes-${formIndex}">Considerações:</label>
-        <textarea id="observacoes-${formIndex}" placeholder="Digite suas observações sobre esta subcategoria..."></textarea>
-    </div>
-    <input type="hidden" id="function-${formIndex}" value="${func}">
-    <input type="hidden" id="category-${formIndex}" value="${category}">
-    <input type="hidden" id="value-${formIndex}" value="${subcategoryValue}">
-`;
-
-                                categoryContent.appendChild(subcategoryDiv);
-                                formIndex++;
-                            });
-
-                            categoryDiv.appendChild(categoryHeader);
-                            categoryDiv.appendChild(categoryContent);
-                            functionContent.appendChild(categoryDiv);
-                        }
-                    }
-
-                    if (hasCategories) {
-                        functionDiv.appendChild(functionHeader);
-                        functionDiv.appendChild(functionContent);
-                        formContainer.appendChild(functionDiv);
-
-                        // Expandir a primeira função por padrão
-                        functionContent.classList.add('expanded');
-                        functionHeader.querySelector('.toggle-icon').classList.add('expanded');
-                    }
-                }
-
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
-                document.getElementById('selectionInfo').innerHTML = `
-                    <div class="error-message">
-                        <h2>Erro ao carregar os dados</h2>
-                        <p>Ocorreu um erro ao carregar sua seleção. Por favor, volte e tente novamente.</p>
-                    </div>
-                `;
-                document.querySelector('.btn-salvar').disabled = true;
-            }
-        });
-
-        function voltarParaAnterior() {
-            window.location.href = 'Identificar';
-        }
-
-        function salvarAlteracoes() {
-            try {
-                const alteracoes = [];
-                const formCount = document.querySelectorAll('.subcategory-item').length;
-
-                // Coletar dados dos formulários
-                for (let i = 0; i < formCount; i++) {
-                    const statusElement = document.getElementById(`status-${i}`);
-                    const observacoesElement = document.getElementById(`observacoes-${i}`);
-                    const functionElement = document.getElementById(`function-${i}`);
-                    const categoryElement = document.getElementById(`category-${i}`);
-                    const valueElement = document.getElementById(`value-${i}`);
-
-                    if (statusElement && observacoesElement && functionElement && categoryElement && valueElement) {
-                        alteracoes.push({
-                            funcao: functionElement.value,
-                            categoria: categoryElement.value,
-                            subcategoria: valueElement.value,
-                            status: statusElement.value,
-                            observacoes: observacoesElement.value
-                        });
-                    }
-                }
-
-                // Salvar alterações
-                localStorage.setItem('alteracoesSalvas', JSON.stringify(alteracoes));
-
-                alert('Alterações salvas com sucesso!');
-
-            } catch (error) {
-                console.error('Erro ao salvar alterações:', error);
-                alert('Ocorreu um erro ao salvar as alterações. Por favor, tente novamente.');
-            }
-        }
-        
-        function removerSubcategoria(func, category, subcategoryValue, btnElement) {
-            const confirmacao = confirm("Deseja remover esta subcategoria?");
-            if (!confirmacao) return;
-
-            // Carrega dados do localStorage
-            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
-
-            if (
-                selections[func] &&
-                selections[func][category]
-            ) {
-                selections[func][category] = selections[func][category].filter(item => {
-                    const val = typeof item === 'object' ? item.value || item.text : item;
-                    return val !== subcategoryValue;
+                // 1. Cria a instância do NISTCore
+                app = new NISTCore({
+                    funcaoAtual: 'proteger',
+                    modo: 'futuro'
                 });
 
-                // Se a categoria ficou vazia, remove
-                if (selections[func][category].length === 0) {
-                    delete selections[func][category];
-                }
+                // 2. Torna global para os botões
+                window.app = app;
 
-                // Se a função ficou vazia, remove
-                if (Object.keys(selections[func]).length === 0) {
-                    delete selections[func];
-                }
-
-                // Atualiza localStorage
-                localStorage.setItem('nistSelections', JSON.stringify(selections));
-            }
-
-            // Remover visualmente a subcategoria
-            const subcategoryItem = btnElement.closest('.subcategory-item');
-            const categoryContent = subcategoryItem.closest('.category-content');
-            const categorySection = subcategoryItem.closest('.category-section');
-            const functionSection = subcategoryItem.closest('.function-section');
-
-            subcategoryItem.remove();
-
-            // Se não restarem subcategorias na categoria, remover a categoria do DOM
-            if (categoryContent && categoryContent.querySelectorAll('.subcategory-item').length === 0) {
-                categorySection.remove();
-            }
-
-            // Se não restarem categorias na função, remover a função do DOM
-            if (functionSection && functionSection.querySelectorAll('.category-section').length === 0) {
-                functionSection.remove();
-            }
-
-            // Atualizar resumo
-            atualizarResumoSelecao();
-
-            // Se não restar nenhuma subcategoria, mostrar mensagem
-            if (document.querySelectorAll('.subcategory-item').length === 0) {
-                document.getElementById('formContainer').innerHTML = `
-            <div class="empty-state">
-                <h3>Nenhuma subcategoria selecionada</h3>
-                <p>Volte à página anterior para selecionar subcategorias.</p>
-            </div>
-        `;
-                document.querySelector('.btn-salvar').disabled = true;
-                document.getElementById('selectionInfo').innerHTML = `
-            <div class="error-message">
-                <h2>Nenhuma seleção encontrada</h2>
-                <p>Por favor, volte e faça uma seleção primeiro.</p>
-            </div>
-        `;
-            }
-        }
-
-        function atualizarResumoSelecao() {
-            const formCount = document.querySelectorAll('.subcategory-item').length;
-            const selectionInfo = document.getElementById('selectionInfo');
-
-            selectionInfo.innerHTML = `
-        <h2>Resumo da Seleção</h2>
-        <p><strong>Total de subcategorias selecionadas:</strong> ${formCount}</p>
-    `;
-        }
-
-        function avancarParaProxima() {
-            const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
-            let achouAtual = false;
-
-            for (const func of ordemFuncoes) {
-                if (!achouAtual) {
-                    if (func === funcaoAtual) achouAtual = true;
-                    continue;
-                }
-                if (selections[func] && Object.keys(selections[func]).length > 0) {
-                    window.location.href = `${func}`;
+                // 3. Carregar seleções primeiro
+                const selecoesCarregadas = await app.carregarSelecoes();
+                if (!selecoesCarregadas) {
+                    console.log('Função não selecionada, parando carregamento');
                     return;
                 }
+
+                // 4. Carregar catálogos
+                await app.carregarPrioridades();
+                await app.carregarNiveis();
+
+                // 5. Carregar dados detalhados e cenários
+                await app.carregarInformacoesDetalhadas();
+                await app.carregarDadosCenarios();
+
+                // 6. Exibir os dados na página
+                await app.exibirCenarios();
+
+                console.log('=== CARREGAMENTO CONCLUÍDO ===');
+                console.log('Cache final:', app.cache);
+
+            } catch (error) {
+                console.error('Erro crítico:', error);
+                if (app) {
+                    app.safeUpdateElement('selectionInfo', `
+                <div class="error-message">
+                    <h2>Erro ao carregar a página</h2>
+                    <p>${error.message}</p>
+                </div>
+            `);
+                }
             }
-
-            // Se não houver próxima função, redirecionar para a última página
-            window.location.href = "Detectar";
-        }
-
-        function mostrarSubOpcoes(selectElement) {
-            // Implementar lógica para mostrar subopções se necessário
-            console.log("Prioridade selecionada:", selectElement.value);
-        }
+        });
     </script>
 </body>
 

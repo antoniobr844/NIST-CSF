@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
-using NistXGH.Utils;
+
 
 [ApiController]
 [Route("api/[controller]")]

@@ -103,63 +103,6 @@
             }
         });
     </script>
-    <script>
-        // DEBUG COMPLETO DOS FORMULÁRIOS
-        function debugCompletoFormularios() {
-            console.log('=== 🐛 DEBUG COMPLETO DOS FORMULÁRIOS ===');
-
-            // 1. Verificar containers
-            const currentContainer = document.getElementById('currentScenarioContainer');
-            const futureContainer = document.getElementById('futureScenarioContainer');
-            console.log('📦 Containers:', {
-                current: currentContainer ? `Encontrado (${currentContainer.children.length} filhos)` : 'NÃO ENCONTRADO',
-                future: futureContainer ? `Encontrado (${futureContainer.children.length} filhos)` : 'NÃO ENCONTRADO'
-            });
-
-            // 2. Verificar todos os formulários
-            const forms = document.querySelectorAll('.subcategory-item');
-            console.log('📝 Total de formulários (.subcategory-item):', forms.length);
-
-            forms.forEach((form, index) => {
-                console.log(`--- Formulário ${index} ---`);
-
-                // Verificar se está no container correto
-                const container = form.closest('#currentScenarioContainer') ? 'CURRENT' :
-                    form.closest('#futureScenarioContainer') ? 'FUTURE' : 'OUTRO';
-                console.log(`   Container: ${container}`);
-
-                // Verificar campos hidden
-                const hiddenInputs = form.querySelectorAll('input[type="hidden"]');
-                console.log(`   Campos hidden: ${hiddenInputs.length}`);
-
-                hiddenInputs.forEach((hidden, hIndex) => {
-                    console.log(`     Hidden ${hIndex}: ID="${hidden.id}", Value="${hidden.value}"`);
-                });
-
-                // Verificar outros campos
-                const selects = form.querySelectorAll('select');
-                const textareas = form.querySelectorAll('textarea');
-                console.log(`   Selects: ${selects.length}, Textareas: ${textareas.length}`);
-            });
-
-            // 3. Verificar IDs específicos dos campos hidden
-            console.log('--- 🔍 BUSCA POR IDs ESPECÍFICOS ---');
-            for (let i = 0; i < 10; i++) {
-                const currentHidden = document.getElementById(`current-subcategory-${i}`);
-                const futureHidden = document.getElementById(`future-subcategory-${i}`);
-
-                if (currentHidden || futureHidden) {
-                    console.log(`   Índice ${i}:`, {
-                        current: currentHidden ? `ID="${currentHidden.id}", Value="${currentHidden.value}"` : 'NÃO EXISTE',
-                        future: futureHidden ? `ID="${futureHidden.id}", Value="${futureHidden.value}"` : 'NÃO EXISTE'
-                    });
-                }
-            }
-        }
-
-        // Executar debug após a página carregar
-        setTimeout(debugCompletoFormularios, 3000);
-    </script>
 </body>
 
 </html>
