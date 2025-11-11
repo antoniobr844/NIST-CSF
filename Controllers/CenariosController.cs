@@ -172,7 +172,7 @@ namespace NistXGH.Controllers
 
                 foreach (var item in lista)
                 {
-                    // ✅ SEMPRE CRIAR NOVO REGISTRO
+                    // SEMPRE CRIAR NOVO REGISTRO
                     var novoCenario = new CenarioFuturo
                     {
                         SUBCATEGORIA = item.SUBCATEGORIA,
