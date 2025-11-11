@@ -12,7 +12,7 @@ namespace NistXGH.Controllers
         private readonly IFormatacaoService _formatacaoService;
 
         public FormatacaoController(IFormatacaoService formatacaoService)
-        {
+        {   
             _formatacaoService = formatacaoService;
         }
 

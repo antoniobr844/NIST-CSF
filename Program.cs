@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using NistXGH.Models;
-using Oracle.EntityFrameworkCore;
-using Oracle.ManagedDataAccess.Client;
+using NistXGH.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +11,7 @@ builder.Services.AddDbContext<SgsiDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("SgsiDbContext"))
 );
 
+builder.Services.AddScoped<IFormatacaoService, FormatacaoService>();   
 
 var app = builder.Build();
 
@@ -20,6 +20,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
+
 
 app.UseHttpsRedirection();
 
