@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  oracle-db:
+    image: pedro94157/sgsi:latest
+    container_name: oracle-db
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=321
+
+    networks:
+      - sgsi-net
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'select 1 from dual;' | sqlplus -s system/321@oracle-db:1521/sgsi_pdb || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 15
+
+  sgsi-app:
+    build: .
+    container_name: sgsi-app
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    ports:
+      - "5263:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SgsiDbContext=User Id=SGSI;Password=321;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle-db)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=sgsi_pdb)));
+    networks:
+      - sgsi-net
+
+networks:
+  sgsi-net:
+    driver: bridge
