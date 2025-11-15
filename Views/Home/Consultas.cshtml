@@ -5,11 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIST CSF - Consulta de Categorias</title>
-    <link rel="stylesheet" href="/css/base/variables.css">
-    <link rel="stylesheet" href="/css/base/reset.css">
-    <link rel="stylesheet" href="/css/components/breadcrumb.css">
-    <link rel="stylesheet" href="/css/components/forms.css">
-    <link rel="stylesheet" href="/css/components/buttons.css">
     <link rel="stylesheet" href="/css/pages/consultas.css">
 </head>
 
@@ -17,10 +12,26 @@
     <div class="container">
         <h1>NIST CSF - Consultas</h1>
 
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Total de Funções</h3>
+                <div class="summary-value" id="totalFuncoes">6</div>
+            </div>
+            <div class="summary-card">
+                <h3>Categorias Disponíveis</h3>
+                <div class="summary-value" id="totalCategorias">-</div>
+            </div>
+            <div class="summary-card">
+                <h3>Subcategorias</h3>
+                <div class="summary-value" id="totalSubcategorias">-</div>
+            </div>
+        </div>
+
         <div class="breadcrumb">
             <div class="active">Função</div>
             <div>Categoria</div>
             <div>Subcategorias</div>
+            <div>Informações</div>
         </div>
 
         <div class="combo-container">
@@ -49,8 +60,8 @@
         </div>
 
         <div id="infoContainer" class="hidden">
-            <div class="combo-container">
-                <h3>Informações da Subcategoria:</h3>
+            <div class="combo-container info-highlight">
+                <h3>📋 Informações da Subcategoria</h3>
                 <textarea id="infoTextarea" readonly></textarea>
             </div>
         </div>
@@ -103,20 +114,20 @@
             const nomeSubcategoria = subcategoria.codigo || subcategoria.nome || subcategoria.subcategoria;
             const descricao = subcategoria.descricao || '';
 
-            let texto = `FUNÇÃO: ${codigoFuncao} - ${nomeFuncao}\n`;
-            texto += `CATEGORIA: ${codigoCategoria} - ${nomeCategoria}\n`;
-            texto += `SUBCATEGORIA: ${nomeSubcategoria}\n`;
-            texto += `DESCRIÇÃO: ${descricao}\n\n`;
+            let texto = `🏛️ FUNÇÃO: ${codigoFuncao} - ${nomeFuncao}\n`;
+            texto += `📂 CATEGORIA: ${codigoCategoria} - ${nomeCategoria}\n`;
+            texto += `📝 SUBCATEGORIA: ${nomeSubcategoria}\n`;
+            texto += `📋 DESCRIÇÃO: ${descricao}\n\n`;
 
             if (controles && controles.length > 0) {
-                texto += `CONTROLES RELACIONADOS:\n`;
+                texto += `🛡️ CONTROLES RELACIONADOS:\n`;
                 controles.forEach(c => {
                     texto += `• ${c.controle || c.CONTROLE || 'Controle'}`;
                     if (c.codigo || c.CODIGO) texto += ` (${c.codigo || c.CODIGO})`;
                     texto += '\n';
                 });
             } else {
-                texto += 'CONTROLES: Nenhum controle específico cadastrado.\n';
+                texto += '🛡️ CONTROLES: Nenhum controle específico cadastrado.\n';
             }
 
             return texto;
@@ -146,6 +157,9 @@
                     });
                     preencherSelect(SELECT_FUNCOES, opcoesElements, 'Selecione uma função');
                     this.breadcrumb.update(1);
+
+                    // Atualizar contador de funções
+                    document.getElementById('totalFuncoes').textContent = funcoes.length;
                 } catch (error) {
                     this.mostrarErro(SELECT_FUNCOES, 'Erro ao carregar funções');
                 }
@@ -160,6 +174,8 @@
             async carregarCategorias(funcaoId) {
                 if (!funcaoId) {
                     ocultarContainer(CONTAINER_CATEGORIAS);
+                    ocultarContainer(CONTAINER_SUBCATEGORIAS);
+                    ocultarContainer(CONTAINER_INFO);
                     this.breadcrumb.update(1);
                     return;
                 }
@@ -175,6 +191,13 @@
                     preencherSelect(SELECT_CATEGORIAS, opcoesElements, 'Selecione uma categoria');
                     mostrarContainer(CONTAINER_CATEGORIAS);
                     this.breadcrumb.update(2);
+
+                    // Atualizar contador de categorias
+                    document.getElementById('totalCategorias').textContent = categorias.length;
+
+                    // Resetar containers seguintes
+                    ocultarContainer(CONTAINER_SUBCATEGORIAS);
+                    ocultarContainer(CONTAINER_INFO);
                 } catch (error) {
                     this.mostrarErro(SELECT_CATEGORIAS, 'Erro ao carregar categorias');
                 }
@@ -183,6 +206,7 @@
             async carregarSubcategorias(categoriaId) {
                 if (!categoriaId) {
                     ocultarContainer(CONTAINER_SUBCATEGORIAS);
+                    ocultarContainer(CONTAINER_INFO);
                     this.breadcrumb.update(2);
                     return;
                 }
@@ -211,6 +235,12 @@
                     mostrarContainer(CONTAINER_SUBCATEGORIAS);
                     this.breadcrumb.update(3);
 
+                    // Atualizar contador de subcategorias
+                    document.getElementById('totalSubcategorias').textContent = subcategorias.length;
+
+                    // Resetar container de informações
+                    ocultarContainer(CONTAINER_INFO);
+
                 } catch (error) {
                     this.mostrarErro(SELECT_SUBCATEGORIAS, 'Erro ao carregar subcategorias');
                 }
@@ -230,6 +260,7 @@
 
                     infoTextarea.value = formatarTextArea(subcategoria, controles, funcaoOption, categoriaOption);
                     mostrarContainer(CONTAINER_INFO);
+                    this.breadcrumb.update(4);
 
                 } catch (error) {
                     console.error('Erro ao carregar informações da subcategoria:', error);
@@ -237,6 +268,7 @@
                     const selectedOption = subCatSelect.options[subCatSelect.selectedIndex];
                     infoTextarea.value = selectedOption?.getAttribute('data-descricao') || 'Informações não disponíveis.';
                     mostrarContainer(CONTAINER_INFO);
+                    this.breadcrumb.update(4);
                 }
             }
 

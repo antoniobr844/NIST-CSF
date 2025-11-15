@@ -5,19 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIST CSF - Seleção de Subcategorias</title>
-
-    <!-- CSS Compartilhado -->
-    <link rel="stylesheet" href="/css/base/variables.css">
-    <link rel="stylesheet" href="/css/base/reset.css">
-    <link rel="stylesheet" href="/css/components/breadcrumb.css">
-    <link rel="stylesheet" href="/css/components/forms.css">
-    <link rel="stylesheet" href="/css/components/buttons.css">
     <link rel="stylesheet" href="/css/pages/precadastro.css">
 </head>
 
 <body>
     <div class="container">
         <h1>NIST CSF - Seleção de Subcategorias</h1>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Total de Subcategorias Selecionadas</h3>
+                <div class="summary-value" id="totalSubcategorias">0</div>
+            </div>
+            <div class="summary-card">
+                <h3>Funções com Seleções</h3>
+                <div class="summary-value" id="totalFuncoes">0</div>
+            </div>
+            <div class="summary-card">
+                <h3>Categorias com Seleções</h3>
+                <div class="summary-value" id="totalCategorias">0</div>
+            </div>
+        </div>
 
         <div class="breadcrumb">
             <div class="active">Função</div>
@@ -361,7 +369,6 @@
                 }
             }
 
-            // FUNÇÃO CORRIGIDA: Avançar para alterações
             avancarParaAlteracoes() {
                 const totalSelecoes = this.selectionManager.getTotalSelectedCount();
                 console.log('Total de seleções:', totalSelecoes);
@@ -391,7 +398,6 @@
                 window.location.href = paginaDestino;
             }
 
-            // FUNÇÃO CORRIGIDA: Encontrar a primeira função com seleções
             encontrarPrimeiraFuncaoComSelecoes() {
                 const selecoes = this.selectionManager.selectedSubcategories;
                 console.log('Estrutura de seleções:', selecoes);
@@ -455,10 +461,32 @@
 
             atualizarContadorGlobal() {
                 const globalSelectedCount = document.getElementById('globalSelectedCount');
+                const totalSubcategorias = document.getElementById('totalSubcategorias');
+                const totalFuncoes = document.getElementById('totalFuncoes');
+                const totalCategorias = document.getElementById('totalCategorias');
+
                 const total = this.selectionManager.getTotalSelectedCount();
 
-                globalSelectedCount.textContent =
-                    `Total de ${total} subcategoria${total !== 1 ? 's' : ''} selecionada${total !== 1 ? 's' : ''} em todas as categorias`;
+                // Contar funções e categorias com seleções
+                let totalFunc = 0;
+                let totalCat = 0;
+                const selecoes = this.selectionManager.selectedSubcategories;
+
+                for (const func in selecoes) {
+                    let temSelecoes = false;
+                    for (const categoria in selecoes[func]) {
+                        if (selecoes[func][categoria].length > 0) {
+                            totalCat++;
+                            temSelecoes = true;
+                        }
+                    }
+                    if (temSelecoes) totalFunc++;
+                }
+
+                globalSelectedCount.textContent = `Total de ${total} subcategoria${total !== 1 ? 's' : ''} selecionada${total !== 1 ? 's' : ''} em todas as categorias`;
+                totalSubcategorias.textContent = total;
+                totalFuncoes.textContent = totalFunc;
+                totalCategorias.textContent = totalCat;
             }
 
             atualizarEstadoBotaoAvancar() {
