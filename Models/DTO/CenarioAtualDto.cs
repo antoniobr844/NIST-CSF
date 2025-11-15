@@ -1,8 +1,8 @@
-// Models/Dto/CenarioAtualDto.cs
 namespace NistXGH.Models.Dto
 {
     public class CenarioAtualDto
     {
+        public int ID { get; set; }
         public int SUBCATEGORIA { get; set; }
         public string? JUSTIFICATIVA { get; set; }
         public int PRIOR_ATUAL { get; set; }

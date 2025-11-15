@@ -98,8 +98,8 @@ namespace NistXGH.Controllers
                         }
 
                         // ✅ CORREÇÃO: Validar e converter valores numéricos
-                        var prioridade = cenarioDto.PRIOR_ATUAL ;
-                        var status = cenarioDto.STATUS_ATUAL ;
+                        var prioridade = cenarioDto.PRIOR_ATUAL;
+                        var status = cenarioDto.STATUS_ATUAL;
 
                         // Validação adicional para números
                         if (prioridade < 0) prioridade = 1;
@@ -110,7 +110,7 @@ namespace NistXGH.Controllers
                             SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
                             JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA,
                             PRIOR_ATUAL = prioridade,
-                            STATUS_ATUAL = status, 
+                            STATUS_ATUAL = status,
                             POLIT_ATUAL = cenarioDto.POLIT_ATUAL,
                             PRAT_ATUAL = cenarioDto.PRAT_ATUAL,
                             FUNC_RESP = cenarioDto.FUNC_RESP,
@@ -414,6 +414,160 @@ namespace NistXGH.Controllers
             }
 
         }
+
+        // ========== EDIÇÃO DE CENÁRIOS ==========
+
+        [HttpPost("atual/editar")]
+        public async Task<IActionResult> EditarCenarioAtual([FromBody] CenarioAtualDto dados)
+        {
+            try
+            {
+                _logger.LogInformation("Iniciando edição do cenário atual - ID: {Id}", dados.ID);
+
+                var registro = await _context.CenariosAtual.FindAsync(dados.ID);
+                if (registro == null)
+                {
+                    _logger.LogWarning("Cenário atual não encontrado para edição - ID: {Id}", dados.ID);
+                    return NotFound("Registro não encontrado");
+                }
+
+                // Gerar log das alterações
+                var alteracoes = await GerarLogAlteracoes(registro, dados, "ATUAL");
+
+                // Aplicar alterações
+                registro.PRIOR_ATUAL = dados.PRIOR_ATUAL;
+                registro.STATUS_ATUAL = dados.STATUS_ATUAL;
+                registro.POLIT_ATUAL = dados.POLIT_ATUAL;
+                registro.PRAT_ATUAL = dados.PRAT_ATUAL;
+                registro.FUNC_RESP = dados.FUNC_RESP;
+                registro.REF_INFO = dados.REF_INFO;
+                registro.EVID_ATUAL = dados.EVID_ATUAL;
+                registro.JUSTIFICATIVA = dados.JUSTIFICATIVA;
+                registro.NOTAS = dados.NOTAS;
+                registro.CONSIDERACOES = dados.CONSIDERACOES;
+                registro.DATA_REGISTRO = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Cenário atual editado com sucesso - ID: {Id}, Alterações: {Count}",
+                    dados.ID, alteracoes.Count);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Registro atualizado com sucesso",
+                    alteracoes = alteracoes.Count,
+                    id = dados.ID
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao editar cenário atual - ID: {Id}", dados.ID);
+                return StatusCode(500, $"Erro ao editar registro: {ex.Message}");
+            }
+        }
+
+        [HttpPost("futuro/editar")]
+        public async Task<IActionResult> EditarCenarioFuturo([FromBody] CenarioFuturoDto dados)
+        {
+            try
+            {
+                _logger.LogInformation("Iniciando edição do cenário futuro - ID: {Id}", dados.ID);
+
+                var registro = await _context.CenariosFuturo.FindAsync(dados.ID);
+                if (registro == null)
+                {
+                    _logger.LogWarning("Cenário futuro não encontrado para edição - ID: {Id}", dados.ID);
+                    return NotFound("Registro não encontrado");
+                }
+
+                // Gerar log das alterações
+                var alteracoes = await GerarLogAlteracoes(registro, dados, "FUTURO");
+
+                // Aplicar alterações
+                registro.PRIORIDADE_ALVO = dados.PRIORIDADE_ALVO;
+                registro.NIVEL_ALVO = dados.NIVEL_ALVO;
+                registro.POLIT_ALVO = dados.POLIT_ALVO;
+                registro.PRAT_ALVO = dados.PRAT_ALVO;
+                registro.FUNC_ALVO = dados.FUNC_ALVO;
+                registro.REF_INFO_ALVO = dados.REF_INFO_ALVO;
+                registro.ARTEF_ALVO = dados.ARTEF_ALVO;
+                registro.DATA_REGISTRO = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Cenário futuro editado com sucesso - ID: {Id}, Alterações: {Count}",
+                    dados.ID, alteracoes.Count);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Registro atualizado com sucesso",
+                    alteracoes = alteracoes.Count,
+                    id = dados.ID
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao editar cenário futuro - ID: {Id}", dados.ID);
+                return StatusCode(500, $"Erro ao editar registro: {ex.Message}");
+            }
+        }
+
+        // ========== MÉTODO AUXILIAR PARA LOG ==========
+
+        private async Task<List<LogAlteracao>> GerarLogAlteracoes(object registroAntigo, object registroNovo, string tipoCenario)
+        {
+            var alteracoes = new List<LogAlteracao>();
+            var propriedades = registroAntigo.GetType().GetProperties();
+
+            foreach (var prop in propriedades)
+            {
+                // Ignorar propriedades que não devem ser logadas
+                if (prop.Name == "ID" || prop.Name == "DATA_REGISTRO" || prop.Name == "SUBCATEGORIA")
+                    continue;
+
+                var valorAntigo = prop.GetValue(registroAntigo)?.ToString();
+                var valorNovo = prop.GetValue(registroNovo)?.ToString();
+
+                if (valorAntigo != valorNovo)
+                {
+                    var log = new CenarioLog
+                    {
+                        CENARIO_ID = ((dynamic)registroAntigo).ID,
+                        CENARIO_TIPO = tipoCenario,
+                        SUBCATEGORIA_ID = ((dynamic)registroAntigo).SUBCATEGORIA,
+                        CAMPO_ALTERADO = prop.Name,
+                        VALOR_ANTIGO = valorAntigo,
+                        VALOR_NOVO = valorNovo,
+                        USUARIO = User.Identity?.Name ?? "Sistema",
+                        DATA_ALTERACAO = DateTime.Now,
+                        IP_MAQUINA = HttpContext.Connection.RemoteIpAddress?.ToString()
+                    };
+
+                    _context.CenarioLog.Add(log);
+                    alteracoes.Add(new LogAlteracao
+                    {
+                        Campo = prop.Name,
+                        ValorAntigo = valorAntigo,
+                        ValorNovo = valorNovo
+                    });
+
+                    _logger.LogInformation("Campo alterado: {Campo} - De: {ValorAntigo} Para: {ValorNovo}",
+                        prop.Name, valorAntigo, valorNovo);
+                }
+            }
+
+            if (alteracoes.Any())
+                await _context.SaveChangesAsync();
+
+            return alteracoes;
+        }
+
+ 
+        // Classe auxiliar para retorno do log
+
+
         // ========== IMPLEMENTAÇÃO FUTURA ==========
 
         /* [HttpGet("atual/formatados")]

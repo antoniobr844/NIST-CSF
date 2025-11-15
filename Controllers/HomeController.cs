@@ -195,4 +195,9 @@ public class HomeController : Controller
         ViewBag.OpcoesSelecionadas = opcoes;
         return View();
     }
+
+    public IActionResult EdicaoCenario()
+    {
+        return View();
+    }
 }

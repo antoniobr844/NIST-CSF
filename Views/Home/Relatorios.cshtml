@@ -147,6 +147,17 @@
         box-shadow: 0 6px 18px rgba(39, 174, 96, 0.4);
     }
 
+    .btn-secondary {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(108, 117, 125, 0.4);
+    }
+
     .table-container {
         overflow-x: auto;
         border-radius: 8px;
@@ -176,8 +187,13 @@
         color: #2c3e50;
     }
 
+    tbody tr {
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
     tbody tr:hover {
-        background: #f8f9fa;
+        background: #f8f9fa !important;
     }
 
     tbody tr:nth-child(even) {
@@ -281,6 +297,66 @@
         margin: 20px 0;
         border-left: 6px solid #e74c3c;
         font-weight: 500;
+    }
+
+    /* Modal de Edição */
+    .modal-edicao {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        min-width: 450px;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+        margin-bottom: 20px;
+    }
+
+    .modal-header h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .modal-info {
+        margin-bottom: 20px;
+    }
+
+    .modal-info p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .modal-actions .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+    .clickable-row:hover {
+        background-color: #f8f9fa !important;
     }
 </style>
 
@@ -464,10 +540,10 @@
         }
 
         configurarEventos() {
+            // Eventos dos filtros
             document.getElementById('btnFiltrar').addEventListener('click', () => this.aplicarFiltros());
             document.getElementById('btnExportar').addEventListener('click', () => this.exportarRelatorio());
 
-            // Aplicar filtros ao mudar seleções
             document.getElementById('filterFunction').addEventListener('change', (e) => {
                 this.filtros.funcao = e.target.value;
                 this.aplicarFiltros();
@@ -481,6 +557,18 @@
             document.getElementById('filterLevel').addEventListener('change', (e) => {
                 this.filtros.nivel = e.target.value;
                 this.aplicarFiltros();
+            });
+
+            // Evento de clique nas linhas da tabela
+            this.configurarEventosDeClique();
+        }
+
+        configurarEventosDeClique() {
+            document.addEventListener('click', (e) => {
+                const linha = e.target.closest('tr');
+                if (linha && linha.parentElement.tagName === 'TBODY' && !linha.classList.contains('loading')) {
+                    this.abrirOpcoesEdicao(linha);
+                }
             });
         }
 
@@ -508,7 +596,6 @@
             try {
                 tbody.innerHTML = '<tr><td colspan="10" class="loading">Carregando dados do cenário futuro...</td></tr>';
 
-                // ✅ CORREÇÃO: Usar apenas o endpoint correto que existe
                 const dados = await this.fetchAPI('/api/Cenarios/futuro/formatados');
 
                 if (!dados || !Array.isArray(dados)) {
@@ -537,16 +624,13 @@
 
         aplicarFiltros() {
             const dadosFiltrados = this.dadosCenarios.filter(cenario => {
-                // Filtro por função (busca no código da subcategoria formatada)
                 const matchesFuncao = !this.filtros.funcao ||
                     (cenario.subcategoriaFormatada && cenario.subcategoriaFormatada.includes(this.filtros.funcao)) ||
                     (cenario.funcaoCodigo && cenario.funcaoCodigo === this.filtros.funcao);
 
-                // Filtro por prioridade
                 const matchesPrioridade = !this.filtros.prioridade ||
                     cenario.prioridade == this.filtros.prioridade;
 
-                // Filtro por nível
                 const matchesNivel = !this.filtros.nivel ||
                     cenario.nivel == this.filtros.nivel;
 
@@ -579,7 +663,9 @@
                 const dataRegistro = cenario.dataRegistro ? new Date(cenario.dataRegistro).toLocaleDateString('pt-BR') : 'N/A';
 
                 html += `
-                    <tr>
+                    <tr class="clickable-row" 
+                        data-id="${cenario.id || 'N/A'}" 
+                        data-subcategoria-id="${cenario.subcategoriaId}">
                         <td>${cenario.id || 'N/A'}</td>
                         <td><strong>${subcategoria}</strong></td>
                         <td><span class="priority-badge priority-${this.getPrioridadeClass(prioridade)}">${this.getPrioridadeTexto(prioridade)}</span></td>
@@ -596,6 +682,64 @@
 
             tbody.innerHTML = html;
             this.atualizarResumos(dados);
+        }
+
+        abrirOpcoesEdicao(linha) {
+            const id = linha.cells[0].textContent.trim();
+            const subcategoria = linha.cells[1].textContent.trim();
+            const subcategoriaId = linha.dataset.subcategoriaId;
+
+            if (!id || id === 'N/A') {
+                alert('Não é possível editar este registro - ID inválido');
+                return;
+            }
+
+            const modal = document.createElement('div');
+            modal.className = 'modal-edicao';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>✏️ Editar Registro</h3>
+                    </div>
+                    <div class="modal-info">
+                        <p><strong>ID:</strong> ${id}</p>
+                        <p><strong>Subcategoria:</strong> ${subcategoria}</p>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="relatoriosManager.editarCenario('ATUAL', ${id}, ${subcategoriaId})">
+                            📊 Cenário Atual
+                        </button>
+                        <button class="btn btn-success" onclick="relatoriosManager.editarCenario('FUTURO', ${id}, ${subcategoriaId})">
+                            🎯 Cenário Futuro
+                        </button>
+                        <button class="btn btn-secondary" onclick="relatoriosManager.fecharModal()">
+                            ❌ Cancelar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        fecharModal() {
+            const modal = document.querySelector('.modal-edicao');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        editarCenario(tipo, id, subcategoriaId) {
+            this.fecharModal();
+
+            if (!id || !subcategoriaId) {
+                alert('Erro: Não foi possível identificar o registro para edição');
+                return;
+            }
+
+            const url = `/Home/EdicaoCenario?id=${id}&tipo=${tipo}&subcategoriaId=${subcategoriaId}`;
+            console.log('Redirecionando para:', url);
+            window.location.href = url;
         }
 
         getPrioridadeClass(prioridade) {

@@ -4,6 +4,7 @@ namespace NistXGH.Models.Dto
 {
     public class CenarioFuturoDto
     {
+        public int ID { get; set; }
         public int SUBCATEGORIA { get; set; }
         public string? POLIT_ALVO { get; set; }
         public string? PRAT_ALVO { get; set; }

@@ -14,6 +14,7 @@ public class SgsiDbContext : DbContext
     public DbSet<Subcategorias> Subcategorias { get; set; }
     public DbSet<PrioridadeTb> PrioridadeTb { get; set; }
     public DbSet<StatusTb> StatusTb { get; set; }
+    public DbSet<CenarioLog> CenarioLog { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -91,7 +92,7 @@ public class SgsiDbContext : DbContext
                    .HasColumnName("JUSTIFICATIVA");
 
                entity.Property(e => e.PRIOR_ATUAL)
-                   .HasColumnName("PRIOR_ATUAL") 
+                   .HasColumnName("PRIOR_ATUAL")
                    .HasDefaultValue(1);
 
                entity.Property(e => e.STATUS_ATUAL)
@@ -99,17 +100,17 @@ public class SgsiDbContext : DbContext
 
                entity.Property(e => e.POLIT_ATUAL)
                    .HasColumnName("POLIT_ATUAL")
-                   .HasMaxLength(20); 
+                   .HasMaxLength(20);
                entity.Property(e => e.PRAT_ATUAL)
                    .HasColumnName("PRAT_ATUAL")
-                   .HasMaxLength(200); 
+                   .HasMaxLength(200);
                entity.Property(e => e.FUNC_RESP)
                    .HasColumnName("FUNC_RESP")
-                   .HasMaxLength(50); 
+                   .HasMaxLength(50);
 
                entity.Property(e => e.REF_INFO)
                    .HasColumnName("REF_INFO")
-                   .HasMaxLength(90); 
+                   .HasMaxLength(90);
 
                entity.Property(e => e.EVID_ATUAL)
                    .HasColumnName("EVID_ATUAL");
@@ -118,13 +119,13 @@ public class SgsiDbContext : DbContext
                    .HasColumnName("NOTAS");
 
                entity.Property(e => e.CONSIDERACOES)
-                   .HasColumnName("CONSIDERACOES") 
+                   .HasColumnName("CONSIDERACOES")
                    .HasMaxLength(200);
 
                entity.Property(e => e.DATA_REGISTRO)
                    .HasColumnName("DATA_REGISTRO");
 
-              
+
                entity.HasOne(e => e.SubcategoriaNav)
                    .WithMany()
                    .HasForeignKey(e => e.SUBCATEGORIA)
@@ -155,7 +156,7 @@ public class SgsiDbContext : DbContext
             entity.Property(e => e.REF_INFO_ALVO).HasColumnName("REF_INFO_ALVO");
             entity.Property(e => e.ARTEF_ALVO).HasColumnName("ARTEF_ALVO");
             entity.Property(e => e.DATA_REGISTRO).HasColumnName("DATA_REGISTRO");
-           
+
             entity
                 .HasOne(e => e.Prioridade)
                 .WithMany()
@@ -177,5 +178,51 @@ public class SgsiDbContext : DbContext
                 .HasPrincipalKey(s => s.ID)
                 .HasConstraintName("FK_SUBCAT_FUTURO");
         });
+
+        modelBuilder.Entity<CenarioLog>(entity =>
+       {
+           entity.ToTable("CENARIO_LOG", "SGSI");
+           entity.HasKey(e => e.ID);
+
+           entity.Property(e => e.ID)
+               .HasColumnName("ID")
+               .ValueGeneratedOnAdd(); // Para identity no Oracle
+
+           entity.Property(e => e.CENARIO_ID)
+               .HasColumnName("CENARIO_ID")
+               .IsRequired();
+
+           entity.Property(e => e.CENARIO_TIPO)
+               .HasColumnName("CENARIO_TIPO")
+               .HasMaxLength(10)
+               .IsRequired();
+
+           entity.Property(e => e.SUBCATEGORIA_ID)
+               .HasColumnName("SUBCATEGORIA_ID")
+               .IsRequired();
+
+           entity.Property(e => e.CAMPO_ALTERADO)
+               .HasColumnName("CAMPO_ALTERADO")
+               .HasMaxLength(50)
+               .IsRequired();
+
+           entity.Property(e => e.VALOR_ANTIGO)
+               .HasColumnName("VALOR_ANTIGO");
+
+           entity.Property(e => e.VALOR_NOVO)
+               .HasColumnName("VALOR_NOVO");
+
+           entity.Property(e => e.USUARIO)
+               .HasColumnName("USUARIO")
+               .HasMaxLength(100);
+
+           entity.Property(e => e.DATA_ALTERACAO)
+               .HasColumnName("DATA_ALTERACAO")
+               .HasDefaultValueSql("SYSDATE"); 
+
+           entity.Property(e => e.IP_MAQUINA)
+               .HasColumnName("IP_MAQUINA")
+               .HasMaxLength(45);
+       });
     }
 }

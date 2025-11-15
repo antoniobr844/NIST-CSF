@@ -120,8 +120,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>66enhbbslh</Fingerprint>
-      <Integrity>fhRnGl7CWwgruEAOna5ooDWTQNiYeukJh3npSpCeu38=</Integrity>
+      <Fingerprint>yjukz3f2nm</Fingerprint>
+      <Integrity>UsnSKVxI0nKLRp4uw1e8Py+Tmaw8Sl88szY5y5C902A=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\pages\alteracoes.css'))</OriginalItemSpec>
@@ -336,8 +336,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5krhbbs3hd</Fingerprint>
-      <Integrity>xRxBgL+VwHgbzHi/ACVI2djMRKHDsXhKHrsPG5d2Evc=</Integrity>
+      <Fingerprint>zy67r9e3nq</Fingerprint>
+      <Integrity>C34lOAl4irZVaBTBUoPaRiFZQTaRQ+TW9xxfa0wcPms=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\core\nist-core.js'))</OriginalItemSpec>

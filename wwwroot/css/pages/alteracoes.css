@@ -328,13 +328,50 @@ h1 {
 }
 
 .form-section-divider {
-    border-top: 2px solid #007bff;
-    margin: 20px 0 15px 0;
-    padding-top: 10px;
+  border-top: 2px solid #007bff;
+  margin: 20px 0 15px 0;
+  padding-top: 10px;
 }
 
 .form-section-divider h5 {
-    color: #007bff;
-    margin: 0;
-    font-size: 1.1em;
+  color: #007bff;
+  margin: 0;
+  font-size: 1.1em;
+}
+
+/* Estilos para modo edição */
+.edicao-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.edicao-header h2 {
+  margin: 0 0 10px 0;
+  color: white;
+}
+
+.edicao-info {
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+.btn-historico {
+  margin-top: 15px;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.btn-historico:hover {
+  background-color: #138496;
+  border-color: #117a8b;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+  margin-top: 10px;
 }
