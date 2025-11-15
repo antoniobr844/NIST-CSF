@@ -23,14 +23,13 @@ namespace NistXGH.Controllers
 
         // ========== CENÁRIO ATUAL ==========
 
+
         [HttpGet("atual")]
         public async Task<IActionResult> GetCenarioAtual([FromQuery] int subcategoriaId)
         {
             try
             {
                 _logger.LogInformation("Buscando cenário atual para subcategoria {SubcategoriaId}", subcategoriaId);
-
-                // Buscar o MAIS RECENTE - usando DATA_REGISTRO
                 var cenario = await _context.CenariosAtual
                     .Where(c => c.SUBCATEGORIA == subcategoriaId)
                     .OrderByDescending(c => c.DATA_REGISTRO)
@@ -39,12 +38,12 @@ namespace NistXGH.Controllers
                 if (cenario == null)
                 {
                     _logger.LogWarning("Nenhum cenário atual encontrado para subcategoria {SubcategoriaId}", subcategoriaId);
-                    return Ok(new CenarioAtualDto
+                    return Ok(new
                     {
                         SUBCATEGORIA = subcategoriaId,
                         JUSTIFICATIVA = "Registro a ser preenchido",
                         PRIOR_ATUAL = 0,
-                        STATUS_ATUAL = "",
+                        STATUS_ATUAL = 0,
                         POLIT_ATUAL = "Não informado",
                         PRAT_ATUAL = "Não informado",
                         FUNC_RESP = "Não informado",
@@ -61,7 +60,11 @@ namespace NistXGH.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro interno ao buscar cenário atual para subcategoria {SubcategoriaId}", subcategoriaId);
-                return StatusCode(500, $"Erro interno: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    error = $"Erro interno: {ex.Message}",
+                    details = ex.InnerException?.Message
+                });
             }
         }
 
@@ -73,52 +76,110 @@ namespace NistXGH.Controllers
 
             try
             {
+                _logger.LogInformation("Iniciando salvamento de {Count} registros de cenário atual", lista.Count);
+
                 var novosCenarios = new List<CenarioAtual>();
+                var registrosComErro = new List<object>();
+                var registrosComSucesso = new List<object>();
 
                 foreach (var cenarioDto in lista)
                 {
-                    var novoCenario = new CenarioAtual
+                    try
                     {
-                        SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
-                        JUSTIFICATIVA = string.IsNullOrWhiteSpace(cenarioDto.JUSTIFICATIVA) ? null : cenarioDto.JUSTIFICATIVA,
-                        PRIOR_ATUAL = cenarioDto.PRIOR_ATUAL,
-                        STATUS_ATUAL = cenarioDto.STATUS_ATUAL,
-                        POLIT_ATUAL = string.IsNullOrWhiteSpace(cenarioDto.POLIT_ATUAL) ? null : cenarioDto.POLIT_ATUAL,
-                        PRAT_ATUAL = string.IsNullOrWhiteSpace(cenarioDto.PRAT_ATUAL) ? null : cenarioDto.PRAT_ATUAL,
-                        FUNC_RESP = string.IsNullOrWhiteSpace(cenarioDto.FUNC_RESP) ? null : cenarioDto.FUNC_RESP,
-                        REF_INFO = string.IsNullOrWhiteSpace(cenarioDto.REF_INFO) ? null : cenarioDto.REF_INFO,
-                        EVID_ATUAL = string.IsNullOrWhiteSpace(cenarioDto.EVID_ATUAL) ? null : cenarioDto.EVID_ATUAL,
-                        NOTAS = string.IsNullOrWhiteSpace(cenarioDto.NOTAS) ? null : cenarioDto.NOTAS,
-                        CONSIDERACOES = string.IsNullOrWhiteSpace(cenarioDto.CONSIDERACOES) ? null : cenarioDto.CONSIDERACOES,
-                        DATA_REGISTRO = DateTime.Now
-                    };
+                        if (cenarioDto.SUBCATEGORIA <= 0)
+                        {
+                            _logger.LogWarning("SUBCATEGORIA inválido: {Subcategoria}", cenarioDto.SUBCATEGORIA);
+                            registrosComErro.Add(new
+                            {
+                                subcategoria = cenarioDto.SUBCATEGORIA,
+                                erro = "SUBCATEGORIA inválida"
+                            });
+                            continue;
+                        }
 
-                    novosCenarios.Add(novoCenario);
+                        // ✅ CORREÇÃO: Validar e converter valores numéricos
+                        var prioridade = cenarioDto.PRIOR_ATUAL ;
+                        var status = cenarioDto.STATUS_ATUAL ;
+
+                        // Validação adicional para números
+                        if (prioridade < 0) prioridade = 1;
+                        if (status < 0) status = 1;
+
+                        var novoCenario = new CenarioAtual
+                        {
+                            SUBCATEGORIA = cenarioDto.SUBCATEGORIA,
+                            JUSTIFICATIVA = cenarioDto.JUSTIFICATIVA,
+                            PRIOR_ATUAL = prioridade,
+                            STATUS_ATUAL = status, 
+                            POLIT_ATUAL = cenarioDto.POLIT_ATUAL,
+                            PRAT_ATUAL = cenarioDto.PRAT_ATUAL,
+                            FUNC_RESP = cenarioDto.FUNC_RESP,
+                            REF_INFO = cenarioDto.REF_INFO,
+                            EVID_ATUAL = cenarioDto.EVID_ATUAL,
+                            NOTAS = cenarioDto.NOTAS,
+                            CONSIDERACOES = cenarioDto.CONSIDERACOES,
+                            DATA_REGISTRO = DateTime.Now
+                        };
+
+                        novosCenarios.Add(novoCenario);
+                        registrosComSucesso.Add(new
+                        {
+                            subcategoria = cenarioDto.SUBCATEGORIA,
+                            prioridade = prioridade,
+                            status = status
+                        });
+
+                        _logger.LogInformation("Criado registro para subcategoria {Subcategoria} - Prioridade: {Prioridade}, Status: {Status}",
+                            cenarioDto.SUBCATEGORIA, prioridade, status);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Erro ao processar subcategoria {Subcategoria}", cenarioDto.SUBCATEGORIA);
+                        registrosComErro.Add(new
+                        {
+                            subcategoria = cenarioDto.SUBCATEGORIA,
+                            erro = ex.Message
+                        });
+                    }
+                }
+
+                if (novosCenarios.Count == 0)
+                {
+                    return BadRequest(new
+                    {
+                        sucesso = false,
+                        mensagem = "Nenhum registro válido para salvar.",
+                        erros = registrosComErro
+                    });
                 }
 
                 _context.CenariosAtual.AddRange(novosCenarios);
                 await _context.SaveChangesAsync();
 
-                var resultados = novosCenarios.Select(c => new
-                {
-                    subcategoriaId = c.SUBCATEGORIA,
-                    id = c.ID
-                });
+                _logger.LogInformation("Salvos {Count} registros de cenário atual com sucesso", novosCenarios.Count);
 
                 return Ok(new
                 {
                     sucesso = true,
                     mensagem = $"Novos registros de Cenário Atual ({novosCenarios.Count}) criados com sucesso!",
-                    registros = resultados
+                    registrosSalvos = registrosComSucesso,
+                    erros = registrosComErro.Count > 0 ? registrosComErro : null,
+                    totalProcessado = lista.Count,
+                    totalSalvo = novosCenarios.Count,
+                    totalErros = registrosComErro.Count
                 });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao salvar cenário atual");
-                return StatusCode(500, $"Erro ao salvar: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    error = $"Erro ao salvar: {ex.Message}",
+                    innerException = ex.InnerException?.Message,
+                    details = "Verifique os logs para mais informações"
+                });
             }
         }
-
 
         // ========== CENÁRIO FUTURO ==========
 

@@ -216,17 +216,17 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"thvl82x5m5"},{"Name":"integrity","Value":"sha256-sTJUBZCULEwzVkPo7Fp8knLU9nY3QojIrWtXCWs/klw="},{"Name":"label","Value":"_content/NistXGH/js/Consultas.js"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2010"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022sTJUBZCULEwzVkPo7Fp8knLU9nY3QojIrWtXCWs/klw=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 14:28:35 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/NistXGH/js/core/nist-core.j9b134c8od.js">
+    <StaticWebAssetEndpoint Include="_content/NistXGH/js/core/nist-core.5krhbbs3hd.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\core\nist-core.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"j9b134c8od"},{"Name":"integrity","Value":"sha256-ud30AYs7PpHkm\u002Bi01Km\u002BMrdnvPMKURnG0761weMHJtk="},{"Name":"label","Value":"_content/NistXGH/js/core/nist-core.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"65302"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ud30AYs7PpHkm\u002Bi01Km\u002BMrdnvPMKURnG0761weMHJtk=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 14:28:35 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"5krhbbs3hd"},{"Name":"integrity","Value":"sha256-xRxBgL\u002BVwHgbzHi/ACVI2djMRKHDsXhKHrsPG5d2Evc="},{"Name":"label","Value":"_content/NistXGH/js/core/nist-core.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"67029"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022xRxBgL\u002BVwHgbzHi/ACVI2djMRKHDsXhKHrsPG5d2Evc=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 18:12:03 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/NistXGH/js/core/nist-core.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\core\nist-core.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ud30AYs7PpHkm\u002Bi01Km\u002BMrdnvPMKURnG0761weMHJtk="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"65302"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ud30AYs7PpHkm\u002Bi01Km\u002BMrdnvPMKURnG0761weMHJtk=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 14:28:35 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-xRxBgL\u002BVwHgbzHi/ACVI2djMRKHDsXhKHrsPG5d2Evc="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"67029"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022xRxBgL\u002BVwHgbzHi/ACVI2djMRKHDsXhKHrsPG5d2Evc=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 18:12:03 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/NistXGH/js/modules/apiService.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\modules\apiService.js'))</AssetFile>
@@ -1036,13 +1036,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\NistXGH.ib8hrivvan.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-XneiTZUC1w5QdRHM3m\u002BEfDPYS1MDXokEVDdFq0OEM\u002BA="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1445"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022XneiTZUC1w5QdRHM3m\u002BEfDPYS1MDXokEVDdFq0OEM\u002BA=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 15:28:03 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1445"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022XneiTZUC1w5QdRHM3m\u002BEfDPYS1MDXokEVDdFq0OEM\u002BA=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 18:44:03 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/NistXGH/NistXGH.ib8hrivvan.bundle.scp.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\NistXGH.ib8hrivvan.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ib8hrivvan"},{"Name":"integrity","Value":"sha256-XneiTZUC1w5QdRHM3m\u002BEfDPYS1MDXokEVDdFq0OEM\u002BA="},{"Name":"label","Value":"_content/NistXGH/NistXGH.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1445"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022XneiTZUC1w5QdRHM3m\u002BEfDPYS1MDXokEVDdFq0OEM\u002BA=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 15:28:03 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1445"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022XneiTZUC1w5QdRHM3m\u002BEfDPYS1MDXokEVDdFq0OEM\u002BA=\u0022"},{"Name":"Last-Modified","Value":"Sat, 15 Nov 2025 18:44:03 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>

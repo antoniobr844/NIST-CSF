@@ -255,10 +255,10 @@ class NISTCore {
 
       if (this.config.modo === 'futuro') {
         await this.carregarDadosFuturos()
-        await this.carregarDadosAtuaisExistentes() // Mantido para carregar dados de comparação no modo futuro
+        await this.carregarDadosAtuaisExistentes()
       } else {
-        await this.carregarDadosAtuais() // Carrega os dados atuais mais recentes
-        await this.carregarDadosBanco() // Carrega os dados futuros para comparação no modo atual
+        await this.carregarDadosAtuais()
+        await this.carregarDadosBanco()
       }
 
       console.log('✅ Dados dos cenários carregados com sucesso')
@@ -283,7 +283,6 @@ class NISTCore {
             console.log(`🔍 Buscando dados futuros para ${subcategoryId}...`)
 
             try {
-              // ✅ USAR ENDPOINT CORRETO: /api/Cenarios/futuro
               const dadosFuturos = await this.fetchAPI(
                 `/api/Cenarios/futuro?subcategoriaId=${subcategoryId}`
               )
@@ -351,7 +350,6 @@ class NISTCore {
       for (const categoryId in this.selections[funcId]) {
         for (const subcategoryId of this.selections[funcId][categoryId]) {
           try {
-            // ✅ USAR ENDPOINT CORRETO: /api/Cenarios/atual
             const dadosAtuais = await this.fetchAPI(
               `/api/Cenarios/atual?subcategoriaId=${subcategoryId}`
             )
@@ -723,6 +721,34 @@ class NISTCore {
       notas: '',
       consideracoes: ''
     }
+  }
+
+  mostrarLoadingSalvamento (mostrar) {
+    const btnSalvar = document.querySelector('#btnSalvar')
+    if (btnSalvar) {
+      if (mostrar) {
+        btnSalvar.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Salvando...'
+        btnSalvar.disabled = true
+      } else {
+        btnSalvar.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações'
+        btnSalvar.disabled = false
+      }
+    }
+  }
+
+  mostrarMensagemSucesso (mensagem) {
+    if (
+      confirm(
+        `${mensagem}\n\nDeseja recarregar a página para ver as alterações?`
+      )
+    ) {
+      location.reload()
+    }
+  }
+
+  mostrarMensagemErro (mensagem) {
+    alert(mensagem)
   }
 
   // === FUNÇÕES DE EXIBIÇÃO DE CENÁRIOS ===
@@ -1353,7 +1379,7 @@ class NISTCore {
 
       if (this.config.modo === 'atual') {
         endpoint = '/api/Cenarios/atual/salvar'
-        dadosParaSalvar = this.coletarDadosFormularioAtual() // Retorna Array
+        dadosParaSalvar = this.coletarDadosFormularioAtual()
         console.log('💾 Salvando no CENÁRIO ATUAL')
       } else {
         if (isCopiando) {
@@ -1363,16 +1389,19 @@ class NISTCore {
           endpoint = '/api/Cenarios/futuro/salvar'
           console.log('💾 Salvando no CENÁRIO FUTURO')
         }
-        dadosParaSalvar = this.coletarDadosFormularioFuturo(isCopiando) // Retorna Array
+        dadosParaSalvar = this.coletarDadosFormularioFuturo(isCopiando)
       }
 
       console.log(`📤 Endpoint: ${endpoint}`)
       console.log(`📦 Dados para salvar:`, dadosParaSalvar)
 
       if (dadosParaSalvar.length === 0) {
-        alert('⚠️ Nenhum dado para salvar!')
+        alert(
+          '⚠️ Nenhum dado para salvar! Verifique se todos os campos estão preenchidos.'
+        )
         return
-      } // ✅ ENVIAR COMO ARRAY - AGORA CORRETO PARA AMBOS OS ENDPOINTS C#
+      }
+      this.mostrarLoadingSalvamento(true)
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -1380,11 +1409,10 @@ class NISTCore {
           'Content-Type': 'application/json',
           Accept: 'application/json'
         },
-        body: JSON.stringify(dadosParaSalvar) // ← SEMPRE array
+        body: JSON.stringify(dadosParaSalvar)
       })
 
-      console.log(`📥 Resposta:`, response.status)
-
+      console.log(`📥 Resposta:`, response.status, response.statusText)
       if (response.ok) {
         const resultado = await response.json()
         console.log('✅ Dados salvos com sucesso:', resultado)
@@ -1397,8 +1425,7 @@ class NISTCore {
         } else {
           successMessage = `✅ ${dadosParaSalvar.length} registros salvos com sucesso no CENÁRIO FUTURO!`
         }
-
-        alert(successMessage)
+        this.mostrarMensagemSucesso(successMessage)
 
         if (isCopiando) {
           localStorage.removeItem('modoCopiaFuturoParaAtual')
@@ -1406,17 +1433,34 @@ class NISTCore {
 
         await this.recarregarDados()
       } else {
-        const errorText = await response.text()
-        console.error('❌ Erro ao salvar:', errorText)
-        alert('❌ Erro ao salvar: ' + errorText)
+        let errorMessage = 'Erro desconhecido ao salvar'
+
+        try {
+          const errorText = await response.text()
+          console.error('❌ Erro detalhado:', errorText)
+
+          try {
+            const errorJson = JSON.parse(errorText)
+            errorMessage = errorJson.error || errorJson.message || errorText
+          } catch {
+            errorMessage =
+              errorText || `HTTP ${response.status}: ${response.statusText}`
+          }
+        } catch (parseError) {
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`
+        }
+
+        this.mostrarMensagemErro(`❌ Erro ao salvar: ${errorMessage}`)
       }
     } catch (error) {
       console.error('❌ Erro ao salvar:', error)
-      alert('❌ Erro ao salvar: ' + error.message)
+      this.mostrarMensagemErro(`❌ Erro de rede: ${error.message}`)
+    } finally {
+      this.mostrarLoadingSalvamento(false)
     }
   }
 
-  // === FUNÇÕES DE CARREGAMENTO - MODIFICADAS PARA PEGAR O MAIS RECENTE ===
+  // === FUNÇÕES DE CARREGAMENTO
   async carregarDadosFuturos () {
     try {
       console.log('=== CARREGANDO DADOS FUTUROS ===')
@@ -1430,7 +1474,6 @@ class NISTCore {
             console.log(`🔍 Buscando dados futuros para ${subcategoryId}...`)
 
             try {
-              // ✅ USAR ENDPOINT CORRETO: /api/Cenarios/futuro (já busca o mais recente por DATA_REGISTRO)
               const dadosFuturos = await this.fetchAPI(
                 `/api/Cenarios/futuro?subcategoriaId=${subcategoryId}`
               )
@@ -1502,9 +1545,9 @@ class NISTCore {
             console.log(`🔍 Processando subcategoria ${subcategoryId}...`)
 
             if (isCopiando) {
-              console.log(`📋 Modo cópia ativo para ${subcategoryId}`) // Buscar o mais recente do futuro para copiar
+              console.log(`📋 Modo cópia ativo para ${subcategoryId}`)
               const dadosFuturos = await this.fetchAPI(
-                `/api/Cenarios/futuro?subcategoriaId=${subcategoryId}` // Endpoint futuro correto
+                `/api/Cenarios/futuro?subcategoriaId=${subcategoryId}`
               )
 
               if (dadosFuturos) {
@@ -1512,9 +1555,9 @@ class NISTCore {
                   prioridade:
                     dadosFuturos.prioridadeAlvo ||
                     dadosFuturos.PRIORIDADE_ALVO ||
-                    0, // 🚨 Usar 0 como default para numérico
+                    0,
                   status:
-                    dadosFuturos.nivelAlvo || dadosFuturos.NIVEL_ALVO || 0, // 🚨 Usar 0 como default para numérico
+                    dadosFuturos.nivelAlvo || dadosFuturos.NIVEL_ALVO || 0,
                   politicasPro:
                     dadosFuturos.politicasAlvo || dadosFuturos.POLIT_ALVO || '',
                   praticasInternas:
@@ -1541,7 +1584,7 @@ class NISTCore {
             } else {
               console.log(
                 `📊 Buscando dados atuais mais recentes para ${subcategoryId}...`
-              ) // 🚨 CORREÇÃO: Endpoint é apenas /atual, que já retorna o mais recente
+              )
               const dadosAtuais = await this.fetchAPI(
                 `/api/Cenarios/atual?subcategoriaId=${subcategoryId}`
               )
@@ -1552,12 +1595,12 @@ class NISTCore {
                     dadosAtuais.PRIOR_ATUAL ||
                     dadosAtuais.prior_Atual ||
                     dadosAtuais.prioridadeAtual ||
-                    0, // 🚨 Usar 0
+                    0,
                   status:
                     dadosAtuais.STATUS_ATUAL ||
                     dadosAtuais.status_Atual ||
                     dadosAtuais.statusAtual ||
-                    0, // 🚨 Usar 0
+                    0,
                   politicasPro:
                     dadosAtuais.POLIT_ATUAL ||
                     dadosAtuais.polit_Atual ||
@@ -1632,53 +1675,81 @@ class NISTCore {
         continue
       }
 
-      const subcategoryId = subcategoryIdInput.value
+      const subcategoryId = parseInt(subcategoryIdInput.value)
 
-      const prioridade = document.getElementById(
+      if (isNaN(subcategoryId) || subcategoryId <= 0) {
+        console.warn(
+          `❌ SubcategoryId inválido: ${subcategoryIdInput.value} - PULANDO`
+        )
+        continue
+      }
+
+      // ✅ CORREÇÃO: Coletar valores com fallback para null
+      const prioridadeSelect = document.getElementById(
         `current-prioridade-${i}`
-      )?.value
-      const nivel = document.getElementById(`current-nivel-${i}`)?.value
-      const politicas = document.getElementById(
-        `current-politicasPro-${i}`
-      )?.value
-      const praticas = document.getElementById(
-        `current-praticasInternas-${i}`
-      )?.value
-      const funcoes = document.getElementById(`current-funcoesResp-${i}`)?.value
-      const referencias = document.getElementById(
-        `current-referenciasInfo-${i}`
-      )?.value
-      const evidencias = document.getElementById(
-        `current-artefatosEvi-${i}`
-      )?.value
-      const justificativa = document.getElementById(
-        `current-justificativa-${i}`
-      )?.value
-      const notas = document.getElementById(`current-notas-${i}`)?.value
-      const consideracoes = document.getElementById(
-        `current-consideracoes-${i}`
-      )?.value // 🚨 CORREÇÃO: Usar parseInt ou 0/1 para campos numéricos e null para strings vazias
+      )
+      const nivelSelect = document.getElementById(`current-nivel-${i}`)
 
-      const prioridadeValida = prioridade ? parseInt(prioridade) : 1 // Usar 1 como default se vazio
-      const statusValido = nivel ? parseInt(nivel) : 1 // Usar 1 como default se vazio
+      const prioridade = prioridadeSelect?.value || null
+      const nivel = nivelSelect?.value || null
+      const politicas =
+        document.getElementById(`current-politicasPro-${i}`)?.value || null
+      const praticas =
+        document.getElementById(`current-praticasInternas-${i}`)?.value || null
+      const funcoes =
+        document.getElementById(`current-funcoesResp-${i}`)?.value || null
+      const referencias =
+        document.getElementById(`current-referenciasInfo-${i}`)?.value || null
+      const evidencias =
+        document.getElementById(`current-artefatosEvi-${i}`)?.value || null
+      const justificativa =
+        document.getElementById(`current-justificativa-${i}`)?.value ||
+        'Registro atualizado via sistema NIST CSF'
+      const notas = document.getElementById(`current-notas-${i}`)?.value || null
+      const consideracoes =
+        document.getElementById(`current-consideracoes-${i}`)?.value || null
+
+      // ✅ CORREÇÃO: Converter para números inteiros (mantendo null se vazio)
+      const prioridadeValida = prioridade ? parseInt(prioridade) : null
+      const statusValido = nivel ? parseInt(nivel) : null // ✅ AGORA É NUMBER (INT)
+
+      // ✅ CORREÇÃO: Validar conversões numéricas
+      if (prioridade && isNaN(prioridadeValida)) {
+        console.warn(
+          `❌ Prioridade inválida para subcategoria ${subcategoryId}: ${prioridade}`
+        )
+        continue
+      }
+
+      if (nivel && isNaN(statusValido)) {
+        console.warn(
+          `❌ Nível inválido para subcategoria ${subcategoryId}: ${nivel}`
+        )
+        continue
+      }
 
       dadosParaSalvar.push({
-        SUBCATEGORIA: parseInt(subcategoryId),
+        SUBCATEGORIA: subcategoryId,
         PRIOR_ATUAL: prioridadeValida,
-        STATUS_ATUAL: statusValido,
-        POLIT_ATUAL: politicas || null,
-        PRAT_ATUAL: praticas || null,
-        FUNC_RESP: funcoes || null,
-        REF_INFO: referencias || null,
-        EVID_ATUAL: evidencias || null,
-        JUSTIFICATIVA: justificativa || null,
-        NOTAS: notas || null,
-        CONSIDERACOES: consideracoes || null,
-        DATA_REGISTRO: new Date().toISOString().split('T')[0]
+        STATUS_ATUAL: statusValido, // ✅ AGORA É NUMBER (INT)
+        POLIT_ATUAL: politicas,
+        PRAT_ATUAL: praticas,
+        FUNC_RESP: funcoes,
+        REF_INFO: referencias,
+        EVID_ATUAL: evidencias,
+        JUSTIFICATIVA: justificativa,
+        NOTAS: notas,
+        CONSIDERACOES: consideracoes
+      })
+
+      console.log(`✅ Dados coletados para subcategoria ${subcategoryId}:`, {
+        prioridade: prioridadeValida,
+        status: statusValido,
+        subcategoria: subcategoryId
       })
     }
 
-    console.log('📦 Dados atuais coletados:', dadosParaSalvar)
+    console.log('📦 Dados atuais coletados para salvar:', dadosParaSalvar)
     return dadosParaSalvar
   }
 
@@ -1702,14 +1773,20 @@ class NISTCore {
         continue
       }
 
-      const subcategoryId = subcategoryIdInput.value
+      const subcategoryId = parseInt(subcategoryIdInput.value)
+
+      // ✅ VALIDAÇÃO: Verificar se subcategoryId é válido
+      if (isNaN(subcategoryId) || subcategoryId <= 0) {
+        console.warn(
+          `❌ SubcategoryId inválido: ${subcategoryIdInput.value} - PULANDO`
+        )
+        continue
+      }
 
       const prioridade = document.getElementById(
         `future-prioridade-${i}`
       )?.value
       const nivel = document.getElementById(`future-nivel-${i}`)?.value
-      // 🚨 CORREÇÃO NO JS: Coleta o valor. Se for string vazia/nula,
-      // o mapeamento abaixo o converterá em null, o que é o ideal para o backend.
       const politicas = document.getElementById(
         `future-politicasPro-${i}`
       )?.value
@@ -1724,13 +1801,20 @@ class NISTCore {
         `future-artefatosEvi-${i}`
       )?.value
 
-      // ✅ ESTRUTURA CORRETA para CenarioFuturoDto
+      if (!prioridade || !nivel) {
+        console.warn(
+          `❌ Campos obrigatórios não preenchidos para subcategoria ${subcategoryId} - PULANDO`
+        )
+        continue
+      }
+
+      const prioridadeValida = prioridade ? parseInt(prioridade) : null
+      const nivelValido = nivel ? parseInt(nivel) : null
+
       dadosParaSalvar.push({
-        SUBCATEGORIA: parseInt(subcategoryId),
-        PRIORIDADE_ALVO: prioridade ? parseInt(prioridade) : null,
-        NIVEL_ALVO: nivel ? parseInt(nivel) : null,
-        // Usamos o operador || null para garantir que se a string for vazia ('') ou undefined,
-        // ela seja enviada como null no JSON, o que se alinha com string? no C#.
+        SUBCATEGORIA: subcategoryId,
+        PRIORIDADE_ALVO: prioridadeValida,
+        NIVEL_ALVO: nivelValido,
         POLIT_ALVO: politicas || null,
         PRAT_ALVO: praticas || null,
         FUNC_ALVO: funcoes || null,
@@ -1739,7 +1823,7 @@ class NISTCore {
       })
     }
 
-    console.log('📦 Dados coletados:', dadosParaSalvar)
+    console.log('📦 Dados futuros coletados:', dadosParaSalvar)
     return dadosParaSalvar
   }
 

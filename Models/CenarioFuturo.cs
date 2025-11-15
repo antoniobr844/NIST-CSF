@@ -22,7 +22,6 @@ namespace NistXGH.Models
         [ForeignKey("NIVEL_ALVO")]
         public virtual StatusTb Nivel { get; set; }
 
-        // 🚨 CORREÇÃO 2: Tornar propriedades de string nullable (string?)
         [Column("POLIT_ALVO")]
         public string? POLIT_ALVO { get; set; } // CLOB
 
@@ -49,6 +48,8 @@ namespace NistXGH.Models
 
         [ForeignKey("SUBCATEGORIA")]
         public virtual Subcategorias SubcategoriaNav { get; set; }
+
+        
 
     }
 }

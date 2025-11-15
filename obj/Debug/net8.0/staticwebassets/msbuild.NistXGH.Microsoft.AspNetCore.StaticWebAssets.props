@@ -336,8 +336,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>j9b134c8od</Fingerprint>
-      <Integrity>ud30AYs7PpHkm+i01Km+MrdnvPMKURnG0761weMHJtk=</Integrity>
+      <Fingerprint>5krhbbs3hd</Fingerprint>
+      <Integrity>xRxBgL+VwHgbzHi/ACVI2djMRKHDsXhKHrsPG5d2Evc=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\core\nist-core.js'))</OriginalItemSpec>
