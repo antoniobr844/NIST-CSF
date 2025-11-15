@@ -120,8 +120,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>nmfb5gmhix</Fingerprint>
-      <Integrity>3yime8qvawk0b4KaPeQNyRp+IldsG4X+g5e28qJLSWQ=</Integrity>
+      <Fingerprint>66enhbbslh</Fingerprint>
+      <Integrity>fhRnGl7CWwgruEAOna5ooDWTQNiYeukJh3npSpCeu38=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\pages\alteracoes.css'))</OriginalItemSpec>
@@ -138,8 +138,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>87y4zyyvx1</Fingerprint>
-      <Integrity>JDE9mS9r4At2Ogiutt7E96bsRC5ujAuff9ROwHm8qaM=</Integrity>
+      <Fingerprint>1o0eexc9de</Fingerprint>
+      <Integrity>HxOGAQuzEgj3GVR6l4YNWk5jR4154/4UC9rU0VZCJDk=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\pages\consultas.css'))</OriginalItemSpec>
@@ -174,8 +174,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>r0e6z21usk</Fingerprint>
-      <Integrity>e2cBaNg3DSVTdo0DUSYoPM0u+VnoT6WrUFnPzdULFXQ=</Integrity>
+      <Fingerprint>gyirfp05xt</Fingerprint>
+      <Integrity>uEu61k8tsqQca90z7FpyXUbqhtuOPYmy7xKqN9gtynk=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\pages\precadastro.css'))</OriginalItemSpec>
