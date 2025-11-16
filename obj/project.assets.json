@@ -2620,24 +2620,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\anton\\.nuget\\packages\\": {}
+    "C:\\Users\\pedro\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\anton\\Documents\\GitHub\\NIST-CSF\\NistXGH.csproj",
+      "projectUniqueName": "C:\\Users\\pedro\\OneDrive\\Área de Trabalho\\FACULDADE\\Gestão e Qualidade de SoftWare\\C#\\NIST-CSF\\NIST-CSF\\NistXGH.csproj",
       "projectName": "NistXGH",
-      "projectPath": "C:\\Users\\anton\\Documents\\GitHub\\NIST-CSF\\NistXGH.csproj",
-      "packagesPath": "C:\\Users\\anton\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\anton\\Documents\\GitHub\\NIST-CSF\\obj\\",
+      "projectPath": "C:\\Users\\pedro\\OneDrive\\Área de Trabalho\\FACULDADE\\Gestão e Qualidade de SoftWare\\C#\\NIST-CSF\\NIST-CSF\\NistXGH.csproj",
+      "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pedro\\OneDrive\\Área de Trabalho\\FACULDADE\\Gestão e Qualidade de SoftWare\\C#\\NIST-CSF\\NIST-CSF\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\anton\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2656,7 +2663,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -2702,8 +2709,16 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema ao ler o arquivo de cache C:\\Users\\pedro\\OneDrive\\Área de Trabalho\\FACULDADE\\Gestão e Qualidade de SoftWare\\C#\\NIST-CSF\\NIST-CSF\\obj\\project.nuget.cache: '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
+    }
+  ]
 }
