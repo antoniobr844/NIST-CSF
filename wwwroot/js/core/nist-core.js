@@ -249,23 +249,24 @@ class NISTCore {
     }
   }
 
-  // Modificar a função de carregamento de dados
   async carregarDadosCenarios () {
     try {
       console.log('Carregando dados dos cenários... Modo:', this.config.modo)
+      console.log('Modo Edição config:', this.config.modoEdicao)
 
       // Verificar se está em modo edição
       const modoEdicao = this.detectarModoEdicao()
+      console.log('Modo edição detectado:', modoEdicao)
 
       if (modoEdicao) {
-        // Modo edição: carregar apenas o registro específico
+        console.log('🔧 Modo edição ativo, carregando dados específicos...')
         await this.carregarDadosEdicao()
       } else if (this.config.modo === 'futuro') {
-        // Modo normal futuro
+        console.log('🔮 Modo futuro normal...')
         await this.carregarDadosFuturos()
         await this.carregarDadosAtuaisExistentes()
       } else {
-        // Modo normal atual
+        console.log('📊 Modo atual normal...')
         await this.carregarDadosAtuais()
         await this.carregarDadosBanco()
       }
@@ -762,28 +763,41 @@ class NISTCore {
   exibirCenarios () {
     try {
       console.log('Exibindo cenários... Modo:', this.config.modo)
+      console.log('Modo Edição ativo:', this.config.modoEdicao?.ativo)
 
+      // === MODO EDIÇÃO ===
+      if (this.config.modoEdicao?.ativo) {
+        console.log(
+          '🎯 Modo edição detectado, exibindo formulário de edição...'
+        )
+        this.exibirCenarioEdicao()
+        return
+      }
+
+      // === MODO NORMAL ===
+      console.log('📊 Modo normal, exibindo cenários padrão...')
       const currentContainer = document.getElementById(
         'currentScenarioContainer'
       )
       const futureContainer = document.getElementById('futureScenarioContainer')
       const selectionInfo = document.getElementById('selectionInfo')
 
+      console.log('Containers encontrados:', {
+        currentContainer: !!currentContainer,
+        futureContainer: !!futureContainer,
+        selectionInfo: !!selectionInfo
+      })
+
       if (!currentContainer || !futureContainer) {
-        console.error('Containers não encontrados')
+        console.error('❌ Containers não encontrados para modo normal')
+        console.error('- currentScenarioContainer:', currentContainer)
+        console.error('- futureScenarioContainer:', futureContainer)
         return
       }
 
       currentContainer.innerHTML = ''
       futureContainer.innerHTML = ''
 
-      // === MODO EDIÇÃO ===
-      if (this.config.modoEdicao.ativo) {
-        this.exibirCenarioEdicao()
-        return
-      }
-
-      // === MODO NORMAL (código existente) ===
       let totalSubcategories = 0
 
       for (const funcId in this.selections) {
@@ -859,57 +873,106 @@ class NISTCore {
 
       this.atualizarInfoSelecao(totalSubcategories)
     } catch (error) {
-      console.error('Erro ao exibir cenários:', error)
+      console.error('❌ Erro ao exibir cenários:', error)
     }
   }
 
+  // === FUNÇÃO ESPECÍFICA PARA EDIÇÃO ===
   exibirCenarioEdicao () {
-    const { subcategoriaId, tipoCenario } = this.config.modoEdicao
-    const container =
-      tipoCenario === 'ATUAL'
-        ? document.getElementById('currentScenarioContainer')
-        : document.getElementById('futureScenarioContainer')
+    try {
+      console.log('🎯 Exibindo cenário em modo edição...')
 
-    const subcategoriaTexto = this.obterNomeSubcategoria(subcategoriaId)
+      const container = document.getElementById('edicaoScenarioContainer')
+      console.log('🔍 Container de edição:', container)
 
-    // Criar header especial para edição
-    const headerDiv = document.createElement('div')
-    headerDiv.className = 'edicao-header'
-    headerDiv.innerHTML = `
-        <h2><i class="fas fa-edit"></i> Editando Registro</h2>
-        <div class="edicao-info">
-            <strong>Subcategoria:</strong> ${subcategoriaTexto} |
-            <strong>Tipo:</strong> ${
-              tipoCenario === 'ATUAL' ? 'Cenário Atual' : 'Cenário Futuro'
-            }
-        </div>
-        <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i>
-            Todas as alterações serão registradas em log com data/hora.
-        </div>
-    `
+      if (!container) {
+        console.error(
+          '❌ Container de edição não encontrado: edicaoScenarioContainer'
+        )
 
-    container.appendChild(headerDiv)
+        // Fallback: tentar encontrar outros containers
+        const fallbackContainer =
+          document.getElementById('currentScenarioContainer') ||
+          document.getElementById('futureScenarioContainer')
+        if (fallbackContainer) {
+          console.log('🔄 Usando container fallback:', fallbackContainer.id)
+          fallbackContainer.innerHTML =
+            '<div class="error">Container de edição não configurado corretamente.</div>'
+        }
+        return
+      }
 
-    // Criar formulário de edição
-    let formularioDiv
-    if (tipoCenario === 'ATUAL') {
-      formularioDiv = this.criarFormularioAtualEditavel(subcategoriaId, 0)
-    } else {
-      formularioDiv = this.criarFormularioFuturoEditavel(subcategoriaId, 0)
+      container.innerHTML = ''
+
+      const { subcategoriaId, tipoCenario } = this.config.modoEdicao
+      const subcategoriaTexto = this.obterNomeSubcategoria(subcategoriaId)
+
+      console.log('📝 Criando formulário para:', {
+        subcategoriaId,
+        tipoCenario,
+        subcategoriaTexto
+      })
+
+      // Criar header especial para edição
+      const headerDiv = document.createElement('div')
+      headerDiv.className = 'edicao-header-form'
+      headerDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h4 style="margin: 0; color: #2c3e50;">${subcategoriaTexto}</h4>
+                <span class="badge" style="background: #3498db; color: white; padding: 5px 10px; border-radius: 15px;">
+                    ${
+                      tipoCenario === 'ATUAL'
+                        ? 'Cenário Atual'
+                        : 'Cenário Futuro'
+                    }
+                </span>
+            </div>
+        `
+
+      container.appendChild(headerDiv)
+
+      // Criar formulário de edição baseado no tipo
+      let formularioDiv
+      if (tipoCenario === 'ATUAL') {
+        console.log('📋 Criando formulário ATUAL editável')
+        formularioDiv = this.criarFormularioAtualEditavel(subcategoriaId, 0)
+      } else {
+        console.log('📋 Criando formulário FUTURO editável')
+        formularioDiv = this.criarFormularioFuturoEditavel(subcategoriaId, 0)
+      }
+
+      // Adicionar informações de identificação
+      const infoDiv = document.createElement('div')
+      infoDiv.className = 'edicao-info-form'
+      infoDiv.innerHTML = `
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #17a2b8;">
+                <small style="color: #6c757d;">
+                    <strong>ID do Registro:</strong> ${this.config.modoEdicao.cenarioId} | 
+                    <strong>Subcategoria ID:</strong> ${subcategoriaId} |
+                    <strong>Tipo:</strong> ${tipoCenario}
+                </small>
+            </div>
+        `
+
+      container.appendChild(infoDiv)
+      container.appendChild(formularioDiv)
+
+      console.log('✅ Formulário de edição exibido com sucesso')
+    } catch (error) {
+      console.error('❌ Erro ao exibir cenário de edição:', error)
+
+      // Mostrar erro no container
+      const container = document.getElementById('edicaoScenarioContainer')
+      if (container) {
+        container.innerHTML = `
+                <div class="error">
+                    <h3>Erro ao carregar formulário</h3>
+                    <p>${error.message}</p>
+                    <button onclick="location.reload()" class="btn btn-secondary">Tentar Novamente</button>
+                </div>
+            `
+      }
     }
-
-    // Adicionar botão de histórico
-    const historicoBtn = document.createElement('button')
-    historicoBtn.className = 'btn btn-info btn-historico'
-    historicoBtn.innerHTML = '<i class="fas fa-history"></i> Ver Histórico'
-    historicoBtn.onclick = () => this.visualizarHistorico(subcategoriaId)
-    formularioDiv.appendChild(historicoBtn)
-
-    container.appendChild(formularioDiv)
-
-    // Atualizar info de seleção para modo edição
-    this.atualizarInfoSelecaoEdicao()
   }
 
   atualizarInfoSelecaoEdicao () {
@@ -1452,7 +1515,8 @@ class NISTCore {
       this.mostrarLoadingSalvamento(true)
 
       // Verificar modo edição
-      if (this.config.modoEdicao.ativo) {
+      if (this.config.modoEdicao?.ativo) {
+        console.log('🎯 Modo edição detectado, salvando edição...')
         await this.salvarEdicao()
         return
       }
@@ -1531,24 +1595,31 @@ class NISTCore {
     try {
       this.mostrarLoadingSalvamento(true)
 
+      console.log('💾 Iniciando salvamento de edição...', {
+        cenarioId,
+        tipoCenario,
+        subcategoriaId
+      })
+
       let dadosParaSalvar
       let endpoint
 
       if (tipoCenario === 'ATUAL') {
         endpoint = '/api/Cenarios/atual/editar'
-        dadosParaSalvar = this.coletarDadosFormularioAtualEdicao(
-          cenarioId,
-          subcategoriaId
-        )
+        dadosParaSalvar = this.coletarDadosFormularioAtualEdicao()
+        console.log('📤 Salvando CENÁRIO ATUAL:', dadosParaSalvar)
       } else {
         endpoint = '/api/Cenarios/futuro/editar'
-        dadosParaSalvar = this.coletarDadosFormularioFuturoEdicao(
-          cenarioId,
-          subcategoriaId
-        )
+        dadosParaSalvar = this.coletarDadosFormularioFuturoEdicao()
+        console.log('📤 Salvando CENÁRIO FUTURO:', dadosParaSalvar)
       }
 
-      console.log('💾 Salvando edição:', { endpoint, dadosParaSalvar })
+      // Validação básica
+      if (!dadosParaSalvar) {
+        throw new Error('Nenhum dado coletado para salvar')
+      }
+
+      console.log('🚀 Enviando para API:', endpoint, 'Dados:', dadosParaSalvar)
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -1571,11 +1642,24 @@ class NISTCore {
 
         // Redirecionar de volta para relatórios após sucesso
         setTimeout(() => {
-          window.location.href = '/Home/Relatorios' // ou a página de origem
+          window.location.href = '/Home/Relatorios'
         }, 2000)
       } else {
-        const erro = await response.text()
-        throw new Error(erro)
+        let erroTexto = await response.text()
+        console.error(
+          '❌ Erro da API - Status:',
+          response.status,
+          'Response:',
+          erroTexto
+        )
+
+        // Tentar parsear como JSON se possível
+        try {
+          const erroJson = JSON.parse(erroTexto)
+          throw new Error(erroJson.message || erroJson.title || erroTexto)
+        } catch {
+          throw new Error(erroTexto || `Erro HTTP ${response.status}`)
+        }
       }
     } catch (error) {
       console.error('❌ Erro ao salvar edição:', error)
@@ -1583,6 +1667,113 @@ class NISTCore {
     } finally {
       this.mostrarLoadingSalvamento(false)
     }
+  }
+
+  // === FUNÇÕES DE COLETA DE DADOS PARA EDIÇÃO ===
+  coletarDadosFormularioAtualEdicao () {
+    const { cenarioId, subcategoriaId } = this.config.modoEdicao
+
+    console.log('📝 Coletando dados do formulário ATUAL para edição...')
+
+    // Como estamos em modo edição, só tem um formulário (índice 0)
+    const prioridade = document.getElementById('current-prioridade-0')?.value
+    const nivel = document.getElementById('current-nivel-0')?.value
+    const politicas = document.getElementById('current-politicasPro-0')?.value
+    const praticas = document.getElementById(
+      'current-praticasInternas-0'
+    )?.value
+    const funcoes = document.getElementById('current-funcoesResp-0')?.value
+    const referencias = document.getElementById(
+      'current-referenciasInfo-0'
+    )?.value
+    const evidencias = document.getElementById('current-artefatosEvi-0')?.value
+    const justificativa = document.getElementById(
+      'current-justificativa-0'
+    )?.value
+    const notas = document.getElementById('current-notas-0')?.value
+    const consideracoes = document.getElementById(
+      'current-consideracoes-0'
+    )?.value
+
+    console.log('📊 Dados coletados ATUAL:', {
+      prioridade,
+      nivel,
+      politicas,
+      praticas,
+      funcoes,
+      referencias,
+      evidencias,
+      justificativa,
+      notas,
+      consideracoes
+    })
+
+    return {
+      ID: cenarioId,
+      SUBCATEGORIA: subcategoriaId,
+      PRIOR_ATUAL: prioridade ? parseInt(prioridade) : null,
+      STATUS_ATUAL: nivel ? parseInt(nivel) : null,
+      POLIT_ATUAL: politicas || null,
+      PRAT_ATUAL: praticas || null,
+      FUNC_RESP: funcoes || null,
+      REF_INFO: referencias || null,
+      EVID_ATUAL: evidencias || null,
+      JUSTIFICATIVA: justificativa || null,
+      NOTAS: notas || null,
+      CONSIDERACOES: consideracoes || null
+    }
+  }
+
+  coletarDadosFormularioFuturoEdicao () {
+    const { cenarioId, subcategoriaId } = this.config.modoEdicao
+
+    console.log('📝 Coletando dados do formulário FUTURO para edição...')
+
+    // Coletar valores dos campos
+    const prioridadeElement = document.getElementById('future-prioridade-0')
+    const nivelElement = document.getElementById('future-nivel-0')
+    const politicasElement = document.getElementById('future-politicasPro-0')
+    const praticasElement = document.getElementById('future-praticasInternas-0')
+    const funcoesElement = document.getElementById('future-funcoesResp-0')
+    const referenciasElement = document.getElementById(
+      'future-referenciasInfo-0'
+    )
+    const evidenciasElement = document.getElementById('future-artefatosEvi-0')
+
+    const prioridade = prioridadeElement?.value
+    const nivel = nivelElement?.value
+    const politicas = politicasElement?.value
+    const praticas = praticasElement?.value
+    const funcoes = funcoesElement?.value
+    const referencias = referenciasElement?.value
+    const evidencias = evidenciasElement?.value
+
+    console.log('📊 Dados coletados FUTURO:', {
+      prioridade,
+      nivel,
+      politicas,
+      praticas,
+      funcoes,
+      referencias,
+      evidencias
+    })
+
+    // Preparar dados para envio
+    const dadosParaEnvio = {
+      ID: cenarioId,
+      SUBCATEGORIA: subcategoriaId,
+      PRIORIDADE_ALVO: prioridade ? parseInt(prioridade) : null,
+      NIVEL_ALVO: nivel ? parseInt(nivel) : null,
+      POLIT_ALVO: politicas || null,
+      PRAT_ALVO: praticas || null,
+      FUNC_ALVO: funcoes || null,
+      REF_INFO_ALVO: referencias || null,
+      ARTEF_ALVO: evidencias || null
+    }
+
+    console.log('📤 Dados preparados para API:', dadosParaEnvio)
+
+    return dadosParaEnvio
   }
 
   coletarDadosFormularioAtualEdicao (cenarioId, subcategoriaId) {
@@ -2028,27 +2219,38 @@ class NISTCore {
     try {
       const endpoint =
         tipoCenario === 'ATUAL'
-          ? `/api/Cenarios/atual?id=${cenarioId}`
-          : `/api/Cenarios/futuro?id=${cenarioId}`
+          ? `/api/Cenarios/atual/editar?id=${cenarioId}`
+          : `/api/Cenarios/futuro/editar?id=${cenarioId}`
 
-      const response = await fetch(endpoint)
-      if (!response.ok) throw new Error('Registro não encontrado')
+      console.log('🔍 Buscando dados em:', endpoint)
 
-      const dados = await response.json()
+      const response = await this.fetchAPI(endpoint)
+
+      if (!response) {
+        throw new Error('Registro não encontrado ou erro ao carregar')
+      }
+
+      console.log('📦 Dados recebidos para edição:', response)
 
       // Preencher o cache com os dados do registro
       if (tipoCenario === 'ATUAL') {
         this.cache.dadosAtuais[subcategoriaId] =
-          this.mapearDadosParaFormularioAtual(dados)
+          this.mapearDadosParaFormularioAtual(response)
+        console.log(
+          '✅ Dados atuais mapeados:',
+          this.cache.dadosAtuais[subcategoriaId]
+        )
       } else {
         this.cache.dadosFuturos[subcategoriaId] =
-          this.mapearDadosParaFormularioFuturo(dados)
+          this.mapearDadosParaFormularioFuturo(response)
+        console.log(
+          '✅ Dados futuros mapeados:',
+          this.cache.dadosFuturos[subcategoriaId]
+        )
       }
-
-      console.log('✅ Dados de edição carregados:', dados)
     } catch (error) {
       console.error('❌ Erro ao carregar dados para edição:', error)
-      alert('Erro ao carregar registro para edição')
+      throw new Error(`Erro ao carregar registro para edição: ${error.message}`)
     }
   }
 

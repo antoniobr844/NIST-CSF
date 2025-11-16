@@ -1,265 +1,396 @@
 @{
-    ViewData[index: "Title"] = "Editar Cenário";
+    ViewData["Title"] = "Editar Cenário";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Configurações da página
+    var urlParams = Context.Request.Query;
+    var cenarioId = urlParams["id"];
+    var tipoCenario = urlParams["tipo"];
+    var subcategoriaId = urlParams["subcategoriaId"];
 }
 
-<style>
-    .edicao-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    
-    .edicao-header {
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        color: white;
-        padding: 25px;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .edicao-header h1 {
-        margin: 0 0 10px 0;
-        font-size: 1.8em;
-    }
-    
-    .edicao-info {
-        background: rgba(255,255,255,0.1);
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 15px;
-    }
-    
-    .alert-info {
-        background: #d1ecf1;
-        border: 1px solid #bee5eb;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 20px 0;
-        color: #0c5460;
-    }
-    
-    .btn-historico {
-        margin: 15px 0;
-    }
-    
-    .action-buttons {
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 2px solid #e9ecef;
-        text-align: center;
-    }
-    
-    /* Estilos dos formulários existentes do nist-core */
-    .scenario-comparison {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 30px;
-        margin-top: 20px;
-    }
-    
-    .scenario-section {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        border-left: 4px solid #3498db;
-    }
-    
-    .function-section {
-        margin-bottom: 25px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    
-    .function-header {
-        background: linear-gradient(135deg, #2c3e50, #34495e);
-        color: white;
-        padding: 20px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .function-header h2 {
-        margin: 0;
-        font-size: 1.4em;
-    }
-    
-    .toggle-icon::after {
-        content: '▼';
-        transition: transform 0.3s ease;
-    }
-    
-    .function-content.expanded .toggle-icon::after {
-        transform: rotate(180deg);
-    }
-    
-    .function-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-    }
-    
-    .function-content.expanded {
-        max-height: 5000px;
-    }
-    
-    .category-section {
-        margin: 15px;
-        border: 1px solid #dee2e6;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    
-    .category-header {
-        background: #495057;
-        color: white;
-        padding: 15px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .category-header h3 {
-        margin: 0;
-        font-size: 1.1em;
-    }
-    
-    .category-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-    }
-    
-    .category-content.expanded {
-        max-height: 5000px;
-    }
-    
-    .subcategory-item {
-        background: white;
-        margin: 15px;
-        padding: 20px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    
-    .subcategory-item h4 {
-        color: #2c3e50;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #3498db;
-    }
-    
-    .form-group {
-        margin-bottom: 20px;
-    }
-    
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #495057;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #e9ecef;
-        border-radius: 6px;
-        font-size: 1em;
-        transition: border-color 0.3s ease;
-    }
-    
-    .form-control:focus {
-        outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
-    
-    textarea.form-control {
-        resize: vertical;
-        min-height: 80px;
-    }
-    
-    .readonly-field {
-        background-color: #f8f9fa;
-        cursor: not-allowed;
-    }
-    
-    .btn {
-        padding: 12px 25px;
-        border: none;
-        border-radius: 6px;
-        font-size: 1em;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin: 5px;
-    }
-    
-    .btn-success {
-        background: linear-gradient(135deg, #27ae60, #2ecc71);
-        color: white;
-    }
-    
-    .btn-success:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
-    }
-    
-    .btn-secondary {
-        background: linear-gradient(135deg, #6c757d, #5a6268);
-        color: white;
-    }
-    
-    .btn-secondary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-    }
-    
-    .btn-info {
-        background: linear-gradient(135deg, #17a2b8, #138496);
-        color: white;
-    }
-    
-    .loading {
-        text-align: center;
-        padding: 40px;
-        color: #6c757d;
-        font-style: italic;
-    }
-    
-    .error {
-        background: #f8d7da;
-        color: #721c24;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        margin: 20px 0;
-        border-left: 4px solid #dc3545;
-    }
-</style>
+@section Styles {
+    <style>
+        /* === VARIÁVEIS CSS === */
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --success-color: #27ae60;
+            --success-dark: #2ecc71;
+            --info-color: #17a2b8;
+            --info-dark: #138496;
+            --secondary-color: #6c757d;
+            --secondary-dark: #5a6268;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* === LAYOUT PRINCIPAL === */
+        .edicao-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .edicao-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edicao-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        .edicao-header h1 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .edicao-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .edicao-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 0 5px;
+        }
+
+        /* === ALERTAS E MENSAGENS === */
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 20px 0;
+            color: #0c5460;
+            border-left: 4px solid var(--info-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 20px 0;
+            border-left: 4px solid var(--danger-color);
+            animation: shake 0.5s ease;
+        }
+
+        /* === BOTÕES === */
+        .action-buttons {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color), var(--info-dark));
+            color: white;
+        }
+
+        .btn-info:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+
+        /* === FORMULÁRIOS === */
+        .scenario-comparison {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .scenario-section {
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border-left: 4px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .scenario-section:hover {
+            box-shadow: var(--box-shadow);
+        }
+
+        /* === ESTILOS PARA EDIÇÃO === */
+.edicao-header-form {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3498db;
+}
+
+.edicao-info-form {
+    margin: 15px 0;
+}
+
+/* Estilos para garantir que os formulários fiquem corretos */
+.subcategory-item {
+    background: white;
+    margin: 15px 0;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+        /* === ANIMAÇÕES === */
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @@keyframes shine {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        @@keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: var(--secondary-color); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 var(--secondary-color), .5em 0 0 rgba(0,0,0,0); }
+            80%, 100% { text-shadow: .25em 0 0 var(--secondary-color), .5em 0 0 var(--secondary-color); }
+        }
+
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* === RESPONSIVIDADE === */
+        @@media (max-width: 768px) {
+            .edicao-container {
+                padding: 15px;
+            }
+
+            .edicao-header {
+                padding: 20px;
+            }
+
+            .edicao-header h1 {
+                font-size: 1.5em;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .edicao-header {
+                padding: 15px;
+            }
+
+            .edicao-header h1 {
+                font-size: 1.3em;
+            }
+
+            .edicao-info {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* === ESTILOS PARA O MODO EDIÇÃO ESPECÍFICO === */
+        .edicao-destaque {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7) !important;
+            border-left: 4px solid #f39c12 !important;
+        }
+
+        .campo-obrigatorio label::after {
+            content: " *";
+            color: var(--danger-color);
+        }
+
+        .status-edicao {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            animation: slideInRight 0.5s ease;
+        }
+
+        @@keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        
+    </style>
+}
 
 <div class="edicao-container">
+    <!-- Cabeçalho Informativo -->
+    <div class="edicao-header">
+        <h1>
+            <i class="fas fa-edit"></i> Editar Cenário
+            <span class="edicao-badge">@tipoCenario</span>
+        </h1>
+        <div class="edicao-info">
+            <div>
+                <strong>ID do Registro:</strong> <span class="edicao-badge">@cenarioId</span>
+            </div>
+            <div>
+                <strong>Subcategoria ID:</strong> <span class="edicao-badge">@subcategoriaId</span>
+            </div>
+            <div>
+                <strong>Tipo:</strong> <span class="edicao-badge">@tipoCenario</span>
+            </div>
+        </div>
+        <div class="alert-info">
+            <i class="fas fa-info-circle"></i>
+            <strong>Modo Edição:</strong> Todas as alterações serão registradas em log com data/hora e usuário responsável.
+        </div>
+    </div>
+
+    <!-- Área de Informações Dinâmicas -->
     <div id="selectionInfo" class="loading">
         Carregando dados para edição...
     </div>
-    
+
+    <!-- Container do Formulário ESPECÍFICO PARA EDIÇÃO -->
     <div class="scenario-comparison">
         <div class="scenario-section">
-            <div id="currentScenarioContainer" class="loading">
-                Carregando formulário de edição...
+            <!-- Container único para edição -->
+            <div id="edicaoScenarioContainer" class="loading">
+                Inicializando formulário de edição...
             </div>
         </div>
     </div>
-    
+    <!-- Botões de Ação -->
     <div class="action-buttons">
-        <button id="btnSalvar" class="btn btn-success">
+        <button id="btnSalvar" class="btn btn-success" disabled>
             <i class="fas fa-save"></i> Salvar Alterações
         </button>
         <button id="btnHistorico" class="btn btn-info">
@@ -272,159 +403,370 @@
 </div>
 
 @section Scripts {
-    <script>
-        // Configuração para modo edição
-        const urlParams = new URLSearchParams(window.location.search);
-        const config = {
-            modo: 'edicao',
-            modoEdicao: {
-                ativo: true,
-                cenarioId: parseInt(urlParams.get('id')),
-                tipoCenario: urlParams.get('tipo'),
-                subcategoriaId: parseInt(urlParams.get('subcategoriaId'))
-            }
-        };
+    <!-- Carregar NISTCore primeiro -->
+    <script src="~/js/core/nist-core.js" asp-append-version="true"></script>
 
-        const app = new NISTCore(config);
+    <script>
+        // === CONFIGURAÇÃO E INICIALIZAÇÃO ===
+        class EdicaoCenarioManager {
+            constructor() {
+                this.config = this.obterConfiguracao();
+                this.app = null;
+                this.inicializado = false;
+            }
+
+            obterConfiguracao() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const config = {
+                    modo: 'edicao',
+                    modoEdicao: {
+                        ativo: true,
+                        cenarioId: parseInt(urlParams.get('id')),
+                        tipoCenario: urlParams.get('tipo'),
+                        subcategoriaId: parseInt(urlParams.get('subcategoriaId'))
+                    }
+                };
+
+                // Validar configuração
+                if (!config.modoEdicao.cenarioId || !config.modoEdicao.tipoCenario || !config.modoEdicao.subcategoriaId) {
+                    throw new Error('Parâmetros de edição incompletos na URL.');
+                }
+
+                return config;
+            }
+
+            async inicializar() {
+                try {
+                    console.log('🚀 Inicializando modo edição...', this.config.modoEdicao);
+                    
+                    // Verificar se NISTCore está disponível
+                    if (typeof NISTCore === 'undefined') {
+                        throw new Error('NISTCore não foi carregado. Verifique o caminho do script.');
+                    }
+                    
+                    this.configurarEventos();
+                    this.app = new NISTCore(this.config);
+                    
+                    await this.carregarDados();
+                    this.inicializado = true;
+                    
+                    console.log('✅ Modo edição inicializado com sucesso');
+                    this.mostrarStatus('Sistema carregado com sucesso!', 'success');
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao inicializar edição:', error);
+                    this.mostrarErro(error);
+                    throw error;
+                }
+            }
+
+            configurarEventos() {
+                // Eventos dos botões
+                const btnSalvar = document.getElementById('btnSalvar');
+                const btnHistorico = document.getElementById('btnHistorico');
+                const btnVoltar = document.getElementById('btnVoltar');
+
+                if (btnSalvar) btnSalvar.addEventListener('click', () => this.salvar());
+                if (btnHistorico) btnHistorico.addEventListener('click', () => this.verHistorico());
+                if (btnVoltar) btnVoltar.addEventListener('click', () => this.voltar());
+
+                // Eventos de teclado
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 's') {
+                        e.preventDefault();
+                        this.salvar();
+                    }
+                });
+            }
+
+           async carregarDados() {
+    try {
+        console.log('📥 Iniciando carregamento de dados para edição...');
+        console.log('Configuração de edição:', this.config.modoEdicao);
         
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                console.log('🚀 Iniciando modo edição...', config.modoEdicao);
+        // Garantir que o modo edição está ativo no NISTCore
+        this.app.config.modoEdicao = this.config.modoEdicao;
+        this.app.config.modo = 'edicao';
+        
+        console.log('NISTCore config após atualização:', {
+            modo: this.app.config.modo,
+            modoEdicao: this.app.config.modoEdicao
+        });
+
+        const steps = [
+            { name: 'Carregando seleção...', action: () => this.carregarSelecaoUnica() },
+            { name: 'Carregando prioridades...', action: () => this.app.carregarPrioridades() },
+            { name: 'Carregando níveis...', action: () => this.app.carregarNiveis() },
+            { name: 'Carregando informações...', action: () => this.carregarInformacoesDetalhadasEdicao() },
+            { name: 'Carregando dados do cenário...', action: () => this.app.carregarDadosCenarios() }
+        ];
+
+        for (const step of steps) {
+            console.log(`🔄 ${step.name}`);
+            this.atualizarStatusCarregamento(step.name);
+            await step.action();
+        }
+
+        console.log('✅ Todos os dados carregados, exibindo cenário...');
+        
+        // Chamar a exibição - deve detectar automaticamente o modo edição
+        this.app.exibirCenarios();
+        
+        this.habilitarInterface();
+        
+    } catch (error) {
+        console.error('❌ Erro no carregamento de dados:', error);
+        throw error;
+    }
+        }
+
+            async carregarSelecaoUnica() {
+                const { subcategoriaId } = this.config.modoEdicao;
                 
-                // Configurar eventos dos botões
-                document.getElementById('btnSalvar').addEventListener('click', () => app.salvarAlteracoes());
-                document.getElementById('btnHistorico').addEventListener('click', () => app.visualizarHistorico(config.modoEdicao.subcategoriaId));
-                document.getElementById('btnVoltar').addEventListener('click', () => window.location.href = '/Home/Relatorios');
+                this.app.selections = {
+                    '1': { 
+                        '1': [subcategoriaId]
+                    }
+                };
                 
-                // Para modo edição, precisamos carregar apenas a subcategoria específica
-                await app.carregarSelecaoUnica();
-                await app.carregarPrioridades();
-                await app.carregarNiveis();
-                await app.carregarInformacoesDetalhadasEdicao();
-                await app.carregarDadosCenarios();
-                app.exibirCenarios();
+                console.log('🎯 Seleção única criada para edição:', this.app.selections);
+                return true;
+            }
+
+            async carregarInformacoesDetalhadasEdicao() {
+                try {
+                    const { subcategoriaId } = this.config.modoEdicao;
+                    console.log('📥 Carregando informações detalhadas para edição...');
+
+                    // Carregar subcategoria específica
+                    if (!this.app.cache.subcategorias[subcategoriaId]) {
+                        const subcategoria = await this.app.fetchAPI(`/api/Subcategorias/${subcategoriaId}`);
+                        if (subcategoria) {
+                            this.app.cache.subcategorias[subcategoriaId] = subcategoria;
+                        }
+                    }
+
+                    // Carregar categorias relacionadas
+                    const categorias = await this.app.fetchAPI('/api/Categorias');
+                    if (categorias?.length) {
+                        categorias.forEach(categoria => {
+                            this.app.cache.categorias[categoria.id || categoria.ID] = categoria;
+                        });
+                    }
+
+                    console.log('✅ Informações detalhadas carregadas para edição');
+                } catch (error) {
+                    console.error('❌ Erro ao carregar informações para edição:', error);
+                    throw error;
+                }
+            }
+
+            atualizarStatusCarregamento(mensagem) {
+                const element = document.getElementById('selectionInfo');
+                if (element) {
+                    element.innerHTML = `<div class="loading">${mensagem}</div>`;
+                }
+            }
+
+            habilitarInterface() {
+                const btnSalvar = document.getElementById('btnSalvar');
+                if (btnSalvar) btnSalvar.disabled = false;
                 
-                console.log('✅ Modo edição inicializado com sucesso');
+                const selectionInfo = document.getElementById('selectionInfo');
+                if (selectionInfo) {
+                    selectionInfo.innerHTML = `
+                        <div class="alert-info">
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Pronto para editar!</strong> Preencha os campos abaixo e clique em "Salvar Alterações".
+                        </div>
+                    `;
+                }
+            }
+
+            async salvar() {
+                if (!this.inicializado) return;
                 
-            } catch (error) {
-                console.error('❌ Erro ao inicializar edição:', error);
-                document.getElementById('selectionInfo').innerHTML = `
-                    <div class="error">
-                        <h3>Erro ao carregar dados para edição</h3>
-                        <p>${error.message}</p>
-                        <button onclick="location.reload()" class="btn btn-secondary">Tentar Novamente</button>
+                try {
+                    await this.app.salvarAlteracoes();
+                } catch (error) {
+                    console.error('Erro ao salvar:', error);
+                    this.mostrarStatus('Erro ao salvar alterações!', 'error');
+                }
+            }
+
+            verHistorico() {
+                if (!this.inicializado) return;
+                
+                const { subcategoriaId, tipoCenario } = this.config.modoEdicao;
+                this.visualizarHistorico(subcategoriaId, tipoCenario);
+            }
+
+            async visualizarHistorico(subcategoriaId, tipoCenario = 'ATUAL') {
+                try {
+                    const url = `/api/Cenarios/historico?subcategoriaId=${subcategoriaId}&tipo=${tipoCenario}`;
+                    
+                    const response = await fetch(url);
+                    const historico = await response.json();
+                    
+                    if (historico?.length) {
+                        this.exibirModalHistorico(historico);
+                    } else {
+                        alert('Nenhum histórico encontrado para esta subcategoria.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar histórico:', error);
+                    alert('Erro ao carregar histórico.');
+                }
+            }
+
+            exibirModalHistorico(historico) {
+                const modal = document.createElement('div');
+                modal.className = 'modal-edicao';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h3><i class="fas fa-history"></i> Histórico de Alterações</h3>
+                        <div class="historico-lista">
+                            ${historico.map(item => `
+                                <div class="historico-item">
+                                    <strong>${item.CAMPO_ALTERADO || 'Campo não identificado'}</strong>
+                                    <div class="historico-detalhes">
+                                        <span class="valor-antigo"><strong>De:</strong> ${item.VALOR_ANTIGO || '<em>vazio</em>'}</span>
+                                        <span class="valor-novo"><strong>Para:</strong> ${item.VALOR_NOVO || '<em>vazio</em>'}</span>
+                                    </div>
+                                    <small class="historico-meta">
+                                        <i class="fas fa-user"></i> ${item.USUARIO || 'Sistema'} 
+                                        <i class="fas fa-clock"></i> ${new Date(item.DATA_ALTERACAO).toLocaleString('pt-BR')}
+                                    </small>
+                                </div>
+                            `).join('') || '<p class="historico-vazio">Nenhum histórico encontrado</p>'}
+                        </div>
+                        <button class="btn btn-secondary btn-fechar">
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
                     </div>
                 `;
+
+                // Estilos do modal
+                Object.assign(modal.style, {
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '1000'
+                });
+
+                // Estilos do conteúdo do modal
+                const modalContent = modal.querySelector('.modal-content');
+                Object.assign(modalContent.style, {
+                    background: 'white',
+                    padding: '25px',
+                    borderRadius: '8px',
+                    maxWidth: '600px',
+                    maxHeight: '80vh',
+                    overflowY: 'auto',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                    width: '90%'
+                });
+
+                // Estilos dos itens do histórico
+                const historicoItems = modal.querySelectorAll('.historico-item');
+                historicoItems.forEach(item => {
+                    Object.assign(item.style, {
+                        borderLeft: '4px solid #3498db',
+                        padding: '15px',
+                        margin: '10px 0',
+                        background: '#f8f9fa',
+                        borderRadius: '6px'
+                    });
+                });
+
+                modal.querySelector('.btn-fechar').onclick = () => modal.remove();
+                modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+                document.body.appendChild(modal);
+            }
+
+            voltar() {
+                if (confirm('Tem certeza que deseja voltar? As alterações não salvas serão perdidas.')) {
+                    window.location.href = '/Home/Relatorios';
+                }
+            }
+
+            mostrarStatus(mensagem, tipo = 'info') {
+                console.log(`[${tipo.toUpperCase()}] ${mensagem}`);
+            }
+
+            mostrarErro(error) {
+                const errorHtml = `
+                    <div class="error">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Erro ao carregar dados para edição</h3>
+                        <p>${error.message}</p>
+                        <p><small>Verifique se o registro ainda existe e se você tem permissão para editá-lo.</small></p>
+                        <div style="margin-top: 15px;">
+                            <button onclick="location.reload()" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> Tentar Novamente
+                            </button>
+                            <button onclick="window.location.href = '/Home/Relatorios'" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Voltar para Relatórios
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('selectionInfo').innerHTML = errorHtml;
+            }
+        }
+
+        // === INICIALIZAÇÃO DA PÁGINA ===
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const editor = new EdicaoCenarioManager();
+                await editor.inicializar();
+                
+                // Expor globalmente para debug
+                window.edicaoManager = editor;
+                console.log('✅ Editor de cenário inicializado:', editor);
+                
+            } catch (error) {
+                console.error('Falha crítica na inicialização:', error);
+                
+                // Fallback: tentar carregar scripts manualmente se NISTCore não estiver disponível
+                if (error.message.includes('NISTCore')) {
+                    console.warn('⚠️ Tentando carregar NISTCore manualmente...');
+                    
+                    // Criar um script element para carregar o NISTCore
+                    const script = document.createElement('script');
+                    script.src = '/js/core/nist-core.js';
+                    script.onload = () => {
+                        console.log('✅ NISTCore carregado manualmente. Recarregue a página.');
+                        location.reload();
+                    };
+                    script.onerror = () => {
+                        console.error('❌ Falha ao carregar NISTCore manualmente.');
+                        document.getElementById('selectionInfo').innerHTML = `
+                            <div class="error">
+                                <h3>Erro Crítico</h3>
+                                <p>Não foi possível carregar o sistema NISTCore.</p>
+                                <p><strong>Arquivo não encontrado:</strong> /js/core/nist-core.js</p>
+                                <button onclick="location.reload()" class="btn btn-secondary">
+                                    <i class="fas fa-redo"></i> Tentar Novamente
+                                </button>
+                            </div>
+                        `;
+                    };
+                    document.head.appendChild(script);
+                }
             }
         });
 
-        // Adicionar métodos específicos para edição ao NISTCore
-        NISTCore.prototype.carregarSelecaoUnica = async function() {
-            const { subcategoriaId, tipoCenario } = this.config.modoEdicao;
-            
-            // Criar uma seleção única com apenas a subcategoria sendo editada
-            this.selections = {
-                '1': { // Usar função 1 como padrão (será ajustada depois)
-                    '1': [subcategoriaId] // categoria 1, com a subcategoria específica
-                }
-            };
-            
-            console.log('🎯 Seleção única criada para edição:', this.selections);
-            return true;
-        };
-
-        NISTCore.prototype.carregarInformacoesDetalhadasEdicao = async function() {
-            try {
-                const { subcategoriaId } = this.config.modoEdicao;
-                console.log('📥 Carregando informações detalhadas para edição...');
-
-                // Carregar informações da subcategoria específica
-                if (!this.cache.subcategorias[subcategoriaId]) {
-                    const subcategoria = await this.fetchAPI(`/api/Subcategorias/${subcategoriaId}`);
-                    if (subcategoria) {
-                        this.cache.subcategorias[subcategoriaId] = subcategoria;
-                        console.log('✅ Subcategoria carregada:', subcategoria);
-                    }
-                }
-
-                // Carregar categorias e funções relacionadas
-                const categorias = await this.fetchAPI('/api/Categorias');
-                if (categorias && Array.isArray(categorias)) {
-                    categorias.forEach(categoria => {
-                        this.cache.categorias[categoria.id || categoria.ID] = categoria;
-                    });
-                }
-
-                console.log('✅ Informações detalhadas carregadas para edição');
-            } catch (error) {
-                console.error('❌ Erro ao carregar informações para edição:', error);
-            }
-        };
-
-        NISTCore.prototype.visualizarHistorico = async function(subcategoriaId) {
-            try {
-                const response = await this.fetchAPI(`/api/Cenarios/historico?subcategoriaId=${subcategoriaId}`);
-                
-                if (response && Array.isArray(response)) {
-                    this.exibirModalHistorico(response);
-                } else {
-                    alert('Nenhum histórico encontrado para esta subcategoria.');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar histórico:', error);
-                alert('Erro ao carregar histórico.');
-            }
-        };
-
-        NISTCore.prototype.exibirModalHistorico = function(historico) {
-            const modal = document.createElement('div');
-            modal.className = 'modal-edicao';
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            `;
-            
-            const historicoHTML = historico.map(item => `
-                <div class="historico-item" style="border-left: 4px solid #3498db; padding: 15px; margin: 10px 0; background: #f8f9fa; border-radius: 6px;">
-                    <strong style="color: #2c3e50;">${item.CAMPO_ALTERADO}</strong><br>
-                    <div style="margin: 8px 0;">
-                        <small style="color: #e74c3c;"><strong>De:</strong> ${item.VALOR_ANTIGO || '<em>vazio</em>'}</small><br>
-                        <small style="color: #27ae60;"><strong>Para:</strong> ${item.VALOR_NOVO || '<em>vazio</em>'}</small>
-                    </div>
-                    <small style="color: #7f8c8d;">
-                        Por: ${item.USUARIO || 'Sistema'} em ${new Date(item.DATA_ALTERACAO).toLocaleString('pt-BR')}
-                    </small>
-                </div>
-            `).join('');
-            
-            modal.innerHTML = `
-                <div style="background: white; padding: 25px; border-radius: 10px; max-width: 600px; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                    <h3 style="margin-bottom: 20px; color: #2c3e50;">📋 Histórico de Alterações</h3>
-                    <div style="max-height: 60vh; overflow-y: auto;">
-                        ${historicoHTML || '<p style="text-align: center; color: #7f8c8d; font-style: italic;">Nenhum histórico encontrado</p>'}
-                    </div>
-                    <button class="btn btn-secondary" onclick="this.closest('.modal-edicao').remove()" style="margin-top: 20px; width: 100%;">
-                        Fechar
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-        };
-
-        // Sobrescrever a função de mensagem de sucesso para redirecionar
-        NISTCore.prototype.mostrarMensagemSucesso = function(mensagem) {
-            if (confirm(`${mensagem}\n\nDeseja voltar para a página de relatórios?`)) {
-                window.location.href = '/Home/Relatorios';
-            }
-        };
+        // Debug temporário - verificar elementos
+        console.log('🔍 Debug - Elementos na página:');
+        console.log('- edicaoScenarioContainer:', document.getElementById('edicaoScenarioContainer'));
+        console.log('- selectionInfo:', document.getElementById('selectionInfo'));
     </script>
 }

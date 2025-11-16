@@ -2625,11 +2625,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\NistXGH.csproj",
+      "projectUniqueName": "c:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\NistXGH.csproj",
       "projectName": "NistXGH",
-      "projectPath": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\NistXGH.csproj",
+      "projectPath": "c:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\NistXGH.csproj",
       "packagesPath": "C:\\Users\\anton\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\obj\\",
+      "outputPath": "c:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\anton\\AppData\\Roaming\\NuGet\\NuGet.Config"
