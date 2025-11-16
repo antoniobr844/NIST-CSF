@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CUwahj/qXGI=",
+  "dgSpecHash": "AxUZbd0BNM8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\anton\\Documents\\GitHub\\NIST-CSF\\NistXGH.csproj",
+  "projectFilePath": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\NistXGH.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anton\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.0\\microsoft.entityframeworkcore.9.0.0.nupkg.sha512",
     "C:\\Users\\anton\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.0\\microsoft.entityframeworkcore.abstractions.9.0.0.nupkg.sha512",

@@ -1447,16 +1447,16 @@ class NISTCore {
   }
 
   // === FUNÇÕES DE SALVAMENTO ===
-  // Modificar a função salvarAlteracoes
   async salvarAlteracoes () {
     try {
+      this.mostrarLoadingSalvamento(true)
+
       // Verificar modo edição
       if (this.config.modoEdicao.ativo) {
         await this.salvarEdicao()
         return
       }
 
-      // Código normal de salvamento existente...
       const isCopiando = localStorage.getItem('modoCopiaFuturoParaAtual')
       let endpoint
       let dadosParaSalvar = []
@@ -1466,7 +1466,7 @@ class NISTCore {
       if (this.config.modo === 'atual') {
         endpoint = '/api/Cenarios/atual/salvar'
         dadosParaSalvar = this.coletarDadosFormularioAtual()
-        console.log('💾 Salvando no CENÁRIO ATUAL')
+        console.log('💾 Salvando no CENÁRIO ATUAL:', dadosParaSalvar)
       } else {
         if (isCopiando) {
           endpoint = '/api/Cenarios/atual/salvar'
@@ -1478,10 +1478,48 @@ class NISTCore {
         dadosParaSalvar = this.coletarDadosFormularioFuturo(isCopiando)
       }
 
-      // ... resto do código normal
+      // VALIDAÇÃO: Verificar se há dados para salvar
+      if (!dadosParaSalvar || dadosParaSalvar.length === 0) {
+        this.mostrarMensagemErro(
+          '❌ Nenhum dado válido para salvar. Verifique os campos obrigatórios.'
+        )
+        return
+      }
+
+      console.log('📤 Enviando dados para:', endpoint, dadosParaSalvar)
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify(dadosParaSalvar)
+      })
+
+      if (response.ok) {
+        const resultado = await response.json()
+        console.log('✅ Salvamento bem-sucedido:', resultado)
+
+        // Limpar flag de cópia se existir
+        if (isCopiando) {
+          localStorage.removeItem('modoCopiaFuturoParaAtual')
+        }
+
+        this.mostrarMensagemSucesso(
+          resultado.mensagem ||
+            `✅ ${dadosParaSalvar.length} registro(s) salvos com sucesso!`
+        )
+
+        // Recarregar dados para atualizar interface
+        await this.recarregarDados()
+      } else {
+        const erro = await response.text()
+        throw new Error(erro || `Erro HTTP ${response.status}`)
+      }
     } catch (error) {
       console.error('❌ Erro ao salvar:', error)
-      this.mostrarMensagemErro(`❌ Erro de rede: ${error.message}`)
+      this.mostrarMensagemErro(`❌ Erro ao salvar: ${error.message}`)
     } finally {
       this.mostrarLoadingSalvamento(false)
     }
@@ -1925,13 +1963,6 @@ class NISTCore {
         `future-artefatosEvi-${i}`
       )?.value
 
-      if (!prioridade || !nivel) {
-        console.warn(
-          `❌ Campos obrigatórios não preenchidos para subcategoria ${subcategoryId} - PULANDO`
-        )
-        continue
-      }
-
       const prioridadeValida = prioridade ? parseInt(prioridade) : null
       const nivelValido = nivel ? parseInt(nivel) : null
 
@@ -1962,7 +1993,6 @@ class NISTCore {
       console.error('Erro ao recarregar dados:', error)
     }
   }
-  // No nist-core.js, adicione estas funções:
 
   // === FUNÇÕES DE EDIÇÃO ===
   detectarModoEdicao () {
