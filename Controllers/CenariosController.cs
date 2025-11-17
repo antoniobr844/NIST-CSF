@@ -863,7 +863,28 @@ namespace NistXGH.Controllers
         {
             try
             {
-                _logger.LogInformation("Iniciando edição do cenário atual - ID: {Id}", dados.ID);
+                _logger.LogInformation("=== INICIANDO EDIÇÃO CENÁRIO ATUAL ===");
+                _logger.LogInformation(
+                    "Dados recebidos: ID={Id}, SUBCATEGORIA={Subcategoria}",
+                    dados.ID,
+                    dados.SUBCATEGORIA
+                );
+
+                // VALIDAÇÃO CRÍTICA
+                if (dados.ID <= 0)
+                {
+                    _logger.LogWarning("ID inválido recebido: {Id}", dados.ID);
+                    return BadRequest("ID do registro é inválido");
+                }
+
+                if (dados.SUBCATEGORIA <= 0)
+                {
+                    _logger.LogWarning(
+                        "SUBCATEGORIA inválida recebida: {Subcategoria}",
+                        dados.SUBCATEGORIA
+                    );
+                    return BadRequest("SUBCATEGORIA é inválida");
+                }
 
                 var registro = await _context.CenariosAtual.FindAsync(dados.ID);
                 if (registro == null)
@@ -872,8 +893,14 @@ namespace NistXGH.Controllers
                         "Cenário atual não encontrado para edição - ID: {Id}",
                         dados.ID
                     );
-                    return NotFound("Registro não encontrado");
+                    return NotFound($"Registro não encontrado (ID: {dados.ID})");
                 }
+
+                _logger.LogInformation(
+                    "Registro encontrado: ID={Id}, SUBCATEGORIA={Subcategoria}",
+                    registro.ID,
+                    registro.SUBCATEGORIA
+                );
 
                 // Gerar log das alterações
                 var alteracoes = await GerarLogAlteracoes(registro, dados, "ATUAL");
@@ -912,7 +939,7 @@ namespace NistXGH.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao editar cenário atual - ID: {Id}", dados.ID);
-                return StatusCode(500, $"Erro ao editar registro: {ex.Message}");
+                return StatusCode(500, new { error = $"Erro ao editar registro: {ex.Message}" });
             }
         }
 

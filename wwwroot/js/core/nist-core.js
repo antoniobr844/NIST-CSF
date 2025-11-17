@@ -1590,7 +1590,10 @@ class NISTCore {
   }
 
   async salvarEdicao () {
-    const { cenarioId, tipoCenario, subcategoriaId } = this.config.modoEdicao
+    // ✅ CAPTURAR VALORES DIRETAMENTE
+    const cenarioId = this.config.modoEdicao.cenarioId
+    const tipoCenario = this.config.modoEdicao.tipoCenario
+    const subcategoriaId = this.config.modoEdicao.subcategoriaId
 
     try {
       this.mostrarLoadingSalvamento(true)
@@ -1600,6 +1603,15 @@ class NISTCore {
         tipoCenario,
         subcategoriaId
       })
+
+      // VALIDAÇÃO INICIAL CRÍTICA
+      if (!cenarioId || cenarioId <= 0) {
+        throw new Error(`ID do registro inválido: ${cenarioId}`)
+      }
+
+      if (!subcategoriaId || subcategoriaId <= 0) {
+        throw new Error(`SUBCATEGORIA inválida: ${subcategoriaId}`)
+      }
 
       let dadosParaSalvar
       let endpoint
@@ -1614,12 +1626,25 @@ class NISTCore {
         console.log('📤 Salvando CENÁRIO FUTURO:', dadosParaSalvar)
       }
 
-      // Validação básica
+      // Validação final antes do envio
       if (!dadosParaSalvar) {
-        throw new Error('Nenhum dado coletado para salvar')
+        throw new Error('Dados para salvar estão vazios')
       }
 
-      console.log('🚀 Enviando para API:', endpoint, 'Dados:', dadosParaSalvar)
+      if (!dadosParaSalvar.ID || dadosParaSalvar.ID <= 0) {
+        throw new Error(
+          `ID inválido nos dados: ${dadosParaSalvar.ID} (esperado: ${cenarioId})`
+        )
+      }
+
+      if (!dadosParaSalvar.SUBCATEGORIA || dadosParaSalvar.SUBCATEGORIA <= 0) {
+        throw new Error(
+          `SUBCATEGORIA inválida nos dados: ${dadosParaSalvar.SUBCATEGORIA} (esperado: ${subcategoriaId})`
+        )
+      }
+
+      console.log('🚀 Enviando para API:', endpoint)
+      console.log('📦 Dados enviados:', dadosParaSalvar)
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -1653,7 +1678,6 @@ class NISTCore {
           erroTexto
         )
 
-        // Tentar parsear como JSON se possível
         try {
           const erroJson = JSON.parse(erroTexto)
           throw new Error(erroJson.message || erroJson.title || erroTexto)
@@ -1670,59 +1694,6 @@ class NISTCore {
   }
 
   // === FUNÇÕES DE COLETA DE DADOS PARA EDIÇÃO ===
-  coletarDadosFormularioAtualEdicao () {
-    const { cenarioId, subcategoriaId } = this.config.modoEdicao
-
-    console.log('📝 Coletando dados do formulário ATUAL para edição...')
-
-    // Como estamos em modo edição, só tem um formulário (índice 0)
-    const prioridade = document.getElementById('current-prioridade-0')?.value
-    const nivel = document.getElementById('current-nivel-0')?.value
-    const politicas = document.getElementById('current-politicasPro-0')?.value
-    const praticas = document.getElementById(
-      'current-praticasInternas-0'
-    )?.value
-    const funcoes = document.getElementById('current-funcoesResp-0')?.value
-    const referencias = document.getElementById(
-      'current-referenciasInfo-0'
-    )?.value
-    const evidencias = document.getElementById('current-artefatosEvi-0')?.value
-    const justificativa = document.getElementById(
-      'current-justificativa-0'
-    )?.value
-    const notas = document.getElementById('current-notas-0')?.value
-    const consideracoes = document.getElementById(
-      'current-consideracoes-0'
-    )?.value
-
-    console.log('📊 Dados coletados ATUAL:', {
-      prioridade,
-      nivel,
-      politicas,
-      praticas,
-      funcoes,
-      referencias,
-      evidencias,
-      justificativa,
-      notas,
-      consideracoes
-    })
-
-    return {
-      ID: cenarioId,
-      SUBCATEGORIA: subcategoriaId,
-      PRIOR_ATUAL: prioridade ? parseInt(prioridade) : null,
-      STATUS_ATUAL: nivel ? parseInt(nivel) : null,
-      POLIT_ATUAL: politicas || null,
-      PRAT_ATUAL: praticas || null,
-      FUNC_RESP: funcoes || null,
-      REF_INFO: referencias || null,
-      EVID_ATUAL: evidencias || null,
-      JUSTIFICATIVA: justificativa || null,
-      NOTAS: notas || null,
-      CONSIDERACOES: consideracoes || null
-    }
-  }
 
   coletarDadosFormularioFuturoEdicao () {
     const { cenarioId, subcategoriaId } = this.config.modoEdicao
@@ -1776,8 +1747,10 @@ class NISTCore {
     return dadosParaEnvio
   }
 
-  coletarDadosFormularioAtualEdicao (cenarioId, subcategoriaId) {
-    // Como estamos em modo edição, só tem um formulário (índice 0)
+  // nist-core.js
+
+  coletarDadosFormularioAtualEdicao () {
+    const { cenarioId, subcategoriaId } = this.config.modoEdicao
     const prioridade = document.getElementById('current-prioridade-0')?.value
     const nivel = document.getElementById('current-nivel-0')?.value
     const politicas = document.getElementById('current-politicasPro-0')?.value

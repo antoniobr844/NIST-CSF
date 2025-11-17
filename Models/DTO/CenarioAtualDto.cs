@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NistXGH.Models.Dto
 {
     public class CenarioAtualDto
     {
+        [Required]
         public int ID { get; set; }
+        
+        [Required]
         public int SUBCATEGORIA { get; set; }
         public string? JUSTIFICATIVA { get; set; }
         public int PRIOR_ATUAL { get; set; }
