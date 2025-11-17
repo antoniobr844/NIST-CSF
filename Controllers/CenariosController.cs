@@ -230,6 +230,289 @@ namespace NistXGH.Controllers
             }
         }
 
+        // ========== CENÁRIO ATUAL FORMATADO ==========
+
+        [HttpGet("atual/formatados")]
+        public async Task<ActionResult> GetCenariosAtualFormatados()
+        {
+            try
+            {
+                _logger.LogInformation("=== INICIANDO BUSCA DE CENÁRIOS ATUAIS FORMATADOS ===");
+
+                // Busca apenas os MAIS RECENTES de cada subcategoria
+                _logger.LogInformation("Buscando subcategorias únicas...");
+                var subcategoriaIds = await _context
+                    .CenariosAtual.Select(c => c.SUBCATEGORIA)
+                    .Distinct()
+                    .ToListAsync();
+
+                _logger.LogInformation($"Encontradas {subcategoriaIds.Count} subcategorias únicas");
+
+                var cenariosMaisRecentes = new List<CenarioAtual>();
+
+                foreach (var subcategoriaId in subcategoriaIds)
+                {
+                    try
+                    {
+                        _logger.LogInformation(
+                            $"Buscando mais recente para subcategoria {subcategoriaId}..."
+                        );
+                        var maisRecente = await _context
+                            .CenariosAtual.Where(c => c.SUBCATEGORIA == subcategoriaId)
+                            .OrderByDescending(c => c.DATA_REGISTRO)
+                            .FirstOrDefaultAsync();
+
+                        if (maisRecente != null)
+                        {
+                            cenariosMaisRecentes.Add(maisRecente);
+                            _logger.LogInformation(
+                                $"Adicionado cenário ID {maisRecente.ID} para subcategoria {subcategoriaId}"
+                            );
+                        }
+                        else
+                        {
+                            _logger.LogWarning(
+                                $"Nenhum cenário encontrado para subcategoria {subcategoriaId}"
+                            );
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(
+                            ex,
+                            $"Erro ao buscar cenário para subcategoria {subcategoriaId}"
+                        );
+                    }
+                }
+
+                _logger.LogInformation(
+                    $"Total de {cenariosMaisRecentes.Count} cenários atuais mais recentes encontrados"
+                );
+
+                if (!cenariosMaisRecentes.Any())
+                {
+                    _logger.LogInformation(
+                        "Nenhum cenário atual encontrado, retornando lista vazia"
+                    );
+                    return Ok(new List<object>());
+                }
+
+                // Formata as subcategorias
+                Dictionary<int, FormatacaoDto> subcategoriasFormatadas;
+
+                try
+                {
+                    _logger.LogInformation("Iniciando formatação das subcategorias...");
+                    var subcategoriaIdsFormatar = cenariosMaisRecentes
+                        .Select(c => c.SUBCATEGORIA)
+                        .Distinct();
+
+                    _logger.LogInformation(
+                        $"Formatando {subcategoriaIdsFormatar.Count()} subcategorias..."
+                    );
+                    subcategoriasFormatadas =
+                        await _formatacaoService.GetSubcategoriasFormatadasCompletas(
+                            subcategoriaIdsFormatar
+                        );
+                    _logger.LogInformation(
+                        $"Formatação concluída para {subcategoriasFormatadas.Count} subcategorias"
+                    );
+                }
+                catch (Exception formatacaoEx)
+                {
+                    _logger.LogError(formatacaoEx, "Falha crítica no serviço de formatação");
+
+                    // Fallback: retorna dados básicos sem formatação
+                    _logger.LogInformation("Usando fallback sem formatação...");
+                    var resultadoFallback = cenariosMaisRecentes
+                        .Select(c => new
+                        {
+                            id = c.ID,
+                            subcategoriaFormatada = $"ID:{c.SUBCATEGORIA}",
+                            descricaoSubcategoria = "Erro ao carregar descrição",
+                            prioridade = c.PRIOR_ATUAL,
+                            nivel = c.STATUS_ATUAL,
+                            politica = c.POLIT_ATUAL,
+                            pratica = c.PRAT_ATUAL,
+                            artefato = c.EVID_ATUAL,
+                            justificativa = c.JUSTIFICATIVA,
+                            notas = c.NOTAS,
+                            consideracoes = c.CONSIDERACOES,
+                            dataRegistro = c.DATA_REGISTRO,
+                            subcategoriaId = c.SUBCATEGORIA,
+                        })
+                        .ToList();
+
+                    _logger.LogInformation(
+                        $"Retornando {resultadoFallback.Count} registros em fallback"
+                    );
+                    return Ok(resultadoFallback);
+                }
+
+                // Monta resultado final
+                _logger.LogInformation("Montando resultado final...");
+                var resultado = cenariosMaisRecentes
+                    .Select(c =>
+                    {
+                        var subcategoriaInfo = subcategoriasFormatadas.ContainsKey(c.SUBCATEGORIA)
+                            ? subcategoriasFormatadas[c.SUBCATEGORIA]
+                            : null;
+
+                        return new
+                        {
+                            id = c.ID,
+                            subcategoriaFormatada = subcategoriaInfo?.CodigoFormatado
+                                ?? $"ID:{c.SUBCATEGORIA}",
+                            descricaoSubcategoria = subcategoriaInfo?.Descricao
+                                ?? "Descrição não disponível",
+                            prioridade = c.PRIOR_ATUAL,
+                            nivel = c.STATUS_ATUAL,
+                            politica = c.POLIT_ATUAL,
+                            pratica = c.PRAT_ATUAL,
+                            artefato = c.EVID_ATUAL,
+                            justificativa = c.JUSTIFICATIVA,
+                            notas = c.NOTAS,
+                            consideracoes = c.CONSIDERACOES,
+                            dataRegistro = c.DATA_REGISTRO,
+                            subcategoriaId = c.SUBCATEGORIA,
+                            funcaoCodigo = subcategoriaInfo?.FuncaoCodigo,
+                            categoriaCodigo = subcategoriaInfo?.CategoriaCodigo,
+                        };
+                    })
+                    .ToList();
+
+                _logger.LogInformation(
+                    $"=== BUSCA CONCLUÍDA: {resultado.Count} registros retornados ==="
+                );
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "❌ ERRO CRÍTICO ao buscar cenários atuais formatados");
+                return StatusCode(
+                    500,
+                    new
+                    {
+                        error = "Erro interno no servidor",
+                        details = ex.Message,
+                        innerException = ex.InnerException?.Message,
+                        stackTrace = ex.StackTrace,
+                    }
+                );
+            }
+        }
+
+        [HttpGet("atual/todos")]
+        public async Task<ActionResult> GetTodosCenariosAtuais()
+        {
+            try
+            {
+                _logger.LogInformation("Buscando todos os cenários atuais...");
+
+                // Busca todos os registros mais recentes de cada subcategoria
+                var subcategoriaIds = await _context
+                    .CenariosAtual.Select(c => c.SUBCATEGORIA)
+                    .Distinct()
+                    .ToListAsync();
+
+                var cenariosMaisRecentes = new List<CenarioAtual>();
+
+                foreach (var subcategoriaId in subcategoriaIds)
+                {
+                    var maisRecente = await _context
+                        .CenariosAtual.Where(c => c.SUBCATEGORIA == subcategoriaId)
+                        .OrderByDescending(c => c.DATA_REGISTRO)
+                        .FirstOrDefaultAsync();
+
+                    if (maisRecente != null)
+                    {
+                        cenariosMaisRecentes.Add(maisRecente);
+                    }
+                }
+
+                _logger.LogInformation($"Encontrados {cenariosMaisRecentes.Count} cenários atuais");
+
+                // Formata as subcategorias
+                Dictionary<int, FormatacaoDto> subcategoriasFormatadas;
+
+                try
+                {
+                    var subcategoriaIdsFormatar = cenariosMaisRecentes
+                        .Select(c => c.SUBCATEGORIA)
+                        .Distinct();
+                    subcategoriasFormatadas =
+                        await _formatacaoService.GetSubcategoriasFormatadasCompletas(
+                            subcategoriaIdsFormatar
+                        );
+                }
+                catch (Exception formatacaoEx)
+                {
+                    _logger.LogError(formatacaoEx, "Falha no serviço de formatação");
+
+                    // Fallback sem formatação
+                    var resultadoFallback = cenariosMaisRecentes
+                        .Select(c => new
+                        {
+                            id = c.ID,
+                            subcategoriaId = c.SUBCATEGORIA,
+                            subcategoriaFormatada = $"SC-{c.SUBCATEGORIA}",
+                            prioridade = c.PRIOR_ATUAL,
+                            nivel = c.STATUS_ATUAL,
+                            politica = c.POLIT_ATUAL,
+                            pratica = c.PRAT_ATUAL,
+                            artefato = c.EVID_ATUAL,
+                            justificativa = c.JUSTIFICATIVA,
+                            notas = c.NOTAS,
+                            consideracoes = c.CONSIDERACOES,
+                            dataRegistro = c.DATA_REGISTRO,
+                            funcaoCodigo = "GV",
+                        })
+                        .ToList();
+
+                    return Ok(resultadoFallback);
+                }
+
+                // Monta resultado final com formatação
+                var resultado = cenariosMaisRecentes
+                    .Select(c =>
+                    {
+                        var subcategoriaInfo = subcategoriasFormatadas.ContainsKey(c.SUBCATEGORIA)
+                            ? subcategoriasFormatadas[c.SUBCATEGORIA]
+                            : null;
+
+                        return new
+                        {
+                            id = c.ID,
+                            subcategoriaId = c.SUBCATEGORIA,
+                            subcategoriaFormatada = subcategoriaInfo?.CodigoFormatado
+                                ?? $"SC-{c.SUBCATEGORIA}",
+                            prioridade = c.PRIOR_ATUAL,
+                            nivel = c.STATUS_ATUAL,
+                            politica = c.POLIT_ATUAL,
+                            pratica = c.PRAT_ATUAL,
+                            artefato = c.EVID_ATUAL,
+                            justificativa = c.JUSTIFICATIVA,
+                            notas = c.NOTAS,
+                            consideracoes = c.CONSIDERACOES,
+                            dataRegistro = c.DATA_REGISTRO,
+                            funcaoCodigo = subcategoriaInfo?.FuncaoCodigo ?? "GV",
+                            categoriaCodigo = subcategoriaInfo?.CategoriaCodigo,
+                        };
+                    })
+                    .ToList();
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar todos os cenários atuais");
+                return StatusCode(
+                    500,
+                    new { error = "Erro interno no servidor", details = ex.Message }
+                );
+            }
+        }
+
         // ========== CENÁRIO FUTURO ==========
 
         [HttpGet("futuro")]
@@ -423,9 +706,9 @@ namespace NistXGH.Controllers
                         {
                             id = c.ID,
                             subcategoriaFormatada = subcategoriaInfo?.CodigoFormatado
-                                                    ?? $"ID:{c.SUBCATEGORIA}",
+                                ?? $"ID:{c.SUBCATEGORIA}",
                             descricaoSubcategoria = subcategoriaInfo?.Descricao
-                                                    ?? "Descrição não disponível",
+                                ?? "Descrição não disponível",
                             prioridade = c.PRIORIDADE_ALVO,
                             nivel = c.NIVEL_ALVO,
                             politica = c.POLIT_ALVO,
@@ -646,23 +929,29 @@ namespace NistXGH.Controllers
                 var registro = await _context.CenariosFuturo.FindAsync(dados.ID);
                 if (registro == null)
                 {
-                    _logger.LogWarning("Cenário futuro não encontrado para edição - ID: {Id}", dados.ID);
+                    _logger.LogWarning(
+                        "Cenário futuro não encontrado para edição - ID: {Id}",
+                        dados.ID
+                    );
                     return NotFound("Registro não encontrado");
                 }
 
                 // DEBUG: Log do registro atual
-                _logger.LogInformation("Registro atual: {@Registro}", new
-                {
-                    registro.ID,
-                    registro.SUBCATEGORIA,
-                    registro.PRIORIDADE_ALVO,
-                    registro.NIVEL_ALVO,
-                    registro.POLIT_ALVO,
-                    registro.PRAT_ALVO,
-                    registro.FUNC_ALVO,
-                    registro.REF_INFO_ALVO,
-                    registro.ARTEF_ALVO
-                });
+                _logger.LogInformation(
+                    "Registro atual: {@Registro}",
+                    new
+                    {
+                        registro.ID,
+                        registro.SUBCATEGORIA,
+                        registro.PRIORIDADE_ALVO,
+                        registro.NIVEL_ALVO,
+                        registro.POLIT_ALVO,
+                        registro.PRAT_ALVO,
+                        registro.FUNC_ALVO,
+                        registro.REF_INFO_ALVO,
+                        registro.ARTEF_ALVO,
+                    }
+                );
 
                 // Gerar log das alterações
                 var alteracoes = await GerarLogAlteracoes(registro, dados, "FUTURO");
@@ -679,16 +968,21 @@ namespace NistXGH.Controllers
 
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation("Cenário futuro editado com sucesso - ID: {Id}, Alterações: {Count}",
-                    dados.ID, alteracoes.Count);
+                _logger.LogInformation(
+                    "Cenário futuro editado com sucesso - ID: {Id}, Alterações: {Count}",
+                    dados.ID,
+                    alteracoes.Count
+                );
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Registro atualizado com sucesso",
-                    alteracoes = alteracoes.Count,
-                    id = dados.ID
-                });
+                return Ok(
+                    new
+                    {
+                        success = true,
+                        message = "Registro atualizado com sucesso",
+                        alteracoes = alteracoes.Count,
+                        id = dados.ID,
+                    }
+                );
             }
             catch (Exception ex)
             {
@@ -699,8 +993,11 @@ namespace NistXGH.Controllers
 
         // ========== MÉTODO AUXILIAR PARA LOG ==========
 
-        private async Task<List<LogAlteracao>> GerarLogAlteracoes(object registroAntigo, object registroNovo,
-            string tipoCenario)
+        private async Task<List<LogAlteracao>> GerarLogAlteracoes(
+            object registroAntigo,
+            object registroNovo,
+            string tipoCenario
+        )
         {
             var alteracoes = new List<LogAlteracao>();
             var propriedades = registroAntigo.GetType().GetProperties();
@@ -708,38 +1005,56 @@ namespace NistXGH.Controllers
             foreach (var prop in propriedades)
             {
                 // Ignorar propriedades que não devem ser logadas
-                if (prop.Name == "ID" || prop.Name == "DATA_REGISTRO" || prop.Name == "SUBCATEGORIA")
+                if (
+                    prop.Name == "ID"
+                    || prop.Name == "DATA_REGISTRO"
+                    || prop.Name == "SUBCATEGORIA"
+                )
                     continue;
 
                 var valorAntigo = prop.GetValue(registroAntigo)?.ToString();
-                var valorNovo = registroNovo.GetType().GetProperty(prop.Name)?.GetValue(registroNovo)?.ToString();
+                var valorNovo = registroNovo
+                    .GetType()
+                    .GetProperty(prop.Name)
+                    ?.GetValue(registroNovo)
+                    ?.ToString();
 
                 if (valorAntigo != valorNovo)
                 {
                     var log = new CenarioLog
                     {
-                        CENARIO_ID = (int)registroAntigo.GetType().GetProperty("ID")?.GetValue(registroAntigo),
+                        CENARIO_ID = (int)
+                            registroAntigo.GetType().GetProperty("ID")?.GetValue(registroAntigo),
                         CENARIO_TIPO = tipoCenario,
-                        SUBCATEGORIA_ID = (int)registroAntigo.GetType().GetProperty("SUBCATEGORIA")
-                            ?.GetValue(registroAntigo),
+                        SUBCATEGORIA_ID = (int)
+                            registroAntigo
+                                .GetType()
+                                .GetProperty("SUBCATEGORIA")
+                                ?.GetValue(registroAntigo),
                         CAMPO_ALTERADO = prop.Name,
                         VALOR_ANTIGO = valorAntigo,
                         VALOR_NOVO = valorNovo,
                         USUARIO = User.Identity?.Name ?? "Sistema",
                         DATA_ALTERACAO = DateTime.Now,
-                        IP_MAQUINA = HttpContext.Connection.RemoteIpAddress?.ToString()
+                        IP_MAQUINA = HttpContext.Connection.RemoteIpAddress?.ToString(),
                     };
 
                     _context.CenarioLog.Add(log);
-                    alteracoes.Add(new LogAlteracao
-                    {
-                        Campo = prop.Name,
-                        ValorAntigo = valorAntigo,
-                        ValorNovo = valorNovo
-                    });
+                    alteracoes.Add(
+                        new LogAlteracao
+                        {
+                            Campo = prop.Name,
+                            ValorAntigo = valorAntigo,
+                            ValorNovo = valorNovo,
+                        }
+                    );
 
-                    _logger.LogInformation("Campo alterado: {Campo} - De: {ValorAntigo} Para: {ValorNovo}",
-                        prop.Name, valorAntigo, valorNovo);
+                    _logger.LogInformation(
+                        "Campo alterado: {Campo} - De: {ValorAntigo} Para: {ValorNovo}",
+                        prop.Name,
+                        valorAntigo,
+                        valorNovo
+                    );
                 }
             }
 
