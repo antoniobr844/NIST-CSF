@@ -606,6 +606,7 @@ class NISTCore {
   }
 
   // === FUNÇÕES AUXILIARES E DE INTERFACE ===
+
   preencherDropdownsPrioridades () {
     const prefix = this.config.modo === 'atual' ? 'current' : 'future'
     const selects = document.querySelectorAll(
@@ -621,13 +622,17 @@ class NISTCore {
       this.cache.prioridades.forEach(prioridade => {
         const option = document.createElement('option')
         option.value = prioridade.id
-        option.textContent = prioridade.nivel
+        const textoOriginal = prioridade.nivel || 'Prioridade'
+        option.textContent = textoOriginal.replace(/^\d+\s/, '')
+
         select.appendChild(option)
       })
 
       select.disabled = false
     })
   }
+
+  // nist-core.js
 
   preencherDropdownsNiveis () {
     const prefix = this.config.modo === 'atual' ? 'current' : 'future'
@@ -642,7 +647,11 @@ class NISTCore {
       this.cache.niveis.forEach(nivel => {
         const option = document.createElement('option')
         option.value = nivel.id
-        option.textContent = nivel.status || nivel.nivel || 'Nível não definido'
+
+        const textoOriginal =
+          nivel.status || nivel.nivel || 'Nível não definido'
+        option.textContent = textoOriginal.replace(/^\d+\s/, '') 
+
         select.appendChild(option)
       })
 

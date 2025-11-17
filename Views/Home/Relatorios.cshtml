@@ -573,7 +573,7 @@
 </style>
 
 <div class="container">
-    <h1>📊 Relatórios - Cenário Futuro</h1>
+    <h1> Relatórios - Cenário Futuro</h1>
 
 
     <!-- CONTROLES DE TABELA E FILTRO -->
@@ -583,8 +583,8 @@
             <div class="filter-group">
                 <label for="filterTable">Tabela:</label>
                 <select id="filterTable" class="form-control">
-                    <option value="FUTURO">📊 Cenário Futuro</option>
-                    <option value="ATUAL">📈 Cenário Atual</option>
+                    <option value="FUTURO"> Cenário Futuro</option>
+                    <option value="ATUAL"> Cenário Atual</option>
                 </select>
             </div>
 
@@ -1338,18 +1338,18 @@
 
         getPrioridadeClass(prioridade) {
             switch (prioridade.toString()) {
-                case '1': return 'high';
+                case '1': return 'low';
                 case '2': return 'medium';
-                case '3': return 'low';
+                case '3': return 'high';
                 default: return 'medium';
             }
         }
 
         getPrioridadeTexto(prioridade) {
             switch (prioridade.toString()) {
-                case '1': return 'Alta';
+                case '1': return 'Baixa';
                 case '2': return 'Média';
-                case '3': return 'Baixa';
+                case '3': return 'Alta';
                 default: return 'N/A';
             }
         }
