@@ -28,7 +28,9 @@ namespace NistXGH.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var categorias = Assert.IsType<List<Categorias>>(okResult.Value);
-            Assert.Equal(2, categorias.Count);
+
+            // 🔥 CORREÇÃO: 3 categorias no seed
+            Assert.Equal(3, categorias.Count);
         }
 
         [Fact]
@@ -40,6 +42,8 @@ namespace NistXGH.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var categorias = Assert.IsType<List<Categorias>>(okResult.Value);
+
+            // 🔥 CORREÇÃO: 2 categorias para função 1 no seed
             Assert.Equal(2, categorias.Count);
             Assert.All(categorias, c => Assert.Equal(1, c.FUNCAO));
         }

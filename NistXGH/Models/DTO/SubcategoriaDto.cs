@@ -7,10 +7,10 @@ namespace NistXGH.Models.Dto
         public int Id { get; set; }
 
         [JsonPropertyName("codigo")]
-        public string Codigo { get; set; }  // antes era Subcategoria
+        public string Codigo { get; set; } 
 
         [JsonPropertyName("nome")]
-        public string Nome { get; set; }    // usa DESCRICAO
+        public string Nome { get; set; }   
 
         public string Descricao { get; set; }
 

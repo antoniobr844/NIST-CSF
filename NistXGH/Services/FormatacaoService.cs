@@ -170,7 +170,7 @@ namespace NistXGH.Services
             if (subcategoria == null)
                 return "N/A";
 
-            // ✅ CORREÇÃO: A função vem através da categoria
+            //  A função vem através da categoria
             var codigoFuncao = subcategoria.CategoriaNav?.FuncaoNav?.CODIGO ?? "??";
             var codigoCategoria = subcategoria.CategoriaNav?.CODIGO ?? "??";
             var numeroSubcategoria = subcategoria.SUBCATEGORIA;

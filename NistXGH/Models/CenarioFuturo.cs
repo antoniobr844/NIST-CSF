@@ -48,8 +48,5 @@ namespace NistXGH.Models
 
         [ForeignKey("SUBCATEGORIA")]
         public virtual Subcategorias SubcategoriaNav { get; set; }
-
-        
-
     }
 }

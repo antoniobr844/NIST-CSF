@@ -1,114 +1,176 @@
-// NistXGH.Tests/TestBase.cs
 using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
 
 namespace NistXGH.Tests
 {
-    public class TestBase
+    public abstract class TestBase : IDisposable
     {
+        private bool _disposed = false;
+        private List<SgsiDbContext> _contexts = new List<SgsiDbContext>();
+
         protected SgsiDbContext CreateMockDbContext()
         {
             var options = new DbContextOptionsBuilder<SgsiDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            return new SgsiDbContext(options);
+            var context = new SgsiDbContext(options);
+            _contexts.Add(context);
+            SeedTestData(context);
+            return context;
         }
 
         protected void SeedTestData(SgsiDbContext context)
         {
-            // Limpar dados existentes primeiro para evitar conflitos
-            context.Funcoes.RemoveRange(context.Funcoes);
-            context.Categorias.RemoveRange(context.Categorias);
-            context.Subcategorias.RemoveRange(context.Subcategorias);
-            context.PrioridadeTb.RemoveRange(context.PrioridadeTb);
-            context.StatusTb.RemoveRange(context.StatusTb);
-            context.SaveChanges();
+            try
+            {
+                // Garantir que o banco está criado
+                context.Database.EnsureCreated();
 
-            // Adicionar Funções
-            context.Funcoes.AddRange(
-                new Funcoes
+                // Limpar dados existentes
+                context.CenariosAtual.RemoveRange(context.CenariosAtual);
+                context.CenariosFuturo.RemoveRange(context.CenariosFuturo);
+                context.Funcoes.RemoveRange(context.Funcoes);
+                context.Categorias.RemoveRange(context.Categorias);
+                context.Subcategorias.RemoveRange(context.Subcategorias);
+                context.PrioridadeTb.RemoveRange(context.PrioridadeTb);
+                context.StatusTb.RemoveRange(context.StatusTb);
+                context.CenarioLog.RemoveRange(context.CenarioLog);
+
+                context.SaveChanges();
+
+                // Adicionar dados de teste
+                var funcoes = new[]
                 {
-                    ID = 1,
-                    CODIGO = "GV",
-                    NOME = "Governança",
-                },
-                new Funcoes
+                    new Funcoes
+                    {
+                        ID = 1,
+                        CODIGO = "GV",
+                        NOME = "Governança",
+                    },
+                    new Funcoes
+                    {
+                        ID = 2,
+                        CODIGO = "RS",
+                        NOME = "Resiliência",
+                    },
+                };
+                context.Funcoes.AddRange(funcoes);
+
+                var categorias = new[]
                 {
-                    ID = 2,
-                    CODIGO = "ID",
-                    NOME = "Identificar",
+                    new Categorias
+                    {
+                        ID = 1,
+                        CODIGO = "AC",
+                        NOME = "Avaliação",
+                        FUNCAO = 1,
+                    },
+                    new Categorias
+                    {
+                        ID = 2,
+                        CODIGO = "PR",
+                        NOME = "Proteção",
+                        FUNCAO = 1,
+                    },
+                    new Categorias
+                    {
+                        ID = 3,
+                        CODIGO = "DE",
+                        NOME = "Detecção",
+                        FUNCAO = 2,
+                    },
+                };
+                context.Categorias.AddRange(categorias);
+
+                var subcategorias = new[]
+                {
+                    new Subcategorias
+                    {
+                        ID = 1,
+                        CATEGORIA = 1,
+                        FUNCAO = 1,
+                        SUBCATEGORIA = 1,
+                        DESCRICAO = "Subcategoria AC-1",
+                    },
+                    new Subcategorias
+                    {
+                        ID = 2,
+                        CATEGORIA = 1,
+                        FUNCAO = 1,
+                        SUBCATEGORIA = 2,
+                        DESCRICAO = "Subcategoria AC-2",
+                    },
+                    new Subcategorias
+                    {
+                        ID = 3,
+                        CATEGORIA = 2,
+                        FUNCAO = 1,
+                        SUBCATEGORIA = 1,
+                        DESCRICAO = "Subcategoria PR-1",
+                    },
+                };
+                context.Subcategorias.AddRange(subcategorias);
+
+                var prioridades = new[]
+                {
+                    new PrioridadeTb { ID = 1, NIVEL = "ALTA" },
+                    new PrioridadeTb { ID = 2, NIVEL = "MEDIA" },
+                    new PrioridadeTb { ID = 3, NIVEL = "BAIXA" },
+                };
+                context.PrioridadeTb.AddRange(prioridades);
+
+                var status = new[]
+                {
+                    new StatusTb
+                    {
+                        ID = 1,
+                        NIVEL = "IMPLEMENTADO",
+                        STATUS = "Concluído",
+                    },
+                    new StatusTb
+                    {
+                        ID = 2,
+                        NIVEL = "EM ANDAMENTO",
+                        STATUS = "Em Progresso",
+                    },
+                    new StatusTb
+                    {
+                        ID = 3,
+                        NIVEL = "NAO INICIADO",
+                        STATUS = "Pendente",
+                    },
+                };
+                context.StatusTb.AddRange(status);
+
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro no seed: {ex.Message}");
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    foreach (var context in _contexts)
+                    {
+                        context?.Dispose();
+                    }
+                    _contexts.Clear();
                 }
-            );
-
-            // Adicionar Categorias
-            context.Categorias.AddRange(
-                new Categorias
-                {
-                    ID = 1,
-                    CODIGO = "AC",
-                    NOME = "Análise de Contexto",
-                    FUNCAO = 1,
-                },
-                new Categorias
-                {
-                    ID = 2,
-                    CODIGO = "RM",
-                    NOME = "Gerenciamento de Riscos",
-                    FUNCAO = 1,
-                }
-            );
-
-            // Adicionar Subcategorias - CORREÇÃO: SUBCATEGORIA é int, não string
-            context.Subcategorias.AddRange(
-                new Subcategorias
-                {
-                    ID = 1,
-                    SUBCATEGORIA = 1, // 🔥 CORREÇÃO: número inteiro, não string
-                    DESCRICAO = "Subcategoria 1",
-                    CATEGORIA = 1,
-                    FUNCAO = 1,
-                },
-                new Subcategorias
-                {
-                    ID = 2,
-                    SUBCATEGORIA = 2, // 🔥 CORREÇÃO: número inteiro, não string
-                    DESCRICAO = "Subcategoria 2",
-                    CATEGORIA = 1,
-                    FUNCAO = 1,
-                }
-            );
-
-            // Adicionar Prioridades
-            context.PrioridadeTb.AddRange(
-                new PrioridadeTb { ID = 1, NIVEL = "ALTA" },
-                new PrioridadeTb { ID = 2, NIVEL = "MEDIA" },
-                new PrioridadeTb { ID = 3, NIVEL = "BAIXA" }
-            );
-
-            // Adicionar Status
-            context.StatusTb.AddRange(
-                new StatusTb
-                {
-                    ID = 1,
-                    NIVEL = "IMPLEMENTADO",
-                    STATUS = "Concluído",
-                },
-                new StatusTb
-                {
-                    ID = 2,
-                    NIVEL = "EM_ANDAMENTO",
-                    STATUS = "Em Progresso",
-                },
-                new StatusTb
-                {
-                    ID = 3,
-                    NIVEL = "NAO_INICIADO",
-                    STATUS = "Não Iniciado",
-                }
-            );
-
-            context.SaveChanges();
+                _disposed = true;
+            }
         }
     }
 }
