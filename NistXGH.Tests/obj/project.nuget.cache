@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "dsVBcPLl/Fg=",
+  "dgSpecHash": "disixfNG3y0=",
   "success": true,
   "projectFilePath": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\NistXGH.Tests\\NistXGH.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anton\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\anton\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
+    "C:\\Users\\anton\\.nuget\\packages\\coverlet.msbuild\\6.0.4\\coverlet.msbuild.6.0.4.nupkg.sha512",
     "C:\\Users\\anton\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
     "C:\\Users\\anton\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.0\\microsoft.entityframeworkcore.9.0.0.nupkg.sha512",
     "C:\\Users\\anton\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.0\\microsoft.entityframeworkcore.abstractions.9.0.0.nupkg.sha512",

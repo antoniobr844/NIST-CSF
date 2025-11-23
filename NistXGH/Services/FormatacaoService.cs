@@ -10,9 +10,7 @@ namespace NistXGH.Services
         private readonly SgsiDbContext _context;
         private readonly ILogger<FormatacaoService> _logger;
 
-        public FormatacaoService(
-            SgsiDbContext context,
-            ILogger<FormatacaoService> logger)
+        public FormatacaoService(SgsiDbContext context, ILogger<FormatacaoService> logger)
         {
             _context = context;
             _logger = logger;
@@ -27,29 +25,34 @@ namespace NistXGH.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao formatar subcategoria {SubcategoriaId}", subcategoriaId);
+                _logger.LogError(
+                    ex,
+                    "Erro ao formatar subcategoria {SubcategoriaId}",
+                    subcategoriaId
+                );
                 return $"ERRO:{subcategoriaId}";
             }
         }
 
-        public async Task<Dictionary<int, string>> FormatSubcategorias(IEnumerable<int> subcategoriaIds)
+        public async Task<Dictionary<int, string>> FormatSubcategorias(
+            IEnumerable<int> subcategoriaIds
+        )
         {
             try
             {
                 var idsDistintos = subcategoriaIds.Distinct().ToList();
 
-                var subcategorias = await _context.Subcategorias
-                    .Include(s => s.CategoriaNav)
-                        .ThenInclude(c => c.FuncaoNav) // ✅ CORREÇÃO: Acessa função através da categoria
+                var subcategorias = await _context
+                    .Subcategorias.Include(s => s.CategoriaNav)
+                    .ThenInclude(c => c.FuncaoNav) // ✅ CORREÇÃO: Acessa função através da categoria
                     .Where(s => idsDistintos.Contains(s.ID))
                     .AsNoTracking()
                     .ToListAsync();
 
-                var resultado = subcategorias
-                    .ToDictionary(
-                        s => s.ID,
-                        s => FormatSubcategoriaInterno(s)
-                    );
+                var resultado = subcategorias.ToDictionary(
+                    s => s.ID,
+                    s => FormatSubcategoriaInterno(s)
+                );
 
                 // Preencher com erro para IDs não encontrados
                 foreach (var id in idsDistintos)
@@ -64,7 +67,11 @@ namespace NistXGH.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao formatar subcategorias {SubcategoriaIds}", subcategoriaIds);
+                _logger.LogError(
+                    ex,
+                    "Erro ao formatar subcategorias {SubcategoriaIds}",
+                    subcategoriaIds
+                );
                 return subcategoriaIds.ToDictionary(id => id, id => $"ERRO:{id}");
             }
         }
@@ -82,34 +89,36 @@ namespace NistXGH.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter subcategoria completa {SubcategoriaId}", subcategoriaId);
+                _logger.LogError(
+                    ex,
+                    "Erro ao obter subcategoria completa {SubcategoriaId}",
+                    subcategoriaId
+                );
                 return new FormatacaoDto
                 {
                     Id = subcategoriaId,
                     CodigoFormatado = $"ERRO:{subcategoriaId}",
-                    Descricao = "Erro ao carregar subcategoria"
+                    Descricao = "Erro ao carregar subcategoria",
                 };
             }
         }
 
-        public async Task<Dictionary<int, FormatacaoDto>> GetSubcategoriasFormatadasCompletas(IEnumerable<int> subcategoriaIds)
+        public async Task<Dictionary<int, FormatacaoDto>> GetSubcategoriasFormatadasCompletas(
+            IEnumerable<int> subcategoriaIds
+        )
         {
             try
             {
                 var idsDistintos = subcategoriaIds.Distinct().ToList();
 
-                var subcategorias = await _context.Subcategorias
-                    .Include(s => s.CategoriaNav)
-                        .ThenInclude(c => c.FuncaoNav) // ✅ CORREÇÃO: Acessa função através da categoria
+                var subcategorias = await _context
+                    .Subcategorias.Include(s => s.CategoriaNav)
+                    .ThenInclude(c => c.FuncaoNav) // ✅ CORREÇÃO: Acessa função através da categoria
                     .Where(s => idsDistintos.Contains(s.ID))
                     .AsNoTracking()
                     .ToListAsync();
 
-                var resultado = subcategorias
-                    .ToDictionary(
-                        s => s.ID,
-                        s => MapearParaDto(s)
-                    );
+                var resultado = subcategorias.ToDictionary(s => s.ID, s => MapearParaDto(s));
 
                 // Preencher com DTO de erro para IDs não encontrados
                 foreach (var id in idsDistintos)
@@ -120,7 +129,7 @@ namespace NistXGH.Services
                         {
                             Id = id,
                             CodigoFormatado = $"NÃO_ENCONTRADO:{id}",
-                            Descricao = "Subcategoria não encontrada"
+                            Descricao = "Subcategoria não encontrada",
                         };
                     }
                 }
@@ -129,22 +138,29 @@ namespace NistXGH.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter subcategorias completas {SubcategoriaIds}", subcategoriaIds);
+                _logger.LogError(
+                    ex,
+                    "Erro ao obter subcategorias completas {SubcategoriaIds}",
+                    subcategoriaIds
+                );
 
-                return subcategoriaIds.ToDictionary(id => id, id => new FormatacaoDto
-                {
-                    Id = id,
-                    CodigoFormatado = $"ERRO:{id}",
-                    Descricao = "Erro ao carregar subcategoria"
-                });
+                return subcategoriaIds.ToDictionary(
+                    id => id,
+                    id => new FormatacaoDto
+                    {
+                        Id = id,
+                        CodigoFormatado = $"ERRO:{id}",
+                        Descricao = "Erro ao carregar subcategoria",
+                    }
+                );
             }
         }
 
         private async Task<Subcategorias> CarregarSubcategoriaComRelacionamentos(int subcategoriaId)
         {
-            return await _context.Subcategorias
-                .Include(s => s.CategoriaNav)
-                    .ThenInclude(c => c.FuncaoNav) // ✅ CORREÇÃO
+            return await _context
+                .Subcategorias.Include(s => s.CategoriaNav)
+                .ThenInclude(c => c.FuncaoNav) // ✅ CORREÇÃO
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.ID == subcategoriaId);
         }
@@ -179,7 +195,7 @@ namespace NistXGH.Services
                 CategoriaNome = categoria?.NOME,
                 NumeroSubcategoria = subcategoria.SUBCATEGORIA,
                 FuncaoId = funcao?.ID, // ✅ Agora vem da função através da categoria
-                CategoriaId = categoria?.ID
+                CategoriaId = categoria?.ID,
             };
         }
     }

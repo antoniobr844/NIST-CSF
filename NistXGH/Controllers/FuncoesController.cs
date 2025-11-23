@@ -19,13 +19,13 @@ public class FuncoesController : ControllerBase
     {
         try
         {
-            var funcoes = await _context.Funcoes
-                .OrderBy(f => f.CODIGO)
+            var funcoes = await _context
+                .Funcoes.OrderBy(f => f.CODIGO)
                 .Select(f => new FuncaoDto
                 {
                     Id = f.ID,
-                    Codigo = f.CODIGO,
-                    Nome = f.NOME 
+                    Codigo = f.CODIGO ?? string.Empty,
+                    Nome = f.NOME ?? string.Empty,
                 })
                 .ToListAsync();
 
@@ -40,16 +40,25 @@ public class FuncoesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<FuncaoDto>> GetFuncao(int id)
     {
-        var f = await _context.Funcoes.FirstOrDefaultAsync(x => x.ID == id);
-
-        if (f == null)
-            return NotFound();
-
-        return new FuncaoDto
+        try
         {
-            Id = f.ID,
-            Codigo = f.CODIGO,
-            Nome = f.NOME 
-        };
+            var f = await _context.Funcoes.FirstOrDefaultAsync(x => x.ID == id);
+
+            if (f == null)
+                return NotFound();
+
+            var funcaoDto = new FuncaoDto
+            {
+                Id = f.ID,
+                Codigo = f.CODIGO ?? string.Empty,
+                Nome = f.NOME ?? string.Empty,
+            };
+
+            return Ok(funcaoDto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno: {ex.Message}");
+        }
     }
 }

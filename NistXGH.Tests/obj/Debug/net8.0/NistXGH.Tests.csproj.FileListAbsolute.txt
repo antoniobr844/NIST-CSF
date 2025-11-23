@@ -136,6 +136,7 @@ C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\Nist
 C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\NistXGH.Tests.AssemblyInfoInputs.cache
 C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\NistXGH.Tests.AssemblyInfo.cs
 C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\NistXGH.Tests.csproj.CoreCompileInputs.cache
+C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\NistXGH.Tests.sourcelink.json
 C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\NistXGH..C0CB465D.Up2Date
 C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\NistXGH.Tests.dll
 C:\Users\anton\Documents\Nova pasta\NIST-CSF\NistXGH.Tests\obj\Debug\net8.0\refint\NistXGH.Tests.dll

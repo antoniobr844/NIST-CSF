@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+// NistXGH.Tests/TestBase.cs
 using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
 
 namespace NistXGH.Tests
 {
-    public abstract class TestBase : IDisposable
+    public class TestBase
     {
         protected SgsiDbContext CreateMockDbContext()
         {
             var options = new DbContextOptionsBuilder<SgsiDbContext>()
-                .UseInMemoryDatabase(databaseName: $"TestDb_{Guid.NewGuid()}")
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             return new SgsiDbContext(options);
@@ -19,111 +17,98 @@ namespace NistXGH.Tests
 
         protected void SeedTestData(SgsiDbContext context)
         {
-            // Adicionar dados básicos para teste - CORRIGIDO com base nos Models reais
-            if (!context.Funcoes.Any())
-            {
-                context.Funcoes.AddRange(
-                    new Funcoes
-                    {
-                        ID = 1,
-                        CODIGO = "GV",
-                        NOME = "Governança",
-                        DESCRICAO = "Função de Governança",
-                    },
-                    new Funcoes
-                    {
-                        ID = 2,
-                        CODIGO = "ID",
-                        NOME = "Identificar",
-                        DESCRICAO = "Função de Identificação",
-                    }
-                );
-            }
+            // Limpar dados existentes primeiro para evitar conflitos
+            context.Funcoes.RemoveRange(context.Funcoes);
+            context.Categorias.RemoveRange(context.Categorias);
+            context.Subcategorias.RemoveRange(context.Subcategorias);
+            context.PrioridadeTb.RemoveRange(context.PrioridadeTb);
+            context.StatusTb.RemoveRange(context.StatusTb);
+            context.SaveChanges();
 
-            if (!context.Categorias.Any())
-            {
-                context.Categorias.AddRange(
-                    new Categorias
-                    {
-                        ID = 1,
-                        FUNCAO = 1,
-                        CODIGO = "GV.AC",
-                        NOME = "Controle de Acesso",
-                        DESCRICAO = "Categoria de Controle de Acesso",
-                    },
-                    new Categorias
-                    {
-                        ID = 2,
-                        FUNCAO = 1,
-                        CODIGO = "GV.AT",
-                        NOME = "Ameaças",
-                        DESCRICAO = "Categoria de Ameaças",
-                    }
-                );
-            }
+            // Adicionar Funções
+            context.Funcoes.AddRange(
+                new Funcoes
+                {
+                    ID = 1,
+                    CODIGO = "GV",
+                    NOME = "Governança",
+                },
+                new Funcoes
+                {
+                    ID = 2,
+                    CODIGO = "ID",
+                    NOME = "Identificar",
+                }
+            );
 
-            if (!context.Subcategorias.Any())
-            {
-                context.Subcategorias.AddRange(
-                    // CORREÇÃO: Baseado no Model real - SUBCATEGORIA é int?
-                    new Subcategorias
-                    {
-                        ID = 1,
-                        CATEGORIA = 1,
-                        FUNCAO = 1,
-                        SUBCATEGORIA = 1,
-                        DESCRICAO = "Identificar usuários",
-                    },
-                    new Subcategorias
-                    {
-                        ID = 2,
-                        CATEGORIA = 1,
-                        FUNCAO = 1,
-                        SUBCATEGORIA = 2,
-                        DESCRICAO = "Autenticar usuários",
-                    }
-                );
-            }
+            // Adicionar Categorias
+            context.Categorias.AddRange(
+                new Categorias
+                {
+                    ID = 1,
+                    CODIGO = "AC",
+                    NOME = "Análise de Contexto",
+                    FUNCAO = 1,
+                },
+                new Categorias
+                {
+                    ID = 2,
+                    CODIGO = "RM",
+                    NOME = "Gerenciamento de Riscos",
+                    FUNCAO = 1,
+                }
+            );
 
-            if (!context.PrioridadeTb.Any())
-            {
-                context.PrioridadeTb.AddRange(
-                    new PrioridadeTb { ID = 1, NIVEL = "1" },
-                    new PrioridadeTb { ID = 2, NIVEL = "2" },
-                    new PrioridadeTb { ID = 3, NIVEL = "3" }
-                );
-            }
+            // Adicionar Subcategorias - CORREÇÃO: SUBCATEGORIA é int, não string
+            context.Subcategorias.AddRange(
+                new Subcategorias
+                {
+                    ID = 1,
+                    SUBCATEGORIA = 1, // 🔥 CORREÇÃO: número inteiro, não string
+                    DESCRICAO = "Subcategoria 1",
+                    CATEGORIA = 1,
+                    FUNCAO = 1,
+                },
+                new Subcategorias
+                {
+                    ID = 2,
+                    SUBCATEGORIA = 2, // 🔥 CORREÇÃO: número inteiro, não string
+                    DESCRICAO = "Subcategoria 2",
+                    CATEGORIA = 1,
+                    FUNCAO = 1,
+                }
+            );
 
-            if (!context.StatusTb.Any())
-            {
-                context.StatusTb.AddRange(
-                    new StatusTb
-                    {
-                        ID = 1,
-                        NIVEL = "Implementado",
-                        STATUS = "Ativo",
-                    },
-                    new StatusTb
-                    {
-                        ID = 2,
-                        NIVEL = "Parcial",
-                        STATUS = "Ativo",
-                    },
-                    new StatusTb
-                    {
-                        ID = 3,
-                        NIVEL = "Não Implementado",
-                        STATUS = "Ativo",
-                    }
-                );
-            }
+            // Adicionar Prioridades
+            context.PrioridadeTb.AddRange(
+                new PrioridadeTb { ID = 1, NIVEL = "ALTA" },
+                new PrioridadeTb { ID = 2, NIVEL = "MEDIA" },
+                new PrioridadeTb { ID = 3, NIVEL = "BAIXA" }
+            );
+
+            // Adicionar Status
+            context.StatusTb.AddRange(
+                new StatusTb
+                {
+                    ID = 1,
+                    NIVEL = "IMPLEMENTADO",
+                    STATUS = "Concluído",
+                },
+                new StatusTb
+                {
+                    ID = 2,
+                    NIVEL = "EM_ANDAMENTO",
+                    STATUS = "Em Progresso",
+                },
+                new StatusTb
+                {
+                    ID = 3,
+                    NIVEL = "NAO_INICIADO",
+                    STATUS = "Não Iniciado",
+                }
+            );
 
             context.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            // Limpar recursos se necessário
         }
     }
 }

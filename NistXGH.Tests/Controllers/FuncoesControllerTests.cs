@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NistXGH.Controllers;
-using NistXGH.Models;
 using NistXGH.Models.Dto;
 using Xunit;
 
@@ -29,13 +27,26 @@ namespace NistXGH.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<List<FuncaoDto>>(okResult.Value);
-            Assert.Equal(2, returnValue.Count);
+            var funcoes = Assert.IsType<List<FuncaoDto>>(okResult.Value);
+            Assert.Equal(2, funcoes.Count);
+        }
 
-            // Verifica se os dados estão corretos
-            var primeiraFuncao = returnValue.First();
-            Assert.Equal("GV", primeiraFuncao.Codigo);
-            Assert.Equal("Governança", primeiraFuncao.Nome);
+        [Fact]
+        public async Task GetFuncao_ReturnsValidResult_WhenIdExists()
+        {
+            // Act
+            var result = await _controller.GetFuncao(1);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<FuncaoDto>>(result);
+
+            // Para ActionResult<T>, o Result contém o OkObjectResult
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var funcao = Assert.IsType<FuncaoDto>(okResult.Value);
+
+            Assert.NotNull(funcao);
+            Assert.Equal(1, funcao.Id);
+            Assert.Equal("GV", funcao.Codigo);
         }
 
         [Fact]
@@ -45,37 +56,8 @@ namespace NistXGH.Tests.Controllers
             var result = await _controller.GetFuncao(999);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result.Result);
-        }
-
-        [Fact]
-        public async Task GetFuncao_ReturnsValidResult_WhenIdExists()
-        {
-            // Act
-            var result = await _controller.GetFuncao(1);
-
-            // Assert - Versão defensiva que funciona em qualquer cenário
-            Assert.NotNull(result);
-
-            // Verifica se retornou algum resultado válido
-            if (result.Result is OkObjectResult okResult)
-            {
-                var funcao = okResult.Value as FuncaoDto;
-                Assert.NotNull(funcao);
-                Assert.Equal("GV", funcao.Codigo);
-            }
-            else if (result.Value is FuncaoDto funcaoDirect)
-            {
-                Assert.Equal("GV", funcaoDirect.Codigo);
-            }
-            else
-            {
-                // Se nenhum dos formatos esperados, pelo menos não é nulo
-                Assert.True(
-                    result.Result != null || result.Value != null,
-                    "O resultado deve conter dados válidos"
-                );
-            }
+            var actionResult = Assert.IsType<ActionResult<FuncaoDto>>(result);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
     }
 }

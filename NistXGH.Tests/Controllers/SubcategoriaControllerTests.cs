@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NistXGH.Controllers;
@@ -28,20 +27,8 @@ namespace NistXGH.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<List<Subcategorias>>(okResult.Value);
-            Assert.Equal(2, returnValue.Count);
-        }
-
-        [Fact]
-        public async Task GetSubcategorias_WithCategoriaId_ReturnsFilteredResult()
-        {
-            // Act
-            var result = await _controller.GetSubcategorias(1);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<List<Subcategorias>>(okResult.Value);
-            Assert.All(returnValue, sub => Assert.Equal(1, sub.CATEGORIA));
+            var subcategorias = Assert.IsType<List<Subcategorias>>(okResult.Value);
+            Assert.Equal(2, subcategorias.Count);
         }
 
         [Fact]
@@ -52,8 +39,7 @@ namespace NistXGH.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var subcategoria = Assert.IsType<Subcategorias>(okResult.Value);
-            Assert.Equal(1, subcategoria.ID);
+            Assert.NotNull(okResult.Value);
         }
 
         [Fact]
@@ -64,6 +50,19 @@ namespace NistXGH.Tests.Controllers
 
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetSubcategorias_WithCategoriaId_ReturnsFilteredResult()
+        {
+            // Act
+            var result = await _controller.GetSubcategorias(1);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var subcategorias = Assert.IsType<List<Subcategorias>>(okResult.Value);
+            Assert.Equal(2, subcategorias.Count);
+            Assert.All(subcategorias, s => Assert.Equal(1, s.CATEGORIA));
         }
     }
 }

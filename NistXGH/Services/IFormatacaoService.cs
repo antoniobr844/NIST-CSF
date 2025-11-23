@@ -8,6 +8,8 @@ namespace NistXGH.Services
         Task<string> FormatSubcategoria(int subcategoriaId);
         Task<Dictionary<int, string>> FormatSubcategorias(IEnumerable<int> subcategoriaIds);
         Task<FormatacaoDto> GetSubcategoriaFormatadaCompleta(int subcategoriaId);
-        Task<Dictionary<int, FormatacaoDto>> GetSubcategoriasFormatadasCompletas(IEnumerable<int> subcategoriaIds);
+        Task<Dictionary<int, FormatacaoDto>> GetSubcategoriasFormatadasCompletas(
+            IEnumerable<int> subcategoriaIds
+        );
     }
 }

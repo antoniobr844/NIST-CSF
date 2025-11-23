@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NistXGH.Controllers;
@@ -28,8 +27,8 @@ namespace NistXGH.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<List<Categorias>>(okResult.Value);
-            Assert.Equal(2, returnValue.Count);
+            var categorias = Assert.IsType<List<Categorias>>(okResult.Value);
+            Assert.Equal(2, categorias.Count);
         }
 
         [Fact]
@@ -40,8 +39,9 @@ namespace NistXGH.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<List<Categorias>>(okResult.Value);
-            Assert.All(returnValue, cat => Assert.Equal(1, cat.FUNCAO));
+            var categorias = Assert.IsType<List<Categorias>>(okResult.Value);
+            Assert.Equal(2, categorias.Count);
+            Assert.All(categorias, c => Assert.Equal(1, c.FUNCAO));
         }
     }
 }
