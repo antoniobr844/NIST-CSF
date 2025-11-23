@@ -1,33 +1,79 @@
 ﻿using Xunit;
-using Oracle.ManagedDataAccess.Client;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.EntityFrameworkCore;
+using NistXGH.Models;
 
 namespace NistXGH.Tests.Integration
 {
-    public class OracleConnectionTests
+    public class OracleDatabaseIntegrationTests : IAsyncLifetime
     {
-        private readonly string _connectionString;
+        private readonly SgsiDbContext _context;
+        private bool _databaseAvailable;
 
-        public OracleConnectionTests()
+        public OracleDatabaseIntegrationTests()
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
                 .Build();
 
-            _connectionString = config.GetConnectionString("SgsiDbContext");
+            var connectionString = config.GetConnectionString("SgsiDbContext");
+
+            var options = new DbContextOptionsBuilder<SgsiDbContext>()
+                .UseOracle(connectionString)
+                .Options;
+
+            _context = new SgsiDbContext(options);
+        }
+
+        public async Task InitializeAsync()
+        {
+            try
+            {
+                _databaseAvailable = await _context.Database.CanConnectAsync();
+            }
+            catch
+            {
+                _databaseAvailable = false;
+            }
+        }
+
+        public Task DisposeAsync()
+        {
+            _context?.Dispose();
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void DeveConectarAoBancoOracleComSucesso()
+        public void DatabaseConnection_ShouldBeSuccessful()
         {
-            using var connection = new OracleConnection(_connectionString);
+            Assert.True(_databaseAvailable, "Não foi possível conectar ao banco de dados Oracle");
+        }
 
-            connection.Open();
+        [Fact]
+        public async Task Should_QueryBasicData_FromDatabase()
+        {
+            if (!_databaseAvailable)
+                return; // Sai sem falhar
 
-            Assert.Equal(System.Data.ConnectionState.Open, connection.State);
+            var funcoes = await _context.Funcoes.Take(5).ToListAsync();
 
-            connection.Close();
+            Assert.NotNull(funcoes);
+        }
+
+
+        [Fact]
+        public async Task Should_ExecuteStoredProcedure_IfExists()
+        {
+            if (!_databaseAvailable)
+                return;
+
+            var result = await _context.PrioridadeTb
+                .FromSqlRaw("SELECT * FROM PRIORIDADE_TB WHERE ROWNUM <= 3")
+                .ToListAsync();
+
+            Assert.NotNull(result);
+            Assert.True(result.Count <= 3);
         }
     }
 }

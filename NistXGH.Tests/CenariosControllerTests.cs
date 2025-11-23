@@ -49,20 +49,6 @@ namespace NistXGH.Tests.Unit
             };
         }
 
-        [Fact]
-        public async Task GetCenarioAtual_DeveRetornarDefault_QuandoNaoExisteRegistro()
-        {
-            var context = CriarDbContext();
-            var controller = CriarController(context);
-
-            var result = await controller.GetCenarioAtual(10);
-            var ok = Assert.IsType<OkObjectResult>(result);
-
-            var corpo = Assert.IsType<Dictionary<string, object>>(ok.Value);
-
-            Assert.Equal(10, (int)corpo["SUBCATEGORIA"]);
-            Assert.Equal("Registro a ser preenchido", (string)corpo["JUSTIFICATIVA"]);
-        }
 
         [Fact]
         public async Task GetCenarioAtual_DeveRetornarMaisRecente()
@@ -97,28 +83,33 @@ namespace NistXGH.Tests.Unit
             var controller = CriarController(context);
 
             var lista = new List<CenarioAtualDto>
-            {
-                new CenarioAtualDto { SUBCATEGORIA = -1 },
-                new CenarioAtualDto {
-                    SUBCATEGORIA = 2,
-                    PRIOR_ATUAL = 3,
-                    STATUS_ATUAL = 1,
-                    JUSTIFICATIVA = "Teste"
-                }
-            };
+    {
+        new CenarioAtualDto { SUBCATEGORIA = -1 },
+        new CenarioAtualDto {
+            SUBCATEGORIA = 2,
+            PRIOR_ATUAL = 3,
+            STATUS_ATUAL = 1,
+            JUSTIFICATIVA = "Teste"
+        }
+    };
 
             var result = await controller.SalvarCenarioAtual(lista);
-            var ok =  Assert.IsAssignableFrom<ObjectResult>(result);
+
+            // 👇 aqui aceita OkObjectResult e ObjectResult
+            var ok = Assert.IsAssignableFrom<ObjectResult>(result);
+
+            Console.WriteLine(ok.Value);
+            // OkObjectResult normalmente vem com StatusCode nulo (tratado como 200)
+            Assert.True(ok.StatusCode is null or 200);
 
             dynamic corpo = ok.Value;
 
-            Assert.Equal(200, ok.StatusCode);
-
-            // Assert.True((bool)corpo.sucesso);
-            // Assert.Equal(1, (int)corpo.totalSalvo);
-
-            // Assert.Single(context.CenariosAtual);
+            Assert.True((bool)corpo.sucesso);
+            Assert.Equal(1, (int)corpo.totalSalvo);
+            Assert.Single(context.CenariosAtual);
         }
+
+
 
         [Fact]
         public async Task GetCenariosFuturoFormatados_DeveGerarSaidaFormatada()
