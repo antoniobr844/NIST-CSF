@@ -1,72 +1,71 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@{
+    ViewData["Title"] = "NIST CSF - Consulta de Categorias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIST CSF - Consulta de Categorias</title>
-    <link rel="stylesheet" href="/css/pages/consultas.css">
-</head>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/consultas.css" asp-append-version="true" />
+}
 
-<body>
-    <div class="container">
-        <h1>NIST CSF - Consultas</h1>
+<div class="container">
+    <h1>NIST CSF - Consultas</h1>
 
-        <div class="summary-cards">
-            <div class="summary-card">
-                <h3>Total de Funções</h3>
-                <div class="summary-value" id="totalFuncoes">6</div>
-            </div>
-            <div class="summary-card">
-                <h3>Categorias Disponíveis</h3>
-                <div class="summary-value" id="totalCategorias">-</div>
-            </div>
-            <div class="summary-card">
-                <h3>Subcategorias</h3>
-                <div class="summary-value" id="totalSubcategorias">-</div>
-            </div>
+    <div class="summary-cards">
+        <div class="summary-card">
+            <h3>Total de Funções</h3>
+            <div class="summary-value" id="totalFuncoes">6</div>
         </div>
-
-        <div class="breadcrumb">
-            <div class="active">Função</div>
-            <div>Categoria</div>
-            <div>Subcategorias</div>
-            <div>Informações</div>
+        <div class="summary-card">
+            <h3>Categorias Disponíveis</h3>
+            <div class="summary-value" id="totalCategorias">-</div>
         </div>
-
-        <div class="combo-container">
-            <label for="opcoesPrincipais">Selecione uma função:</label>
-            <select id="opcoesPrincipais" disabled>
-                <option value="">Carregando funções...</option>
-            </select>
-        </div>
-
-        <div id="subOpcoesContainer" class="hidden">
-            <div class="combo-container">
-                <label for="subOpcoes">Selecione uma categoria:</label>
-                <select id="subOpcoes" disabled>
-                    <option value="">Selecione uma categoria</option>
-                </select>
-            </div>
-        </div>
-
-        <div id="subCatContainer" class="hidden">
-            <div class="combo-container">
-                <label for="subCatOpcoes">Selecione uma Subcategoria:</label>
-                <select id="subCatOpcoes" disabled>
-                    <option value="">Selecione uma Subcategoria</option>
-                </select>
-            </div>
-        </div>
-
-        <div id="infoContainer" class="hidden">
-            <div class="combo-container info-highlight">
-                <h3>📋 Informações da Subcategoria</h3>
-                <textarea id="infoTextarea" readonly></textarea>
-            </div>
+        <div class="summary-card">
+            <h3>Subcategorias</h3>
+            <div class="summary-value" id="totalSubcategorias">-</div>
         </div>
     </div>
 
+    <div class="breadcrumb">
+        <div class="active">Função</div>
+        <div>Categoria</div>
+        <div>Subcategorias</div>
+        <div>Informações</div>
+    </div>
+
+    <div class="combo-container">
+        <label for="opcoesPrincipais">Selecione uma função:</label>
+        <select id="opcoesPrincipais" disabled>
+            <option value="">Carregando funções...</option>
+        </select>
+    </div>
+
+    <div id="subOpcoesContainer" class="hidden">
+        <div class="combo-container">
+            <label for="subOpcoes">Selecione uma categoria:</label>
+            <select id="subOpcoes" disabled>
+                <option value="">Selecione uma categoria</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="subCatContainer" class="hidden">
+        <div class="combo-container">
+            <label for="subCatOpcoes">Selecione uma Subcategoria:</label>
+            <select id="subCatOpcoes" disabled>
+                <option value="">Selecione uma Subcategoria</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="infoContainer" class="hidden">
+        <div class="combo-container info-highlight">
+            <h3>📋 Informações da Subcategoria</h3>
+            <textarea id="infoTextarea" readonly></textarea>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
     <script type="module">
         import { NistDataLoader } from '/js/modules/nistDataLoader.js';
         import { BreadcrumbManager } from '/js/modules/breadcrumbManager.js';
@@ -284,6 +283,4 @@
             new ConsultasPage();
         });
     </script>
-</body>
-
-</html>
+}

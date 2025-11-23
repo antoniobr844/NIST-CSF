@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\css\\pages\\consultas.css"
     },
     {
+      "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\css\\pages\\edicao-cenario.css",
+      "PackagePath": "staticwebassets\\css\\pages\\edicao-cenario.css"
+    },
+    {
       "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\css\\pages\\home.css",
       "PackagePath": "staticwebassets\\css\\pages\\home.css"
     },
@@ -81,6 +85,10 @@
       "PackagePath": "staticwebassets\\js\\core\\nist-core.js"
     },
     {
+      "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\js\\edicao-cenario.js",
+      "PackagePath": "staticwebassets\\js\\edicao-cenario.js"
+    },
+    {
       "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\js\\modules\\apiService.js",
       "PackagePath": "staticwebassets\\js\\modules\\apiService.js"
     },
@@ -115,6 +123,10 @@
     {
       "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\js\\modules\\selectionManager.js",
       "PackagePath": "staticwebassets\\js\\modules\\selectionManager.js"
+    },
+    {
+      "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\js\\relatorios.js",
+      "PackagePath": "staticwebassets\\js\\relatorios.js"
     },
     {
       "Id": "C:\\Users\\anton\\Documents\\Nova pasta\\NIST-CSF\\wwwroot\\js\\site.js",

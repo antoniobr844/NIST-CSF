@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@{
+    ViewData["Title"] = "NIST CSF - Alterações - Detectar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIST CSF - Alterações - Detectar</title>
-    <link rel="stylesheet" href="/css/pages/alteracoes.css">
-</head>
+@section Styles {
+    <link rel="stylesheet" href="/css/pages/alteracoes.css" asp-append-version="true" />
+}
 
-<body>
     <div class="container">
         <h1>NIST CSF - Alterações - Detectar</h1>
 
@@ -103,6 +101,3 @@
             }
         });
     </script>
-</body>
-
-</html>

@@ -1,108 +1,102 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@{
+    ViewData["Title"] = "NIST CSF - Alterações - Recuperar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIST CSF - Alterações - Recuperar</title>
-    <link rel="stylesheet" href="/css/pages/alteracoes.css">
-</head>
+@section Styles {
+    <link rel="stylesheet" href="/css/pages/alteracoes.css" asp-append-version="true" />
+}
+<div class="container">
+    <h1>NIST CSF - Alterações - Recuperar</h1>
 
-<body>
-    <div class="container">
-        <h1>NIST CSF - Alterações - Recuperar</h1>
+    <div class="selection-info" id="selectionInfo">
+        <h2>Carregando seleção...</h2>
+    </div>
 
-        <div class="selection-info" id="selectionInfo">
-            <h2>Carregando seleção...</h2>
-        </div>
-
-        <div class="scenario-container">
-            <!-- Cenário Futuro (AGORA somente leitura) -->
-            <div class="scenario-section future-scenario">
-                <div class="scenario-header">
-                    CENÁRIO FUTURO (Dados do Banco - Somente Leitura)
-                </div>
-                <div class="scenario-content">
-                    <div id="futureScenarioContainer">
-                        <div class="loading">Carregando cenário futuro...</div>
-                    </div>
-                </div>
+    <div class="scenario-container">
+        <!-- Cenário Futuro (AGORA somente leitura) -->
+        <div class="scenario-section future-scenario">
+            <div class="scenario-header">
+                CENÁRIO FUTURO (Dados do Banco - Somente Leitura)
             </div>
-
-            <!-- Cenário Atual (AGORA editável) -->
-            <div class="scenario-section current-scenario">
-                <div class="scenario-header">
-                    CENÁRIO ATUAL (Editável)
-                </div>
-                <div class="scenario-content">
-                    <div id="currentScenarioContainer">
-                        <div class="loading">Carregando cenário atual...</div>
-                    </div>
+            <div class="scenario-content">
+                <div id="futureScenarioContainer">
+                    <div class="loading">Carregando cenário futuro...</div>
                 </div>
             </div>
         </div>
 
-        <div class="navigation">
-             <button class="btn-voltar" onclick="app.voltarParaAnterior()">← Voltar para Seleção</button>
-            <button class="btn-salvar" onclick="app.salvarAlteracoes()">Salvar Alterações</button>
-            <button class="btn-avancar" onclick="app.avancarParaProxima()">Avançar para Próxima Função</button>
+        <!-- Cenário Atual (AGORA editável) -->
+        <div class="scenario-section current-scenario">
+            <div class="scenario-header">
+                CENÁRIO ATUAL (Editável)
+            </div>
+            <div class="scenario-content">
+                <div id="currentScenarioContainer">
+                    <div class="loading">Carregando cenário atual...</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Carrega o js externo -->
-    <script src="/js/core/nist-core.js"></script>
+    <div class="navigation">
+        <button class="btn-voltar" onclick="app.voltarParaAnterior()">← Voltar para Seleção</button>
+        <button class="btn-salvar" onclick="app.salvarAlteracoes()">Salvar Alterações</button>
+        <button class="btn-avancar" onclick="app.avancarParaProxima()">Avançar para Próxima Função</button>
+    </div>
+</div>
 
-    <script>
-        // Variável global para acesso
-        let app;
+<!-- Carrega o js externo -->
+<script src="/js/core/nist-core.js"></script>
 
-        document.addEventListener('DOMContentLoaded', async function () {
-            try {
-                console.log('=== INICIANDO CARREGAMENTO ===');
+<script>
+    // Variável global para acesso
+    let app;
 
-                // 1. Cria a instância do NISTCore
-                app = new NISTCore({
-                    funcaoAtual: 'recuperar',
-                    modo: 'atual'
-                });
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            console.log('=== INICIANDO CARREGAMENTO ===');
 
-                // 2. Torna global para os botões
-                window.app = app;
+            // 1. Cria a instância do NISTCore
+            app = new NISTCore({
+                funcaoAtual: 'recuperar',
+                modo: 'atual'
+            });
 
-                // 3. Carregar seleções primeiro
-                const selecoesCarregadas = await app.carregarSelecoes();
-                if (!selecoesCarregadas) {
-                    console.log('Função não selecionada, parando carregamento');
-                    return;
-                }
+            // 2. Torna global para os botões
+            window.app = app;
 
-                // 4. Carregar catálogos
-                await app.carregarPrioridades();
-                await app.carregarNiveis();
+            // 3. Carregar seleções primeiro
+            const selecoesCarregadas = await app.carregarSelecoes();
+            if (!selecoesCarregadas) {
+                console.log('Função não selecionada, parando carregamento');
+                return;
+            }
 
-                // 5. Carregar dados detalhados e cenários
-                await app.carregarInformacoesDetalhadas();
-                await app.carregarDadosCenarios();
+            // 4. Carregar catálogos
+            await app.carregarPrioridades();
+            await app.carregarNiveis();
 
-                // 6. Exibir os dados na página
-                await app.exibirCenarios();
+            // 5. Carregar dados detalhados e cenários
+            await app.carregarInformacoesDetalhadas();
+            await app.carregarDadosCenarios();
 
-                console.log('=== CARREGAMENTO CONCLUÍDO ===');
-                console.log('Cache final:', app.cache);
+            // 6. Exibir os dados na página
+            await app.exibirCenarios();
 
-            } catch (error) {
-                console.error('Erro crítico:', error);
-                if (app) {
-                    app.safeUpdateElement('selectionInfo', `
+            console.log('=== CARREGAMENTO CONCLUÍDO ===');
+            console.log('Cache final:', app.cache);
+
+        } catch (error) {
+            console.error('Erro crítico:', error);
+            if (app) {
+                app.safeUpdateElement('selectionInfo', `
                 <div class="error-message">
                     <h2>Erro ao carregar a página</h2>
                     <p>${error.message}</p>
                 </div>
             `);
-                }
             }
-        });
-    </script>
-</body>
-
-</html>
+        }
+    });
+</script>
