@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIST CSF - Seleção de Subcategorias para Cenário Futuro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #2c3e50;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+      text-align: center;
+    }
+
+    .summary-card h3 {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .summary-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .funcao-container {
+      margin-bottom: 30px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      border-left: 4px solid #3498db;
+    }
+
+    .funcao-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e9ecef;
+    }
+
+    .funcao-title {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .funcao-count {
+      background: #3498db;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+
+    .categoria-container {
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .categoria-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .categoria-title {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .categoria-count {
+      background: #27ae60;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 15px;
+      font-size: 0.8em;
+    }
+
+    .subcategorias-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .subcategoria-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .subcategoria-item:hover {
+      border-color: #3498db;
+      background: #e8f4fc;
+    }
+
+    .subcategoria-item.selected {
+      border-color: #27ae60;
+      background-color: #e8f5e9;
+    }
+
+    .subcategoria-checkbox {
+      margin-right: 12px;
+      transform: scale(1.3);
+      accent-color: #27ae60;
+      cursor: pointer;
+      flex: 5%;
+    }
+
+    .subcategoria-info {
+      display: flex;
+      flex-direction: column;
+      flex: 95%;
+      flex: 95%;
+    }
+
+    .subcategoria-codigo {
+      font-weight: bold;
+      color: #2c3e50;
+      font-size: 1em;
+      margin-bottom: 4px;
+    }
+
+    .subcategoria-descricao {
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+
+    .subcategoria-detalhes {
+      display: flex;
+      gap: 15px;
+      margin-top: 8px;
+      font-size: 0.85em;
+      color: #666;
+    }
+
+    .detalhe-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .detalhe-label {
+      font-weight: 500;
+    }
+
+    .global-selected-count {
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      border-left: 4px solid #27ae60;
+      font-weight: bold;
+    }
+
+    .navigation {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn-excluir {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .btn-excluir:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+    }
+
+    .btn-avancar {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+    }
+
+    .btn-avancar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+    }
+
+    .btn-avancar:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-style: italic;
+    }
+
+    .error {
+      background: #ffe6e6;
+      color: #e74c3c;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #7f8c8d;
+    }
+
+    .empty-state h3 {
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .maturity-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: bold;
+      color: #7f8c8d;
+    }
+
+    .level-1 {
+      background-color: #e74c3c;
+    }
+
+    .level-2 {
+      background-color: #e67e22;
+    }
+
+    .level-3 {
+      background-color: #f1c40f;
+      color: #333;
+    }
+
+    .level-4 {
+      background-color: #2ecc71;
+    }
+
+    .level-5 {
+      background-color: #3498db;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>NIST CSF - Seleção de Subcategorias para Cenário Futuro</h1>
+
+    <div class="summary-cards">
+      <div class="summary-card">
+        <h3>Total de Subcategorias Selecionadas</h3>
+        <div class="summary-value" id="totalSubcategorias">0</div>
+      </div>
+      <div class="summary-card">
+        <h3>Funções com Seleções</h3>
+        <div class="summary-value" id="totalFuncoes">0</div>
+      </div>
+      <div class="summary-card">
+        <h3>Categorias com Seleções</h3>
+        <div class="summary-value" id="totalCategorias">0</div>
+      </div>
+    </div>
+
+    <div id="conteudo">
+      <div class="loading">Carregando subcategorias do Cenário Futuro...</div>
+    </div>
+
+    <div class="navigation">
+      <div class="button-group">
+        <button class="btn-excluir" onclick="desmarcarTudo()">
+          Limpar Todas as Seleções
+        </button>
+
+        <button class="btn-avancar" id="btnAvancar" onclick="avancarParaAlteracoes()">
+          Avançar para Edição →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variáveis globais
+    let cenariosFuturo = [];
+    let funcoesData = [];
+    let categoriasData = [];
+    let subcategoriasData = [];
+    let selectedSubcategories = {};
+
+    // Inicialização quando a página carrega
+    document.addEventListener('DOMContentLoaded', function () {
+      carregarDadosCenarioFuturo();
+      loadSelections();
+    });
+
+    async function fetchWithTimeout(url, options = {}, timeout = 8000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal
+        });
+        clearTimeout(id);
+        return response;
+      } catch (error) {
+        clearTimeout(id);
+        throw error;
+      }
+    }
+    // CORREÇÃO ALTERNATIVA: Usar dados reais do banco para mapeamento
+    async function carregarMapeamentos() {
+      try {
+        console.log('🗺️ Carregando mapeamentos do banco...');
+
+        const [funcoesRes, categoriasRes] = await Promise.all([
+          fetch('/api/Funcoes'),
+          fetch('/api/Categorias')
+        ]);
+
+        const funcoes = await funcoesRes.json();
+        const categorias = await categoriasRes.json();
+
+        // Criar mapeamento de códigos para IDs
+        const mapeamentoFuncoes = {};
+        const mapeamentoCategorias = {};
+
+        funcoes.forEach(funcao => {
+          const codigo = funcao.codigo || funcao.CODIGO;
+          const id = funcao.id || funcao.ID;
+          if (codigo && id) {
+            mapeamentoFuncoes[codigo] = id.toString();
+          }
+        });
+
+        categorias.forEach(categoria => {
+          const codigo = categoria.codigo || categoria.CODIGO;
+          const id = categoria.id || categoria.ID;
+          if (codigo && id) {
+            mapeamentoCategorias[codigo] = id.toString();
+          }
+        });
+
+        console.log('✅ Mapeamentos carregados:', {
+          funcoes: mapeamentoFuncoes,
+          categorias: mapeamentoCategorias
+        });
+
+        return { mapeamentoFuncoes, mapeamentoCategorias };
+
+      } catch (error) {
+        console.error('❌ Erro ao carregar mapeamentos:', error);
+        return { mapeamentoFuncoes: {}, mapeamentoCategorias: {} };
+      }
+    }
+
+    // Versão final da função usando mapeamentos do banco
+    let mapeamentosCarregados = null;
+
+    async function extrairInfoSubcategoriaComMapeamento(subcategoriaFormatada) {
+      if (!subcategoriaFormatada) return { funcaoId: '', categoriaId: '' };
+
+      // Carregar mapeamentos se ainda não foram carregados
+      if (!mapeamentosCarregados) {
+        mapeamentosCarregados = await carregarMapeamentos();
+      }
+
+      const { mapeamentoFuncoes, mapeamentoCategorias } = mapeamentosCarregados;
+
+      console.log(`🔍 Processando: ${subcategoriaFormatada}`);
+
+      const partes = subcategoriaFormatada.split('.');
+      if (partes.length === 2) {
+        const [funcaoCodigo, resto] = partes;
+        const categoriaPartes = resto.split('-');
+
+        if (categoriaPartes.length >= 1) {
+          const categoriaCodigo = categoriaPartes[0];
+
+          const funcaoId = mapeamentoFuncoes[funcaoCodigo];
+          const categoriaId = mapeamentoCategorias[categoriaCodigo];
+
+          console.log(`📊 Extraído: ${funcaoCodigo} -> ${funcaoId}, ${categoriaCodigo} -> ${categoriaId}`);
+
+          if (!funcaoId || !categoriaId) {
+            console.warn(`⚠️ Mapeamento não encontrado para: ${funcaoCodigo}.${categoriaCodigo}`);
+          }
+
+          return {
+            funcaoCodigo: funcaoCodigo,
+            categoriaCodigo: categoriaCodigo,
+            numero: categoriaPartes[1],
+            funcaoId: funcaoId,
+            categoriaId: categoriaId
+          };
+        }
+      }
+
+      console.warn(`⚠️ Formato não reconhecido: ${subcategoriaFormatada}`);
+      return { funcaoId: '', categoriaId: '' };
+    }
+
+    // Carregar dados do cenário futuro
+    // Versão final otimizada do carregamento
+    async function carregarDadosCenarioFuturo() {
+      const conteudo = document.getElementById('conteudo');
+
+      try {
+        // Mostrar loading
+        conteudo.innerHTML = '<div class="loading">Carregando dados do Cenário Futuro...</div>';
+
+        // Tentar carregar dados
+        const endpoints = [
+          '/api/Cenarios/futuro/formatados',
+          '/api/Cenarios/futuro',
+          '/api/cenarios-futuro'
+        ];
+
+        let success = false;
+
+        for (const endpoint of endpoints) {
+          try {
+            console.log(`Tentando endpoint: ${endpoint}`);
+            const response = await fetchWithTimeout(endpoint, {}, 5000);
+
+            if (response.ok) {
+              cenariosFuturo = await response.json();
+              console.log(`Sucesso no endpoint: ${endpoint}`, cenariosFuturo);
+              success = true;
+              break;
+            } else {
+              console.warn(`Endpoint ${endpoint} retornou: ${response.status}`);
+            }
+          } catch (endpointError) {
+            console.warn(`Erro no endpoint ${endpoint}:`, endpointError.message);
+          }
+        }
+
+        if (!success) {
+          throw new Error('Todos os endpoints falharam');
+        }
+
+        // Carregar dados auxiliares
+        await carregarDadosAuxiliares();
+
+        // Exibir dados
+        exibirEstruturaCenarioFuturo();
+
+      } catch (error) {
+        console.error('Falha ao carregar dados:', error);
+
+        conteudo.innerHTML = `
+      <div class="error">
+        <h3>⚠️ Erro de Conexão com o Servidor</h3>
+        <p>Não foi possível carregar os dados do Cenário Futuro.</p>
+        <p><em>Possíveis causas:</em></p>
+        <ul style="text-align: left; margin: 15px 0;">
+          <li>Problema temporário no servidor</li>
+          <li>Endpoint da API indisponível</li>
+          <li>Erro interno no processamento dos dados</li>
+        </ul>
+        <div style="margin-top: 20px;">
+          <button onclick="carregarDadosCenarioFuturo()" class="btn-avancar">
+            🔄 Tentar Novamente
+          </button>
+          <button onclick="continuarComDadosVazios()" class="btn-excluir" style="margin-left: 10px;">
+            ➡️ Continuar sem Dados
+          </button>
+        </div>
+      </div>
+    `;
+      }
+    }
+
+    // Continuar com dados vazios
+    function continuarComDadosVazios() {
+      cenariosFuturo = [];
+      carregarDadosAuxiliares().then(() => {
+        exibirEstruturaCenarioFuturo();
+      });
+    }
+
+    // Função para processar dados brutos se o endpoint /formatados não funcionar
+    function processarDadosCenarios(dadosBrutos) {
+      if (!dadosBrutos || !Array.isArray(dadosBrutos)) return [];
+
+      // Adaptar conforme a estrutura real dos dados
+      return dadosBrutos.map(item => {
+        return {
+          id: item.id || item.ID,
+          subcategoriaFormatada: item.subcategoriaFormatada || item.codigo || item.descricao,
+          prioridade: item.prioridade,
+          nivel: item.nivel,
+          dataRegistro: item.dataRegistro || item.dataCriacao
+        };
+      });
+    }
+
+    // Mostrar aviso de fallback
+    function mostrarAvisoFallback() {
+      const aviso = document.createElement('div');
+      aviso.className = 'error';
+      aviso.innerHTML = `
+    <strong>Atenção:</strong> Não foi possível carregar os dados do servidor. 
+    Mostrando interface com dados vazios.
+    <br>
+    <button onclick="carregarDadosCenarioFuturo()" style="margin-top: 10px; padding: 8px 16px;">
+      Tentar Novamente
+    </button>
+  `;
+      document.getElementById('conteudo').prepend(aviso);
+    }
+
+    // Mostrar erro crítico
+    function mostrarErroCritico(error) {
+      document.getElementById('conteudo').innerHTML = `
+    <div class="error">
+      <h3>Erro ao Carregar Dados</h3>
+      <p>Ocorreu um erro no servidor ao tentar carregar os dados.</p>
+      <p><strong>Detalhes:</strong> ${error.message}</p>
+      <div style="margin-top: 20px;">
+        <button onclick="carregarDadosCenarioFuturo()" style="padding: 10px 20px; margin: 5px;">
+          Tentar Novamente
+        </button>
+        <button onclick="location.reload()" style="padding: 10px 20px; margin: 5px;">
+          Recarregar Página
+        </button>
+      </div>
+    </div>
+  `;
+    }
+
+    // Carregar dados auxiliares (funções, categorias, subcategorias)
+    async function carregarDadosAuxiliares() {
+      try {
+        const [resFuncoes, resCategorias, resSubcategorias] = await Promise.all([
+          fetch('/api/Funcoes'),
+          fetch('/api/Categorias'),
+          fetch('/api/Subcategorias')
+        ]);
+
+        if (!resFuncoes.ok || !resCategorias.ok || !resSubcategorias.ok) {
+          throw new Error('Erro ao carregar dados auxiliares');
+        }
+
+        funcoesData = await resFuncoes.json();
+        categoriasData = await resCategorias.json();
+        subcategoriasData = await resSubcategorias.json();
+
+        console.log('Dados auxiliares carregados:', {
+          funcoes: funcoesData.length,
+          categorias: categoriasData.length,
+          subcategorias: subcategoriasData.length
+        });
+
+      } catch (error) {
+        console.error('Erro ao carregar dados auxiliares:', error);
+      }
+    }
+
+    // Exibir apenas as subcategorias que estão no cenário futuro
+    // CORREÇÃO: Função exibirEstruturaCenarioFuturo atualizada
+    async function exibirEstruturaCenarioFuturo() {
+      const conteudo = document.getElementById('conteudo');
+
+      if (cenariosFuturo.length === 0) {
+        conteudo.innerHTML = `
+            <div class="empty-state">
+                <h3>Nenhum dado cadastrado no Cenário Futuro</h3>
+                <p>Não há subcategorias cadastradas no cenário futuro.</p>
+            </div>
+        `;
+        updateSummaryCards();
+        return;
+      }
+
+      // ALTERAÇÃO: Usar await pois agora é async
+      const dadosAgrupados = await agruparDadosPorFuncaoCategoria();
+
+      let html = '';
+      let totalGeralSubcategorias = 0;
+
+      // Para cada função
+      for (const funcaoId in dadosAgrupados) {
+        const funcaoInfo = dadosAgrupados[funcaoId];
+        const funcaoNome = obterNomeFuncao(funcaoId);
+
+        if (funcaoInfo.total === 0) continue;
+
+        html += `
+            <div class="funcao-container">
+                <div class="funcao-header">
+                    <div class="funcao-title">${funcaoNome}</div>
+                    <div class="funcao-count">${funcaoInfo.total} subcategoria(s)</div>
+                </div>
+        `;
+
+        // Para cada categoria da função
+        for (const categoriaId in funcaoInfo.categorias) {
+          const categoriaInfo = funcaoInfo.categorias[categoriaId];
+          const categoriaNome = obterNomeCategoria(categoriaId);
+
+          html += `
+                <div class="categoria-container">
+                    <div class="categoria-header">
+                        <div class="categoria-title">${categoriaNome}</div>
+                        <div class="categoria-count">${categoriaInfo.subcategorias.length} subcategoria(s)</div>
+                    </div>
+                    <div class="subcategorias-list">
+            `;
+
+          // Para cada subcategoria da categoria
+          categoriaInfo.subcategorias.forEach(cenario => {
+            totalGeralSubcategorias++;
+            const subcategoriaId = cenario.id;
+            const isSelected = isSubcategoriaSelecionada(funcaoId, categoriaId, subcategoriaId);
+
+            html += `
+                    <div class="subcategoria-item ${isSelected ? 'selected' : ''}" 
+                         onclick="toggleSubcategoriaSelection(this, '${funcaoId}', '${categoriaId}', '${subcategoriaId}')">
+                        <input type="checkbox" 
+                               class="subcategoria-checkbox" 
+                               ${isSelected ? 'checked' : ''}
+                               onclick="event.stopPropagation()">
+                        <div class="subcategoria-info">
+                            <div class="subcategoria-codigo">${cenario.subcategoriaFormatada || `ID: ${subcategoriaId}`}</div>
+                            <div class="subcategoria-descricao">${obterDescricaoSubcategoria(subcategoriaId) || ''}</div>
+                            <div class="subcategoria-detalhes">
+                                ${cenario.prioridade ? `
+                                    <div class="detalhe-item">
+                                        <span class="detalhe-label">Prioridade:</span>
+                                        <span>${cenario.prioridade}</span>
+                                    </div>
+                                ` : ''}
+                                ${cenario.nivel ? `
+                                    <div class="detalhe-item">
+                                        <span class="detalhe-label">Nível:</span>
+                                        <span class="maturity-badge level-${cenario.nivel}">${cenario.nivel}</span>
+                                    </div>
+                                ` : ''}
+                                ${cenario.dataRegistro ? `
+                                    <div class="detalhe-item">
+                                        <span class="detalhe-label">Data:</span>
+                                        <span>${formatarData(cenario.dataRegistro)}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+          });
+
+          html += `
+                    </div>
+                </div>
+            `;
+        }
+
+        html += `</div>`;
+      }
+
+      // Adicionar contador global
+      const globalCountHtml = `
+        <div class="global-selected-count" id="globalSelectedCount">
+            Total de 0 subcategorias selecionadas
+        </div>
+    `;
+
+      conteudo.innerHTML = globalCountHtml + html;
+      updateGlobalSelectionCount();
+      updateSummaryCards();
+    }
+    // Agrupar dados por função e categoria
+    
+    async function agruparDadosPorFuncaoCategoria() {
+      const agrupado = {};
+
+      for (const cenario of cenariosFuturo) {
+        // Usar a nova função com mapeamento
+        const subcategoriaInfo = await extrairInfoSubcategoriaComMapeamento(cenario.subcategoriaFormatada);
+        const funcaoId = subcategoriaInfo.funcaoId;
+        const categoriaId = subcategoriaInfo.categoriaId;
+
+        if (!funcaoId || !categoriaId) {
+          console.warn(`❌ Não foi possível extrair IDs para: ${cenario.subcategoriaFormatada}`);
+          continue;
+        }
+
+        if (!agrupado[funcaoId]) {
+          agrupado[funcaoId] = {
+            total: 0,
+            categorias: {}
+          };
+        }
+
+        if (!agrupado[funcaoId].categorias[categoriaId]) {
+          agrupado[funcaoId].categorias[categoriaId] = {
+            subcategorias: []
+          };
+        }
+
+        // Adicionar o cenário completo para manter todas as informações
+        agrupado[funcaoId].categorias[categoriaId].subcategorias.push({
+          ...cenario,
+          id: cenario.id // ID do cenário futuro
+        });
+        agrupado[funcaoId].total++;
+      }
+
+      console.log('📂 Dados agrupados:', agrupado);
+      return agrupado;
+    }
+    // Extrair informações da subcategoria formatada
+    function extrairInfoSubcategoria(subcategoriaFormatada) {
+      if (!subcategoriaFormatada) return { funcaoId: '', categoriaId: '' };
+
+      // Formato esperado: "ID.AM-1" (Função.Categoria-Numero)
+      const partes = subcategoriaFormatada.split('.');
+      if (partes.length === 2) {
+        const [funcaoCodigo, resto] = partes;
+        const categoriaPartes = resto.split('-');
+
+        return {
+          funcaoCodigo: funcaoCodigo,
+          categoriaCodigo: categoriaPartes[0],
+          numero: categoriaPartes[1],
+          funcaoId: obterIdFuncaoPorCodigo(funcaoCodigo),
+          categoriaId: obterIdCategoriaPorCodigo(categoriaPartes[0])
+        };
+      }
+
+      return { funcaoId: '', categoriaId: '' };
+    }
+
+    // Funções auxiliares para obter informações
+    function obterNomeFuncao(funcaoId) {
+      const funcao = funcoesData.find(f => (f.id || f.ID) == funcaoId);
+      return funcao ? `${funcao.codigo || funcao.CODIGO} - ${funcao.nome || funcao.NOME}` : `Função ${funcaoId}`;
+    }
+
+    function obterNomeCategoria(categoriaId) {
+      const categoria = categoriasData.find(c => (c.id || c.ID) == categoriaId);
+      return categoria ? `${categoria.codigo || categoria.CODIGO} - ${categoria.nome || categoria.NOME}` : `Categoria ${categoriaId}`;
+    }
+
+    function obterDescricaoSubcategoria(subcategoriaId) {
+      const subcategoria = subcategoriasData.find(s => (s.id || s.ID) == subcategoriaId);
+      return subcategoria ? (subcategoria.descricao || subcategoria.DESCRICAO) : '';
+    }
+
+    function obterIdFuncaoPorCodigo(codigo) {
+      const funcao = funcoesData.find(f => (f.codigo || f.CODIGO) === codigo);
+      return funcao ? (funcao.id || funcao.ID) : null;
+    }
+
+    function obterIdCategoriaPorCodigo(codigo) {
+      const categoria = categoriasData.find(c => (c.codigo || c.CODIGO) === codigo);
+      return categoria ? (categoria.id || categoria.ID) : null;
+    }
+
+    // Formatar data
+    function formatarData(dataString) {
+      if (!dataString) return '-';
+      try {
+        const data = new Date(dataString);
+        return data.toLocaleDateString('pt-BR');
+      } catch {
+        return dataString;
+      }
+    }
+
+    // Funções de gerenciamento de seleções
+    function initializeSelections() {
+      selectedSubcategories = {};
+    }
+
+    function loadSelections() {
+      const savedSelections = localStorage.getItem('nistSelections');
+      if (savedSelections) {
+        selectedSubcategories = JSON.parse(savedSelections);
+      } else {
+        initializeSelections();
+      }
+    }
+
+    function saveSelections() {
+      localStorage.setItem('nistSelections', JSON.stringify(selectedSubcategories));
+      updateGlobalSelectionCount();
+      updateSummaryCards();
+    }
+
+    function isSubcategoriaSelecionada(funcaoId, categoriaId, subcategoriaId) {
+      return selectedSubcategories[funcaoId] &&
+        selectedSubcategories[funcaoId][categoriaId] &&
+        selectedSubcategories[funcaoId][categoriaId].includes(subcategoriaId);
+    }
+
+    function toggleSubcategoriaSelection(element, funcaoId, categoriaId, subcategoriaId) {
+      const checkbox = element.querySelector('.subcategoria-checkbox');
+      checkbox.checked = !checkbox.checked;
+
+      if (checkbox.checked) {
+        element.classList.add('selected');
+        // Adicionar à seleção
+        if (!selectedSubcategories[funcaoId]) {
+          selectedSubcategories[funcaoId] = {};
+        }
+        if (!selectedSubcategories[funcaoId][categoriaId]) {
+          selectedSubcategories[funcaoId][categoriaId] = [];
+        }
+        if (!selectedSubcategories[funcaoId][categoriaId].includes(subcategoriaId)) {
+          selectedSubcategories[funcaoId][categoriaId].push(subcategoriaId);
+        }
+      } else {
+        element.classList.remove('selected');
+        // Remover da seleção
+        if (selectedSubcategories[funcaoId] &&
+          selectedSubcategories[funcaoId][categoriaId]) {
+          const index = selectedSubcategories[funcaoId][categoriaId].indexOf(subcategoriaId);
+          if (index > -1) {
+            selectedSubcategories[funcaoId][categoriaId].splice(index, 1);
+          }
+        }
+      }
+
+      saveSelections();
+    }
+
+    function updateGlobalSelectionCount() {
+      const globalSelectedCount = document.getElementById('globalSelectedCount');
+      let total = 0;
+
+      for (const func in selectedSubcategories) {
+        for (const categoria in selectedSubcategories[func]) {
+          total += selectedSubcategories[func][categoria].length;
+        }
+      }
+
+      if (globalSelectedCount) {
+        globalSelectedCount.textContent = `Total de ${total} subcategoria${total !== 1 ? 's' : ''} selecionada${total !== 1 ? 's' : ''}`;
+      }
+    }
+
+    function updateSummaryCards() {
+      let totalSubcategorias = 0;
+      let totalFuncoes = 0;
+      let totalCategorias = 0;
+
+      for (const func in selectedSubcategories) {
+        let temSelecoes = false;
+        for (const categoria in selectedSubcategories[func]) {
+          const count = selectedSubcategories[func][categoria].length;
+          if (count > 0) {
+            totalCategorias++;
+            totalSubcategorias += count;
+            temSelecoes = true;
+          }
+        }
+        if (temSelecoes) totalFuncoes++;
+      }
+
+      document.getElementById('totalSubcategorias').textContent = totalSubcategorias;
+      document.getElementById('totalFuncoes').textContent = totalFuncoes;
+      document.getElementById('totalCategorias').textContent = totalCategorias;
+    }
+
+    function desmarcarTudo() {
+      // Limpar todas as seleções visuais
+      const selectedItems = document.querySelectorAll('.subcategoria-item.selected');
+      selectedItems.forEach(item => {
+        item.classList.remove('selected');
+        const checkbox = item.querySelector('.subcategoria-checkbox');
+        if (checkbox) checkbox.checked = false;
+      });
+
+      // Limpar o objeto de seleção
+      initializeSelections();
+      saveSelections();
+
+      alert("Todas as seleções foram resetadas!");
+    }
+
+
+    function avancarParaAlteracoes() {
+      const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+      let totalSelecoes = 0;
+
+      // Contar total de subcategorias selecionadas
+      for (const funcId in selections) {
+        for (const category in selections[funcId]) {
+          totalSelecoes += selections[funcId][category].length;
+        }
+      }
+
+      if (totalSelecoes === 0) {
+        alert('Por favor, selecione pelo menos uma subcategoria antes de avançar.');
+        return;
+      }
+
+      // Salvar seleções atuais (removendo as variáveis indefinidas)
+      localStorage.setItem('nistSelections', JSON.stringify(selectedSubcategories));
+
+      // Redireciona para a primeira função com seleções
+      redirecionarParaProximaFuncaoComSelecoes();
+    }
+
+    function redirecionarParaProximaFuncaoComSelecoes() {
+      const selections = JSON.parse(localStorage.getItem('nistSelections') || '{}');
+
+      // Ordem lógica do NIST CSF
+      const ordemFuncoes = [
+        'governanca',
+        'identificar',
+        'proteger',
+        'detectar',
+        'responder',
+        'recuperar'
+      ];
+
+      // Mapeamento direto para as URLs
+      const urlMap = {
+        'governanca': 'GovernancaAtual',
+        'identificar': 'IdentificarAtual',
+        'proteger': 'ProtegerAtual',
+        'detectar': 'DetectarAtual',
+        'responder': 'ResponderAtual',
+        'recuperar': 'RecuperarAtual'
+      };
+
+      // Encontrar a primeira função (na ordem NIST) que tenha seleções
+      for (const funcNome of ordemFuncoes) {
+        // Verificar se há alguma função nos selections que corresponda
+        for (const funcId in selections) {
+          const functionName = getFunctionNameById(funcId); // Você precisa implementar esta função
+          if (functionName === funcNome) {
+            for (const category in selections[funcId]) {
+              if (selections[funcId][category].length > 0) {
+                // Redirecionar para a rota correspondente
+                const rota = `/Home/${urlMap[funcNome]}`;
+                console.log(`Redirecionando para: ${rota}`);
+                window.location.href = rota;
+                return;
+              }
+            }
+          }
+        }
+      }
+
+      // Se não encontrou nenhuma função com seleções, vai para Governança
+      window.location.href = '/Home/GovernancaAtual';
+    }
+
+    // Função auxiliar para obter o nome da função pelo ID
+    function getFunctionNameById(funcId) {
+      // Mapeamento de ID para nome da função - ajuste conforme seus dados
+      const functionMap = {
+        '1': 'governanca',
+        '2': 'identificar',
+        '3': 'proteger',
+        '4': 'detectar',
+        '5': 'responder',
+        '6': 'recuperar'
+      };
+
+      return functionMap[funcId] || '';
+    }
+
+    // Debug detalhado do endpoint problemático
+    async function debugEndpoint500() {
+      console.log('=== DEBUG ENDPOINT 500 ===');
+
+      try {
+        const response = await fetch('/api/Cenarios/futuro/formatados');
+        console.log('Status:', response.status);
+        console.log('Status Text:', response.statusText);
+        console.log('Headers:', Object.fromEntries(response.headers.entries()));
+
+        // Tentar ler a resposta de erro
+        try {
+          const errorText = await response.text();
+          console.log('Resposta de erro:', errorText);
+        } catch (textError) {
+          console.log('Não foi possível ler resposta de erro:', textError);
+        }
+
+      } catch (error) {
+        console.log('Erro na requisição:', error);
+      }
+    }
+
+    // Executar no console para debug
+    // debugEndpoint500();
+  </script>
+</body>
+
+</html>

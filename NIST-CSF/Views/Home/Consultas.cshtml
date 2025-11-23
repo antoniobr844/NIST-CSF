@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST CSF - Consulta de Categorias</title>
+    <link rel="stylesheet" href="/css/pages/consultas.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>NIST CSF - Consultas</h1>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Total de Funções</h3>
+                <div class="summary-value" id="totalFuncoes">6</div>
+            </div>
+            <div class="summary-card">
+                <h3>Categorias Disponíveis</h3>
+                <div class="summary-value" id="totalCategorias">-</div>
+            </div>
+            <div class="summary-card">
+                <h3>Subcategorias</h3>
+                <div class="summary-value" id="totalSubcategorias">-</div>
+            </div>
+        </div>
+
+        <div class="breadcrumb">
+            <div class="active">Função</div>
+            <div>Categoria</div>
+            <div>Subcategorias</div>
+            <div>Informações</div>
+        </div>
+
+        <div class="combo-container">
+            <label for="opcoesPrincipais">Selecione uma função:</label>
+            <select id="opcoesPrincipais" disabled>
+                <option value="">Carregando funções...</option>
+            </select>
+        </div>
+
+        <div id="subOpcoesContainer" class="hidden">
+            <div class="combo-container">
+                <label for="subOpcoes">Selecione uma categoria:</label>
+                <select id="subOpcoes" disabled>
+                    <option value="">Selecione uma categoria</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="subCatContainer" class="hidden">
+            <div class="combo-container">
+                <label for="subCatOpcoes">Selecione uma Subcategoria:</label>
+                <select id="subCatOpcoes" disabled>
+                    <option value="">Selecione uma Subcategoria</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="infoContainer" class="hidden">
+            <div class="combo-container info-highlight">
+                <h3>📋 Informações da Subcategoria</h3>
+                <textarea id="infoTextarea" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { NistDataLoader } from '/js/modules/nistDataLoader.js';
+        import { BreadcrumbManager } from '/js/modules/breadcrumbManager.js';
+
+        // ===== CONSTANTES =====
+        const SELECT_FUNCOES = 'opcoesPrincipais';
+        const SELECT_CATEGORIAS = 'subOpcoes';
+        const SELECT_SUBCATEGORIAS = 'subCatOpcoes';
+        const CONTAINER_SUBCATEGORIAS = 'subCatContainer';
+        const CONTAINER_INFO = 'infoContainer';
+        const CONTAINER_CATEGORIAS = 'subOpcoesContainer';
+
+        // ===== UTILITÁRIOS =====
+        function preencherSelect(selectId, opcoesElements, placeholder = 'Selecione') {
+            const select = document.getElementById(selectId);
+            select.innerHTML = `<option value="">${placeholder}</option>`;
+            opcoesElements.forEach(op => select.appendChild(op));
+            select.disabled = false;
+        }
+
+        function mostrarContainer(containerId) {
+            const container = document.getElementById(containerId);
+            container.classList.remove('hidden');
+            container.classList.add('visible');
+        }
+
+        function ocultarContainer(containerId) {
+            const container = document.getElementById(containerId);
+            container.classList.add('hidden');
+            container.classList.remove('visible');
+        }
+
+        function formatarComboSubcategoria(codigoFuncao, codigoCategoria, sub) {
+            const nomeSubcategoria = sub.codigo || sub.nome || sub.subcategoria;
+            return `${codigoFuncao}.${codigoCategoria} - ${nomeSubcategoria}`;
+        }
+
+        function formatarTextArea(subcategoria, controles, funcaoOption, categoriaOption) {
+            const codigoFuncao = funcaoOption.textContent.split(' - ')[0] || '';
+            const nomeFuncao = funcaoOption.textContent.split(' - ')[1] || '';
+            const codigoCategoria = categoriaOption.textContent.split(' - ')[0] || '';
+            const nomeCategoria = categoriaOption.textContent.split(' - ')[1] || '';
+
+            // CORREÇÃO: Usar propriedades consistentes
+            const nomeSubcategoria = subcategoria.codigo || subcategoria.nome || subcategoria.subcategoria;
+            const descricao = subcategoria.descricao || '';
+
+            let texto = `🏛️ FUNÇÃO: ${codigoFuncao} - ${nomeFuncao}\n`;
+            texto += `📂 CATEGORIA: ${codigoCategoria} - ${nomeCategoria}\n`;
+            texto += `📝 SUBCATEGORIA: ${nomeSubcategoria}\n`;
+            texto += `📋 DESCRIÇÃO: ${descricao}\n\n`;
+
+            if (controles && controles.length > 0) {
+                texto += `🛡️ CONTROLES RELACIONADOS:\n`;
+                controles.forEach(c => {
+                    texto += `• ${c.controle || c.CONTROLE || 'Controle'}`;
+                    if (c.codigo || c.CODIGO) texto += ` (${c.codigo || c.CODIGO})`;
+                    texto += '\n';
+                });
+            } else {
+                texto += '🛡️ CONTROLES: Nenhum controle específico cadastrado.\n';
+            }
+
+            return texto;
+        }
+
+        // ===== CLASSE PRINCIPAL =====
+        class ConsultasPage {
+            constructor() {
+                this.dataLoader = new NistDataLoader();
+                this.breadcrumb = new BreadcrumbManager();
+                this.init();
+            }
+
+            async init() {
+                await this.carregarFuncoes();
+                this.configurarEventos();
+            }
+
+            async carregarFuncoes() {
+                try {
+                    const funcoes = await this.dataLoader.carregarFuncoes();
+                    const opcoesElements = funcoes.map(funcao => {
+                        const option = document.createElement('option');
+                        option.value = funcao.id || funcao.ID;
+                        option.textContent = `${funcao.codigo || funcao.CODIGO || ''} - ${funcao.nome || funcao.NOME}`;
+                        return option;
+                    });
+                    preencherSelect(SELECT_FUNCOES, opcoesElements, 'Selecione uma função');
+                    this.breadcrumb.update(1);
+
+                    // Atualizar contador de funções
+                    document.getElementById('totalFuncoes').textContent = funcoes.length;
+                } catch (error) {
+                    this.mostrarErro(SELECT_FUNCOES, 'Erro ao carregar funções');
+                }
+            }
+
+            configurarEventos() {
+                document.getElementById(SELECT_FUNCOES).addEventListener('change', e => this.carregarCategorias(e.target.value));
+                document.getElementById(SELECT_CATEGORIAS).addEventListener('change', e => this.carregarSubcategorias(e.target.value));
+                document.getElementById(SELECT_SUBCATEGORIAS).addEventListener('change', e => this.carregarInformacoes(e.target.value));
+            }
+
+            async carregarCategorias(funcaoId) {
+                if (!funcaoId) {
+                    ocultarContainer(CONTAINER_CATEGORIAS);
+                    ocultarContainer(CONTAINER_SUBCATEGORIAS);
+                    ocultarContainer(CONTAINER_INFO);
+                    this.breadcrumb.update(1);
+                    return;
+                }
+
+                try {
+                    const categorias = await this.dataLoader.carregarCategorias(funcaoId);
+                    const opcoesElements = categorias.map(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat.id || cat.ID;
+                        option.textContent = `${cat.codigo || cat.CODIGO || ''} - ${cat.nome || cat.NOME}`;
+                        return option;
+                    });
+                    preencherSelect(SELECT_CATEGORIAS, opcoesElements, 'Selecione uma categoria');
+                    mostrarContainer(CONTAINER_CATEGORIAS);
+                    this.breadcrumb.update(2);
+
+                    // Atualizar contador de categorias
+                    document.getElementById('totalCategorias').textContent = categorias.length;
+
+                    // Resetar containers seguintes
+                    ocultarContainer(CONTAINER_SUBCATEGORIAS);
+                    ocultarContainer(CONTAINER_INFO);
+                } catch (error) {
+                    this.mostrarErro(SELECT_CATEGORIAS, 'Erro ao carregar categorias');
+                }
+            }
+
+            async carregarSubcategorias(categoriaId) {
+                if (!categoriaId) {
+                    ocultarContainer(CONTAINER_SUBCATEGORIAS);
+                    ocultarContainer(CONTAINER_INFO);
+                    this.breadcrumb.update(2);
+                    return;
+                }
+
+                try {
+                    const subcategorias = await this.dataLoader.carregarSubcategorias(categoriaId);
+                    const funcaoSelect = document.getElementById(SELECT_FUNCOES);
+                    const funcaoOption = funcaoSelect.options[funcaoSelect.selectedIndex];
+                    const categoriaSelect = document.getElementById(SELECT_CATEGORIAS);
+                    const categoriaOption = categoriaSelect.options[categoriaSelect.selectedIndex];
+
+                    const opcoesElements = subcategorias.map(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub.id || sub.ID || sub.ID_SUBCATEGORIA;
+
+                        // CORREÇÃO: Formatação correta da subcategoria
+                        const codigoFuncao = funcaoOption.textContent.split(' - ')[0];
+                        const codigoCategoria = categoriaOption.textContent.split(' - ')[0];
+                        option.textContent = formatarComboSubcategoria(codigoFuncao, codigoCategoria, sub);
+
+                        option.setAttribute('data-descricao', sub.descricao || sub.DESCRICAO || '');
+                        return option;
+                    });
+
+                    preencherSelect(SELECT_SUBCATEGORIAS, opcoesElements, 'Selecione uma Subcategoria');
+                    mostrarContainer(CONTAINER_SUBCATEGORIAS);
+                    this.breadcrumb.update(3);
+
+                    // Atualizar contador de subcategorias
+                    document.getElementById('totalSubcategorias').textContent = subcategorias.length;
+
+                    // Resetar container de informações
+                    ocultarContainer(CONTAINER_INFO);
+
+                } catch (error) {
+                    this.mostrarErro(SELECT_SUBCATEGORIAS, 'Erro ao carregar subcategorias');
+                }
+            }
+
+            async carregarInformacoes(subcategoriaId) {
+                const infoTextarea = document.getElementById('infoTextarea');
+                if (!subcategoriaId) {
+                    ocultarContainer(CONTAINER_INFO);
+                    return;
+                }
+
+                try {
+                    const { subcategoria, controles } = await this.dataLoader.carregarInformacoesSubcategoria(subcategoriaId);
+                    const funcaoOption = document.getElementById(SELECT_FUNCOES).selectedOptions[0];
+                    const categoriaOption = document.getElementById(SELECT_CATEGORIAS).selectedOptions[0];
+
+                    infoTextarea.value = formatarTextArea(subcategoria, controles, funcaoOption, categoriaOption);
+                    mostrarContainer(CONTAINER_INFO);
+                    this.breadcrumb.update(4);
+
+                } catch (error) {
+                    console.error('Erro ao carregar informações da subcategoria:', error);
+                    const subCatSelect = document.getElementById(SELECT_SUBCATEGORIAS);
+                    const selectedOption = subCatSelect.options[subCatSelect.selectedIndex];
+                    infoTextarea.value = selectedOption?.getAttribute('data-descricao') || 'Informações não disponíveis.';
+                    mostrarContainer(CONTAINER_INFO);
+                    this.breadcrumb.update(4);
+                }
+            }
+
+            mostrarErro(elementId, mensagem) {
+                const element = document.getElementById(elementId);
+                element.innerHTML = `<option value="">${mensagem}</option>`;
+                element.disabled = false;
+            }
+        }
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            new ConsultasPage();
+        });
+    </script>
+</body>
+
+</html>

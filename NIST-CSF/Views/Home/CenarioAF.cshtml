@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Home - Sistema";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/home.css" />
+}
+
+<div class="container">
+    <header class="header">
+        <h1 class="title">Cenário Atual X Cenário Futuro</h1>
+        <p class="subtitle">Selecione uma opção para continuar</p>
+    </header>
+
+    <div class="cards-container">
+        <!-- Card 1 - Cadastro -->
+        <div class="card" onclick="navigateTo('/Home/PreCadastroAtual')">
+            <div class="card-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="card-content">
+                <h3>Cenário Atual</h3>
+                <p>Proposta de alteração de cenário.</p>
+            </div>
+            <div class="card-arrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <!-- Card 2 - Consultas -->
+        <div class="card" onclick="navigateTo('/Home/Precadastro')">
+            <div class="card-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="card-content">
+                <h3>Cenário Futuro</h3>
+                <p>Efetivação de alterações de cenários.</p>
+            </div>
+            <div class="card-arrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Adiciona efeitos de hover via JavaScript
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+}
