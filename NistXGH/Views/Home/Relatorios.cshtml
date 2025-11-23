@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = "Relatório de Análise Descritiva - NIST CSF";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="/css/pages/relatorios.css" asp-append-version="true" />
+}
+
+<div class="container">
+    <h1>📊 Relatórios - Cenário Futuro</h1>
+
+    <!-- CONTROLES DE TABELA E FILTRO -->
+    <div class="combo-container">
+        <div class="controls">
+            <!-- Seletor de Tabela - AGORA DETERMINA A EDIÇÃO -->
+            <div class="filter-group">
+                <label for="filterTable">Cenário para Visualização/Edição:</label>
+                <select id="filterTable" class="form-control">
+                    <option value="FUTURO">Cenário Futuro</option>
+                    <option value="ATUAL">Cenário Atual</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filterFunction">Função:</label>
+                <select id="filterFunction" class="form-control">
+                    <option value="">Todas as funções</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filterPriority">Prioridade:</label>
+                <select id="filterPriority" class="form-control">
+                    <option value="">Todas as prioridades</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filterLevel">Nível:</label>
+                <select id="filterLevel" class="form-control">
+                    <option value="">Todos os níveis</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <button id="btnFiltrar" class="btn btn-primary">🔍 Aplicar Filtros</button>
+            </div>
+
+            <div class="filter-group">
+                <button id="btnExportar" class="btn btn-success">📥 Exportar Relatório</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARDS DE RESUMO -->
+    <div class="summary">
+        <div class="summary-card">
+            <h3>Total de Registros</h3>
+            <div class="summary-value" id="totalRegistros">0</div>
+            <div class="summary-description">Registros carregados</div>
+        </div>
+        <div class="summary-card">
+            <h3>Subcategorias Únicas</h3>
+            <div class="summary-value" id="totalSubcategorias">0</div>
+            <div class="summary-description">Subcategorias distintas</div>
+        </div>
+        <div class="summary-card">
+            <h3>Nível Médio</h3>
+            <div class="summary-value" id="nivelMedio">-</div>
+            <div class="summary-description">Média dos níveis</div>
+        </div>
+        <div class="summary-card">
+            <h3>Prioridade Média</h3>
+            <div class="summary-value" id="prioridadeMedia">-</div>
+            <div class="summary-description">Média das prioridades</div>
+        </div>
+    </div>
+
+    <!-- DICA DE EDIÇÃO ATUALIZADA -->
+    <div class="combo-container"
+        style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-left: 4px solid #2196f3;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 2em;">💡</div>
+            <div>
+                <h3 style="margin: 0 0 5px 0; color: #0d47a1;">Como editar registros</h3>
+                <p style="margin: 0; color: #1565c0;">
+                    <strong>Selecione o cenário na combobox acima e clique em qualquer linha da tabela</strong> para
+                    editar
+                    o cenário atualmente selecionado.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABELA DE DADOS - SEM COLUNA DE AÇÕES -->
+    <div class="combo-container">
+        <div class="table-container">
+            <table id="tabelaCenarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Subcategoria</th>
+                        <th>Prioridade</th>
+                        <th>Nível</th>
+                        <th>Política</th>
+                        <th>Prática</th>
+                        <th>Artefato</th>
+                        <th>Função Responsável</th>
+                        <th>Referência</th>
+                        <th>Data Registro</th>
+                        <!-- REMOVIDA COLUNA DE AÇÕES -->
+                    </tr>
+                </thead>
+                <tbody id="tbodyCenarios">
+                    <tr>
+                        <td colspan="10" class="loading">Carregando dados do cenário futuro...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RECOMENDAÇÕES -->
+    <div class="combo-container">
+        <div class="recommendations">
+            <h2>💡 Recomendações e Insights</h2>
+            <div id="listaRecomendacoes">
+                <div class="recommendation-item">
+                    Analise os dados carregados para ver recomendações específicas baseadas
+                    nos cenários futuros.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/relatorios.js" asp-append-version="true"></script>

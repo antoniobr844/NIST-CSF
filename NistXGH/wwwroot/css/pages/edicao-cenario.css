@@ -1,0 +1,373 @@
+/* edicao-cenario.css - Estilos para a página de Edição de Cenário (SEM HISTÓRICO) */
+
+/* === VARIÁVEIS CSS === */
+:root {
+  --primary-color: #3498db;
+  --primary-dark: #2980b9;
+  --success-color: #27ae60;
+  --success-dark: #2ecc71;
+  --info-color: #17a2b8;
+  --info-dark: #138496;
+  --secondary-color: #6c757d;
+  --secondary-dark: #5a6268;
+  --dark-color: #2c3e50;
+  --light-color: #f8f9fa;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+/* === LAYOUT PRINCIPAL === */
+.edicao-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.edicao-header {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-dark)
+  );
+  color: white;
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-bottom: 25px;
+  box-shadow: var(--box-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.edicao-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+.edicao-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 1.8em;
+  font-weight: 600;
+}
+
+.edicao-info {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-top: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.edicao-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  margin: 0 5px;
+}
+
+/* === ALERTAS E MENSAGENS === */
+.alert-info {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin: 20px 0;
+  color: #0c5460;
+  border-left: 4px solid var(--info-color);
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+.loading::after {
+  content: '...';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin: 20px 0;
+  border-left: 4px solid var(--danger-color);
+  animation: shake 0.5s ease;
+}
+
+/* === BOTÕES === */
+.action-buttons {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #e9ecef;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-success {
+  background: linear-gradient(
+    135deg,
+    var(--success-color),
+    var(--success-dark)
+  );
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color),
+    var(--secondary-dark)
+  );
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* === FORMULÁRIOS === */
+.scenario-comparison {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.scenario-section {
+  background: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  border-left: 4px solid var(--primary-color);
+  transition: var(--transition);
+}
+
+.scenario-section:hover {
+  box-shadow: var(--box-shadow);
+}
+
+/* === ESTILOS PARA EDIÇÃO === */
+.edicao-header-form {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #3498db;
+}
+
+.edicao-info-form {
+  margin: 15px 0;
+}
+
+/* Estilos para garantir que os formulários fiquem corretos */
+.subcategory-item {
+  background: white;
+  margin: 15px 0;
+  padding: 25px;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* === ANIMAÇÕES === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
+
+@keyframes dots {
+  0%,
+  20% {
+    color: rgba(0, 0, 0, 0);
+    text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0);
+  }
+  40% {
+    color: var(--secondary-color);
+    text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0);
+  }
+  60% {
+    text-shadow: 0.25em 0 0 var(--secondary-color), 0.5em 0 0 rgba(0, 0, 0, 0);
+  }
+  80%,
+  100% {
+    text-shadow: 0.25em 0 0 var(--secondary-color),
+      0.5em 0 0 var(--secondary-color);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+  .edicao-container {
+    padding: 15px;
+  }
+  .edicao-header {
+    padding: 20px;
+  }
+  .edicao-header h1 {
+    font-size: 1.5em;
+  }
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .edicao-header {
+    padding: 15px;
+  }
+  .edicao-header h1 {
+    font-size: 1.3em;
+  }
+  .edicao-info {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}
+
+/* === ESTILOS PARA O MODO EDIÇÃO ESPECÍFICO === */
+.edicao-destaque {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7) !important;
+  border-left: 4px solid #f39c12 !important;
+}
+
+.campo-obrigatorio label::after {
+  content: ' *';
+  color: var(--danger-color);
+}
+
+.status-edicao {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--success-color);
+  color: white;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  z-index: 1000;
+  animation: slideInRight 0.5s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,41 @@
+:root {
+  /* Cores principais - MANTENDO CORES ORIGINAIS */
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --warning-color: #f39c12;
+  --success-color: #27ae60;
+  
+  /* Tons de cinza - MANTENDO CORES ORIGINAIS */
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f2f6;
+  --gray-800: #2c3e50;
+  --gray-900: #1e272e;
+  
+  /* Gradientes - MANTENDO GRADIENTE ORIGINAL */
+  --gradient-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  
+  /* Tipografia */
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 2.2em;
+  
+  /* Espaçamentos */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Bordas - MANTENDO BORDAS ORIGINAIS */
+  --border-radius: 8px;
+  --border-radius-lg: 15px;
+  
+  /* Sombras - MANTENDO SOMBRAS ORIGINAIS */
+  --shadow-container: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --shadow-button: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
