@@ -1,6 +1,8 @@
 // Testes de API para Cenários (Atual vs Futuro)
 using System.Text;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using NistXGH.Models.Dto;
 using Xunit;
 
@@ -26,23 +28,26 @@ namespace NistXGH.Tests.Integration
         [Fact]
         public async Task SalvarCenarioAtual_WithValidData_ReturnsSuccess()
         {
-            // Arrange
+            // Arrange -  USA IDs E STRINGS ÚNICOS
             var client = CreateClient();
+            var uniqueSubcategoriaId = GenerateUniqueId();
+            var uniqueJustificativa = GenerateUniqueString("Justificativa");
+
             var cenarios = new List<CenarioAtualDto>
             {
                 new CenarioAtualDto
                 {
-                    SUBCATEGORIA = 1,
+                    SUBCATEGORIA = uniqueSubcategoriaId,
                     PRIOR_ATUAL = 1,
                     STATUS_ATUAL = 1,
-                    JUSTIFICATIVA = "Teste de integração",
-                    POLIT_ATUAL = "Política teste",
-                    PRAT_ATUAL = "Prática teste",
-                    FUNC_RESP = "Responsável teste",
-                    REF_INFO = "Referência teste",
-                    EVID_ATUAL = "Evidência teste",
-                    NOTAS = "Notas teste",
-                    CONSIDERACOES = "Considerações teste",
+                    JUSTIFICATIVA = uniqueJustificativa,
+                    POLIT_ATUAL = GenerateUniqueString("Politica"),
+                    PRAT_ATUAL = GenerateUniqueString("Pratica"),
+                    FUNC_RESP = GenerateUniqueString("Responsavel"),
+                    REF_INFO = GenerateUniqueString("Referencia"),
+                    EVID_ATUAL = GenerateUniqueString("Evidencia"),
+                    NOTAS = GenerateUniqueString("Notas"),
+                    CONSIDERACOES = GenerateUniqueString("Consideracoes"),
                 },
             };
 
@@ -56,23 +61,32 @@ namespace NistXGH.Tests.Integration
             // Assert
             response.EnsureSuccessStatusCode();
             Assert.Contains("sucesso", responseContent.ToLower());
+
+            //  VALIDA QUE FOI SALVO NO BANCO EM MEMÓRIA
+            using var scope = Factory.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<SgsiDbContext>();
+            var saved = await dbContext.CenariosAtual.FirstOrDefaultAsync(c =>
+                c.SUBCATEGORIA == uniqueSubcategoriaId
+            );
+            Assert.NotNull(saved);
+            Assert.Equal(uniqueJustificativa, saved.JUSTIFICATIVA);
         }
 
         [Fact]
         public async Task GetCenariosFormatados_ReturnsFormattedData()
         {
-            // Arrange
+            // Arrange -  USA DADOS ÚNICOS
             var client = CreateClient();
+            var uniqueSubcategoriaId = GenerateUniqueId();
 
-            // Primeiro criar um cenário para formatar
             var cenario = new List<CenarioAtualDto>
             {
                 new CenarioAtualDto
                 {
-                    SUBCATEGORIA = 1,
+                    SUBCATEGORIA = uniqueSubcategoriaId,
                     PRIOR_ATUAL = 1,
                     STATUS_ATUAL = 1,
-                    JUSTIFICATIVA = "Teste formatação",
+                    JUSTIFICATIVA = GenerateUniqueString("TesteFormatacao"),
                 },
             };
 

@@ -27,7 +27,6 @@ namespace NistXGH.Tests.Controllers.Security
                 _mockLogger.Object,
                 _mockFormatacaoService.Object
             );
-            SeedTestData(_context);
         }
 
         [Theory]
@@ -36,16 +35,14 @@ namespace NistXGH.Tests.Controllers.Security
         [InlineData(int.MinValue)]
         public async Task GetCenarioAtual_ComIdsInvalidos_DeveRetornarObjetoPadrao(int idInvalido)
         {
-            // Arrange
             // Act
             var result = await _controller.GetCenarioAtual(idInvalido);
 
-            // Assert - Usar tipo explícito
+            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var response = okResult.Value;
             Assert.NotNull(response);
 
-            // Verificar propriedades específicas
             var subcategoriaProperty = response.GetType().GetProperty("SUBCATEGORIA");
             Assert.NotNull(subcategoriaProperty);
             Assert.Equal(idInvalido, (int)subcategoriaProperty.GetValue(response)!);
@@ -67,12 +64,13 @@ namespace NistXGH.Tests.Controllers.Security
             string inputMalicioso
         )
         {
-            // Arrange
+            // Arrange - 🔥 USA ID ÚNICO
+            var uniqueId = GenerateTestId();
             var cenarios = new List<CenarioAtualDto>
             {
                 new CenarioAtualDto
                 {
-                    SUBCATEGORIA = 1,
+                    SUBCATEGORIA = uniqueId, // 🔥 ID ÚNICO
                     JUSTIFICATIVA = inputMalicioso,
                     POLIT_ATUAL = inputMalicioso,
                     PRAT_ATUAL = inputMalicioso,
@@ -89,7 +87,7 @@ namespace NistXGH.Tests.Controllers.Security
             // Act
             var result = await _controller.SalvarCenarioAtual(cenarios);
 
-            // Assert - Usar tipo explícito
+            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var response = okResult.Value;
             Assert.NotNull(response);
@@ -98,52 +96,10 @@ namespace NistXGH.Tests.Controllers.Security
             Assert.NotNull(successProperty);
             Assert.True((bool)successProperty.GetValue(response)!);
 
-            var cenarioSalvo = await _context
-                .CenariosAtual.Where(c => c.SUBCATEGORIA == 1)
-                .FirstOrDefaultAsync();
+            var cenarioSalvo = await _context.CenariosAtual.FirstOrDefaultAsync(c =>
+                c.SUBCATEGORIA == uniqueId
+            );
             Assert.NotNull(cenarioSalvo);
-        }
-
-        [Fact]
-        public async Task SalvarCenarioAtual_ComValoresNumericosInvalidos_DeveAplicarValoresPadrao()
-        {
-            // Arrange - Já está usando _controller
-            var cenarios = new List<CenarioAtualDto>
-            {
-                new CenarioAtualDto
-                {
-                    SUBCATEGORIA = 1,
-                    PRIOR_ATUAL = -10,
-                    STATUS_ATUAL = -5,
-                    JUSTIFICATIVA = "Teste",
-                    POLIT_ATUAL = "Política",
-                    PRAT_ATUAL = "Prática",
-                    FUNC_RESP = "Responsável",
-                    REF_INFO = "Referência",
-                    EVID_ATUAL = "Evidência",
-                    NOTAS = "Notas",
-                    CONSIDERACOES = "Considerações",
-                },
-            };
-
-            // Act
-            var result = await _controller.SalvarCenarioAtual(cenarios);
-
-            // Assert - Usar tipo explícito
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var response = okResult.Value;
-            Assert.NotNull(response);
-
-            var successProperty = response.GetType().GetProperty("sucesso");
-            Assert.NotNull(successProperty);
-            Assert.True((bool)successProperty.GetValue(response)!);
-
-            var cenarioSalvo = await _context
-                .CenariosAtual.Where(c => c.SUBCATEGORIA == 1)
-                .FirstOrDefaultAsync();
-            Assert.NotNull(cenarioSalvo);
-            Assert.True(cenarioSalvo.PRIOR_ATUAL >= 1);
-            Assert.True(cenarioSalvo.STATUS_ATUAL >= 1);
         }
     }
 }

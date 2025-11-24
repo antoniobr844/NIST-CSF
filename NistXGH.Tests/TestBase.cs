@@ -1,3 +1,4 @@
+// NistXGH.Tests/TestBase.cs
 using Microsoft.EntityFrameworkCore;
 using NistXGH.Models;
 
@@ -6,40 +7,34 @@ namespace NistXGH.Tests
     public abstract class TestBase : IDisposable
     {
         private bool _disposed = false;
-        private List<SgsiDbContext> _contexts = new List<SgsiDbContext>();
+        private readonly List<SgsiDbContext> _contexts = new();
 
         protected SgsiDbContext CreateMockDbContext()
         {
             var options = new DbContextOptionsBuilder<SgsiDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .UseInMemoryDatabase(databaseName: $"UnitTestDb_{Guid.NewGuid()}")
                 .Options;
 
             var context = new SgsiDbContext(options);
             _contexts.Add(context);
-            SeedTestData(context);
+
+            if (!context.Database.IsInMemory())
+                throw new InvalidOperationException(
+                    "🚨 Testes unitários devem usar APENAS banco em memória!"
+                );
+
+            SeedUnitTestData(context);
             return context;
         }
 
-        protected void SeedTestData(SgsiDbContext context)
+        protected void SeedUnitTestData(SgsiDbContext context)
         {
             try
             {
-                // Garantir que o banco está criado
+                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                // Limpar dados existentes
-                context.CenariosAtual.RemoveRange(context.CenariosAtual);
-                context.CenariosFuturo.RemoveRange(context.CenariosFuturo);
-                context.Funcoes.RemoveRange(context.Funcoes);
-                context.Categorias.RemoveRange(context.Categorias);
-                context.Subcategorias.RemoveRange(context.Subcategorias);
-                context.PrioridadeTb.RemoveRange(context.PrioridadeTb);
-                context.StatusTb.RemoveRange(context.StatusTb);
-                context.CenarioLog.RemoveRange(context.CenarioLog);
-
-                context.SaveChanges();
-
-                // Adicionar dados de teste
+                // DADOS BÁSICOS PARA TESTES UNITÁRIOS
                 var funcoes = new[]
                 {
                     new Funcoes
@@ -147,7 +142,10 @@ namespace NistXGH.Tests
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro no seed: {ex.Message}");
+                throw new InvalidOperationException(
+                    $"Erro no seed de testes unitários: {ex.Message}",
+                    ex
+                );
             }
         }
 
@@ -165,6 +163,7 @@ namespace NistXGH.Tests
                 {
                     foreach (var context in _contexts)
                     {
+                        context?.Database?.EnsureDeleted();
                         context?.Dispose();
                     }
                     _contexts.Clear();
@@ -172,5 +171,11 @@ namespace NistXGH.Tests
                 _disposed = true;
             }
         }
+
+        //  MÉTODOS AUXILIARES 
+        protected int GenerateTestId() => new Random().Next(100, 999);
+
+        protected string GenerateTestString(string prefix = "Test") =>
+            $"{prefix}_{Guid.NewGuid().ToString("N")[..8]}";
     }
 }

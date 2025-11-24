@@ -24,14 +24,11 @@ namespace NistXGH.Tests.Controllers
             _mockLogger = new Mock<ILogger<CenariosController>>();
             _mockFormatacaoService = new Mock<IFormatacaoService>();
 
-            // 🔥 CORREÇÃO: Ordem correta dos parâmetros
             _controller = new CenariosController(
                 _context,
                 _mockLogger.Object,
                 _mockFormatacaoService.Object
             );
-
-            SeedTestData(_context);
         }
 
         [Fact]

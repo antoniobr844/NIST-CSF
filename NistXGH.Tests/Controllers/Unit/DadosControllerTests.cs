@@ -21,7 +21,6 @@ namespace NistXGH.Tests.Controllers
             _context = CreateMockDbContext();
             _mockLogger = new Mock<ILogger<DadosController>>();
             _controller = new DadosController(_context, _mockLogger.Object);
-            SeedTestData(_context);
         }
 
         [Fact]
@@ -33,7 +32,7 @@ namespace NistXGH.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var prioridades = Assert.IsType<List<PrioridadeTb>>(okResult.Value);
-            Assert.Equal(3, prioridades.Count); 
+            Assert.Equal(3, prioridades.Count);
         }
 
         [Fact]
@@ -80,7 +79,6 @@ namespace NistXGH.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
 
-            
             var catalogos = okResult.Value;
             Assert.NotNull(catalogos);
 
@@ -95,8 +93,8 @@ namespace NistXGH.Tests.Controllers
 
             Assert.NotNull(prioridades);
             Assert.NotNull(status);
-            Assert.Equal(3, prioridades.Count); 
-            Assert.Equal(3, status.Count); 
+            Assert.Equal(3, prioridades.Count);
+            Assert.Equal(3, status.Count);
         }
     }
 }

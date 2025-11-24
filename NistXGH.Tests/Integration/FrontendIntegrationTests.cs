@@ -13,13 +13,15 @@ namespace NistXGH.Tests.Integration
             // Arrange
             var client = CreateClient();
 
-            // Act - Simular requisições que o JavaScript faz
+            // Act
             var response = await client.GetAsync("/api/funcoes");
 
             // Assert
             response.EnsureSuccessStatusCode();
-            Assert.Equal("application/json; charset=utf-8", 
-                response.Content.Headers.ContentType?.ToString());
+            Assert.Equal(
+                "application/json; charset=utf-8",
+                response.Content.Headers.ContentType?.ToString()
+            );
         }
 
         [Fact]
@@ -33,15 +35,14 @@ namespace NistXGH.Tests.Integration
             var content = await response.Content.ReadAsStringAsync();
             var funcoes = JsonSerializer.Deserialize<JsonElement>(content);
 
-            // Assert - Verificar estrutura esperada pelo frontend
+            // Assert
             response.EnsureSuccessStatusCode();
             Assert.True(funcoes.ValueKind == JsonValueKind.Array, "Deve retornar array");
             Assert.True(funcoes.GetArrayLength() > 0, "Array não deve estar vazio");
 
-            // Verificar que contém dados esperados pelo JavaScript
             var funcoesString = content.ToLower();
-            Assert.Contains("gov", funcoesString); // GV -> Governança
-            Assert.Contains("id", funcoesString);  // IDs presentes
+            Assert.Contains("gov", funcoesString);
+            Assert.Contains("id", funcoesString);
         }
 
         [Fact]
@@ -50,7 +51,7 @@ namespace NistXGH.Tests.Integration
             // Arrange
             var client = CreateClient();
 
-            // Act - Testar filtro por função (como o frontend faz)
+            // Act
             var response = await client.GetAsync("/api/categorias?funcaoId=1");
             var content = await response.Content.ReadAsStringAsync();
             var categorias = JsonSerializer.Deserialize<JsonElement>(content);
@@ -58,8 +59,7 @@ namespace NistXGH.Tests.Integration
             // Assert
             response.EnsureSuccessStatusCode();
             Assert.True(categorias.ValueKind == JsonValueKind.Array);
-            
-            // Todas as categorias devem pertencer à função 1
+
             foreach (var categoria in categorias.EnumerateArray())
             {
                 if (categoria.TryGetProperty("FUNCAO", out var funcaoProp))
@@ -75,13 +75,13 @@ namespace NistXGH.Tests.Integration
             // Arrange
             var client = CreateClient();
 
-            // Act - Testar filtro por categoria (como o frontend faz)
+            // Act
             var response = await client.GetAsync("/api/subcategorias?categoriaId=1");
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
-            Assert.Contains("AC-1", content); // Dado do seed
+            Assert.Contains("AC-1", content);
         }
     }
 }

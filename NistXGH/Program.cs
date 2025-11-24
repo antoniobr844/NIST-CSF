@@ -2,79 +2,58 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NistXGH.Services;
 
-// Remove a classe Startup e usa apenas a abordagem moderna do .NET 6+
-public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<SgsiDbContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("SgsiDbContext"))
+);
+
+builder.Services.AddScoped<IFormatacaoService, FormatacaoService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
 {
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        builder.Services.AddControllersWithViews();
-
-        // Configuração condicional do DbContext
-        // Em ambiente de teste, usa InMemory; caso contrário, usa Oracle
-        if (IsTestEnvironment())
+    c.SwaggerDoc(
+        "v1",
+        new OpenApiInfo
         {
-            builder.Services.AddDbContext<SgsiDbContext>(options =>
-                options.UseInMemoryDatabase("TestDatabase")
-            );
+            Title = "API SGSI",
+            Version = "v1",
+            Description = "Documentação gerada com Swagger",
         }
-        else
-        {
-            builder.Services.AddDbContext<SgsiDbContext>(options =>
-                options.UseOracle(builder.Configuration.GetConnectionString("SgsiDbContext"))
-            );
-        }
+    );
+});
 
-        builder.Services.AddScoped<IFormatacaoService, FormatacaoService>();
+var app = builder.Build();
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc(
-                "v1",
-                new OpenApiInfo
-                {
-                    Title = "API SGSI",
-                    Version = "v1",
-                    Description = "Documentação gerada com Swagger",
-                }
-            );
-        });
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Home/Error");
-        }
-        else
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API SGSI v1");
-                c.RoutePrefix = "swagger";
-            });
-        }
-
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.UseAuthorization();
-
-        app.MapControllers();
-        app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
-
-        app.Run();
-    }
-
-    private static bool IsTestEnvironment()
-    {
-        // Verifica se está em ambiente de teste
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        return environment == "Test" || environment == "Testing";
-    }
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
 }
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API SGSI v1");
+        c.RoutePrefix = "swagger"; // Swagger abre na raiz: http://localhost:5263
+    });
+}
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapControllers();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

@@ -16,7 +16,6 @@ namespace NistXGH.Tests.Controllers
         {
             _context = CreateMockDbContext();
             _controller = new FuncoesController(_context);
-            SeedTestData(_context);
         }
 
         [Fact]

@@ -1,4 +1,5 @@
 // Testes de Renderização de Views
+// NistXGH.Tests/Integration/ViewRenderingTests.cs
 using Xunit;
 
 namespace NistXGH.Tests.Integration
@@ -21,8 +22,6 @@ namespace NistXGH.Tests.Integration
 
             // Assert
             response.EnsureSuccessStatusCode();
-
-            // Verificar elementos críticos estão presentes
             Assert.Contains("<!DOCTYPE html>", content);
             Assert.Contains("<html", content);
             Assert.Contains("</html>", content);
@@ -40,12 +39,7 @@ namespace NistXGH.Tests.Integration
 
             // Assert
             response.EnsureSuccessStatusCode();
-
-            // Verificar que carrega módulos JavaScript (ajuste conforme seus arquivos)
             Assert.Contains("<script", content);
-            // Se você tiver módulos específicos, verifique aqui:
-            // Assert.Contains("nist-core.js", content);
-            // Assert.Contains("type=\"module\"", content);
         }
 
         [Fact]
@@ -60,8 +54,6 @@ namespace NistXGH.Tests.Integration
 
             // Assert
             response.EnsureSuccessStatusCode();
-
-            // Verificar que carrega CSS
             Assert.Contains("<link", content);
             Assert.Contains("stylesheet", content);
         }

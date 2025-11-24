@@ -27,17 +27,16 @@ namespace NistXGH.Tests.Controllers
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var subcategorias = Assert.IsType<List<Subcategorias>>(okResult.Value);
 
-            
             Assert.NotNull(subcategorias);
         }
 
         [Fact]
         public async Task GetSubcategoria_ReturnsOkResult_WhenIdExists()
         {
-            // Arrange 
+            // Arrange
             var result = await _controller.GetSubcategoria(1);
 
-            // Assert 
+            // Assert
             Assert.NotNull(result);
         }
 

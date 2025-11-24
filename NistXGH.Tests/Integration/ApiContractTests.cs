@@ -24,11 +24,10 @@ namespace NistXGH.Tests.Integration
             // Assert
             response.EnsureSuccessStatusCode();
 
-            // Verificar que retorna JSON válido
             var json = JsonSerializer.Deserialize<JsonElement>(content);
             Assert.True(
                 json.ValueKind == JsonValueKind.Array || json.ValueKind == JsonValueKind.Object,
-                "Deve retornar array ou objeto JSON"
+                $"Endpoint {endpoint} deve retornar array ou objeto JSON"
             );
         }
 
