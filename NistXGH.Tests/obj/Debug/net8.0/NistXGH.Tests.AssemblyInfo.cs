@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NistXGH.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ffaf2bc7910869b9e4afe8ded846ac961fae3fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+11a5d9f765b6205ddc4592114c226a1a6536560e")]
 [assembly: System.Reflection.AssemblyProductAttribute("NistXGH.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NistXGH.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
