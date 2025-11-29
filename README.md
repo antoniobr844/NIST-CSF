@@ -1,6 +1,11 @@
 🛡️ NIST-CSF
 Aplicação desenvolvida para auxiliar organizações na gestão e acompanhamento da maturidade em Segurança da Informação, com base no NIST Cybersecurity Framework (CSF).
 
+Link para o banco de dados:
+https://drive.google.com/file/d/1jNxtxjkDQSAx5q0QY9JiGNDAwMfBZ-mO/view?usp=drive_link
+
+Usar preferencialmente a branch "testes".
+
 📘 Sumário
 Visão Geral
 
@@ -122,6 +127,50 @@ Acesse:
 
 text
 http://localhost:5000
+
+    Senha da Aplicação: nist123
+
+🔧 Comandos .NET Essenciais
+🔄 dotnet restore
+
+Função: Restaura pacotes e dependências do NuGet
+Uso: Após clonar o projeto ou adicionar novos pacotes
+bash
+
+dotnet restore
+
+🏃 dotnet run
+
+Função: Compila e executa a aplicação em modo produção
+Comportamento: Compila uma vez e executa
+bash
+
+dotnet run
+
+👀 dotnet watch run
+
+Função: Executa com hot-reload (ideal para desenvolvimento)
+Vantagem: Reinicia automaticamente ao editar código
+bash
+
+dotnet watch run
+
+🧹 dotnet clean
+
+Função: Limpa arquivos de compilação anteriores
+Uso: Resolver problemas de compilação
+bash
+
+dotnet clean
+
+🧪 dotnet test
+
+Função: Executa a suíte de testes
+bash
+
+
+dotnet test
+
 🧪 Testes
 Estrutura de Testes
 O projeto inclui uma suíte abrangente de testes para garantir a qualidade do código:
